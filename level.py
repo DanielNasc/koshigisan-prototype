@@ -1,5 +1,8 @@
 import pygame
+
 from Tile import Tile
+from debug import debug
+from player import Player
 from settings import *
 
 class Level:
@@ -21,6 +24,10 @@ class Level:
 
                 if data == "x":
                     Tile((x, y), (self.visible_sprites))
+                elif data == "p":
+                    self.player = Player((x, y), (self.visible_sprites))
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)
+        self.visible_sprites.update()
+        debug(self.player.direction)

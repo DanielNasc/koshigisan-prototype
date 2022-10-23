@@ -2,7 +2,6 @@ import pygame
 import sys
 
 from settings import *
-from debug import debug
 from level import Level
 
 class Game:
@@ -29,14 +28,10 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            level = Level()
-
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
             self.screen.blit(img, (img_pos_x, img_pos_y)) # Draws a source Surface onto this Surface.
-            level.run()
 
-            debug("hello")
             pygame.display.update()
             self.clock.tick(FPS)
 
