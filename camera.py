@@ -1,6 +1,7 @@
 import pygame
 
 from player import Player
+from settings import HEIGHT, WIDTH
 
 """
 as principais funções dos grupos são
@@ -21,7 +22,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         self.half_w = self.display_surface.get_width() // 2
         self.half_h = self.display_surface.get_height() // 2
 
-        self.internal_surf_size = (800, 600)
+        self.internal_surf_size = (WIDTH, HEIGHT)
         self.internal_surf = pygame.Surface(self.internal_surf_size, pygame.SRCALPHA)
         self.internal_surf_size_vector = pygame.math.Vector2(self.internal_surf_size)
         self.internal_rect = self.internal_surf.get_rect()
@@ -36,7 +37,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
             offset_pos = sprite.rect.topleft - self.offset
             self.internal_surf.blit(sprite.image, offset_pos)
 
-        scaled_surf = pygame.transform.scale(self.internal_surf, self.internal_surf_size_vector * 2)
-        scaled_rect = scaled_surf.get_rect(center = player.rect.center)
+        scaled_surf = pygame.transform.scale(self.internal_surf, self.internal_surf_size_vector * 2.5)
+        scaled_rect = scaled_surf.get_rect(center = (self.half_w, self.half_h))
 
-        self.display_surface.blit(scaled_surf, player.rect.center)
+        self.display_surface.blit(scaled_surf, scaled_rect)
