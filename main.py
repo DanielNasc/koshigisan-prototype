@@ -16,12 +16,6 @@ class Game:
 
 
     def run(self):
-        font = pygame.font.SysFont(None, 24)
-        img = font.render("Hello, Koshigisan!", True, "white")
-
-        img_pos_x = (WIDTH // 2) - (img.get_width() // 2)
-        img_pos_y = (HEIGHT // 2) - (img.get_height() // 2)
-
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -30,7 +24,6 @@ class Game:
 
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
-            self.screen.blit(img, (img_pos_x, img_pos_y)) # Draws a source Surface onto this Surface.
 
             pygame.display.update()
             self.clock.tick(FPS)
