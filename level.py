@@ -23,9 +23,9 @@ class Level:
                 y = row_index * TILESIZE
 
                 if data == "x":
-                    Tile((x, y), (self.visible_sprites))
+                    Tile((x, y), (self.visible_sprites, self.obstacle_sprites))
                 elif data == "p":
-                    self.player = Player((x, y), (self.visible_sprites))
+                    self.player = Player((x, y), (self.visible_sprites), self.obstacle_sprites)
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)
