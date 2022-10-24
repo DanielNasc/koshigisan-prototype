@@ -2,6 +2,7 @@ WIDTH=800
 HEIGHT=600
 FPS=60
 TILESIZE=32
+ZOOM=2
 
 MAP=[
     ["x"] * 100,
