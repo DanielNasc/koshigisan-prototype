@@ -33,7 +33,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
 
         self.internal_surf.fill((0, 0, 0))
 
-        for sprite in self.sprites():
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.y):
             offset_pos = sprite.rect.topleft - self.offset
             self.internal_surf.blit(sprite.image, offset_pos)
 
