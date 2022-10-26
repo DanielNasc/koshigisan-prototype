@@ -7,7 +7,7 @@ from settings import HEIGHT, WIDTH
 as principais funções dos grupos são
 
 1. armazenar e desenhar sprites
-2. chamar o metódo update
+2. chamar o método update
 
 mas você pode mudar adicionar novos metodos ou mudar os existentes extendendo a classe
 """
