@@ -6,7 +6,6 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacles: pygame.sprite.Group):
         super().__init__(groups)
 
-
         #### Animação
 
         # pegar todas as animações dos jogador e colocar na propriedade anim
@@ -22,7 +21,13 @@ class Player(pygame.sprite.Sprite):
 
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = 0.05
+
+        #### Ataques
+
+        self.is_attacking = False
+        self.attack_cooldown = 700
+        self.attack_time = 0
 
         #### Rect
 
@@ -34,6 +39,10 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstacles
 
     def input(self):
+        if self.is_attacking:
+            self.direction.x = self.direction.y = 0
+            return
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:
@@ -53,11 +62,28 @@ class Player(pygame.sprite.Sprite):
             self.status = 'down'
         else:
             self.direction.y = 0
+
+        if keys[pygame.K_x]:
+            self.is_attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print("sword")
+
+        if keys[pygame.K_z]:
+            self.is_attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print("magic")
+
+    def cooldown(self):
+        curr_time = pygame.time.get_ticks()
+
+        if self.is_attacking and (curr_time - self.attack_time >= self.attack_cooldown):
+            self.is_attacking = False
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle_' in self.status:
                 self.status = 'idle_' + self.status 
+                self.frame_index = 0
 
     def move(self, speed: int=5):
         if self.direction.magnitude() != 0:
@@ -74,6 +100,7 @@ class Player(pygame.sprite.Sprite):
     def animate(self):
         animation = self.anim[self.status]
         self.frame_index += self.animation_speed
+
         if self.frame_index >= len(animation):
             self.frame_index = 0
 
@@ -102,6 +129,7 @@ class Player(pygame.sprite.Sprite):
             
 
     def update(self):
+        self.cooldown()
         self.input()
         self.get_status()
         self.animate()
