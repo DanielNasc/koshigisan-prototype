@@ -16,18 +16,23 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
     def __init__(self):
         super().__init__()
 
+        # pegar a surface do display
         self.display_surface = pygame.display.get_surface()
+
+
         self.offset = pygame.math.Vector2()
 
+        # centro da tela
         self.half_w = self.display_surface.get_width() // 2
         self.half_h = self.display_surface.get_height() // 2
 
+        # criando a surface onde os sprites serão "blitados"
         self.internal_surf_size = (WIDTH, HEIGHT)
         self.internal_surf = pygame.Surface(self.internal_surf_size, pygame.SRCALPHA)
         self.internal_surf_size_vector = pygame.math.Vector2(self.internal_surf_size)
         self.internal_rect = self.internal_surf.get_rect()
 
-        # creating the floor
+        # criando o floor
         self.floor_surface = pygame.image.load('assets/sprites/Sky.png').convert()
         self.floor_rect = self.floor_surface.get_rect(topleft = (0,0))
 

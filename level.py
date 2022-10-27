@@ -23,11 +23,8 @@ class Level:
             'boundary': import_positions('assets/positions/Sky_Colisões.csv')
         }
 
-
         for style,layout in layouts.items():
-
             for row_index, row in enumerate(layout):
-        
                 for col_index, data in enumerate(row):
                     if data != '-1':
                         x = col_index * TILESIZE

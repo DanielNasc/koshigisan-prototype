@@ -1,29 +1,35 @@
-
 import pygame
 from settings import *
-from spritesheet import SpriteSheet
 from support import import_sprites
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacles: pygame.sprite.Group):
         super().__init__(groups)
 
-        
-        self.spritesheet = SpriteSheet("assets/sprites/characteres/yamato/down/yamato_05.png")
-        self.image = self.spritesheet.get_sprite(0, 0, 32, 32)
+
+        #### Animação
+
+        # pegar todas as animações dos jogador e colocar na propriedade anim
         self.anim = import_sprites('assets/sprites/characteres/yamato')
-        for anim_array in self.anim.values():
+
+        # ajustar o zoom do sprite do player
+        for anim_array  in self.anim.values():
             for i in range(len(anim_array)):
-                anim_array[i] = pygame.transform.scale(anim_array[i], pygame.math.Vector2(anim_array[i].get_size()) * 2)
+                player_size_vector = pygame.math.Vector2(anim_array[i].get_size())
+                anim_array[i] = pygame.transform.scale(anim_array[i], player_size_vector * PLAYER_ZOOM)
         
+        self.image = self.anim["idle_down"][0]
+
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = 0.05
+        self.animation_speed = 0.15
+
+        #### Rect
 
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0, -10)
+        self.hitbox = self.rect.inflate(0, -10) # Hitbox com altura menor que o rect para possibiltar o efeito de overlay
 
-        self.direction = pygame.math.Vector2()
+        self.direction = pygame.math.Vector2() 
 
         self.obstacle_sprites = obstacles
 

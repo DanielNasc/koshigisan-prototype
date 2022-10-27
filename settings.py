@@ -5,6 +5,7 @@ TILESIZE=32
 ZOOM=2
 
 PLAYER_SPAWN=(1260, 820)
+PLAYER_ZOOM=2
 
 MAP=[
 ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'],

@@ -1,5 +1,5 @@
-from csv import reader
 import pygame
+from csv import reader
 from os import walk, listdir
 from os.path import join 
 
@@ -14,14 +14,22 @@ def import_positions(path):
     return position_map
 
 def import_sprites(path):
+
+    # key: nome da pasta - value: array de surfaces criadas a partir das imagens dessa pasta
     animations = {}
     animation_folders = listdir(path)
 
-    for folder in animation_folders:
+    # percorrer todas as pastas do diretório passado e criar uma Surface para cada uma das animações que
+    # estão contidas nelas e as colocar no dict de animations
+
+    for folder in animation_folders: # para cada pasta do diretório passado
         animations[folder] = []
-        for _,__,images in walk(join(path, folder)):
-            for image in sorted(images):
-                animations[folder].append(pygame.image.load(join(path, folder, image)).convert_alpha())
+        anim_folder = join(path, folder)
+
+        for _,__,images in walk(anim_folder):
+            for image in sorted(images): # manter as animações na ordem
+                image_path = join(path, folder, image)
+                animations[folder].append(pygame.image.load(image_path).convert_alpha())
     
     return animations
     
