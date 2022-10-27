@@ -1,3 +1,4 @@
+from math import floor
 import pygame
 from settings import *
 from support import import_sprites
@@ -21,12 +22,13 @@ class Player(pygame.sprite.Sprite):
 
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = 0.05
+        self.animation_speed = 0.15
 
         #### Ataques
 
+        self.can_attack = True
         self.is_attacking = False
-        self.attack_cooldown = 700
+        self.attack_cooldown = 1000
         self.attack_time = 0
 
         #### Rect
@@ -63,27 +65,46 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.y = 0
 
-        if keys[pygame.K_x]:
+        if keys[pygame.K_x] and self.can_attack:
             self.is_attacking = True
+            self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
             print("sword")
 
-        if keys[pygame.K_z]:
+        if keys[pygame.K_z] and self.can_attack:
             self.is_attacking = True
+            self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
             print("magic")
 
     def cooldown(self):
         curr_time = pygame.time.get_ticks()
 
-        if self.is_attacking and (curr_time - self.attack_time >= self.attack_cooldown):
+        if (curr_time - self.attack_time >= self.attack_cooldown):
             self.is_attacking = False
+            self.can_attack = True
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
-            if not 'idle_' in self.status:
+            if not 'idle_' in self.status and "attacking" not in self.status:
                 self.status = 'idle_' + self.status 
                 self.frame_index = 0
+
+        if self.is_attacking:
+            self.direction.x = self.direction.y = 0
+
+            if not "attacking" in self.status:
+                if "idle" in self.status:
+                    self.status = self.status.replace("idle", "attacking")
+                else:
+                    self.status = "attacking_" + self.status
+                self.frame_index = 0
+                    
+        else:
+            if "attacking" in self.status:
+                self.status = self.status.replace("attacking_", "")
+                self.frame_index = 0
+                
 
     def move(self, speed: int=5):
         if self.direction.magnitude() != 0:
@@ -103,9 +124,11 @@ class Player(pygame.sprite.Sprite):
 
         if self.frame_index >= len(animation):
             self.frame_index = 0
+            if self.is_attacking:
+                self.is_attacking = False
 
         # set the image
-        self.image = animation[int(self.frame_index)]
+        self.image = animation[floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def detect_collision(self, direction):
