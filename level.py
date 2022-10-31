@@ -20,7 +20,7 @@ class Level:
 
     def create_map(self):
         layouts = {
-            'boundary': import_positions('assets/positions/Sky_Colisões.csv')
+            'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv')
         }
 
         for style,layout in layouts.items():
@@ -31,7 +31,7 @@ class Level:
                         y = row_index * TILESIZE
 
                         if style == 'boundary':
-                            Tile((x + 490, y), (self.obstacle_sprites), 'invisible')
+                            Tile((x, y), (self.obstacle_sprites), 'invisible')
                             
                         
         self.player = Player(PLAYER_SPAWN, (self.visible_sprites), self.obstacle_sprites)
@@ -39,4 +39,4 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.frame_index)
+        
