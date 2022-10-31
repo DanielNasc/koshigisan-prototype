@@ -2,6 +2,7 @@ import pygame
 
 from player import Player
 from settings import HEIGHT, WIDTH, ZOOM
+from weapon import Weapon
 
 """
 as principais funções dos grupos são
@@ -11,6 +12,9 @@ as principais funções dos grupos são
 
 mas você pode mudar adicionar novos metodos ou mudar os existentes extendendo a classe
 """
+
+def gambiarra_weapon(sprite: pygame.sprite.Sprite):
+    return sprite.rect.y if not isinstance(sprite,Weapon) else 10000000000
 
 class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
     def __init__(self):
@@ -45,7 +49,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         floor_offset = self.floor_rect.topleft - self.offset
         self.internal_surf.blit(self.floor_surface, floor_offset)
 
-        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.y):
+        for sprite in sorted(self.sprites(), key=gambiarra_weapon):
             offset_pos = sprite.rect.topleft - self.offset
             self.internal_surf.blit(sprite.image, offset_pos)
 

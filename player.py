@@ -4,7 +4,7 @@ from settings import *
 from support import import_sprites
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacles: pygame.sprite.Group):
+    def __init__(self, pos, groups, obstacles: pygame.sprite.Group, create_attack, destroy_attack):
         super().__init__(groups)
 
         #### Animação
@@ -18,11 +18,11 @@ class Player(pygame.sprite.Sprite):
                 player_size_vector = pygame.math.Vector2(anim_array[i].get_size())
                 anim_array[i] = pygame.transform.scale(anim_array[i], player_size_vector * PLAYER_ZOOM)
         
-        self.image = self.anim["idle_down"][0]
+        self.image = self.anim["down_idle"][0]
 
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = ATTACK_SPEED
 
         #### Ataques
 
@@ -30,6 +30,11 @@ class Player(pygame.sprite.Sprite):
         self.is_attacking = False
         self.attack_cooldown = 1000
         self.attack_time = 0
+        self.create_attack = create_attack
+        self.destroy_attack = destroy_attack
+
+        self.weapon_index = 0
+        self.weapon = list(weapons_data.keys())[self.weapon_index]
 
         #### Rect
 
@@ -69,7 +74,7 @@ class Player(pygame.sprite.Sprite):
             self.is_attacking = True
             self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
-            print("sword")
+            self.create_attack()
 
         if keys[pygame.K_z] and self.can_attack:
             self.is_attacking = True
@@ -83,26 +88,27 @@ class Player(pygame.sprite.Sprite):
         if (curr_time - self.attack_time >= self.attack_cooldown):
             self.is_attacking = False
             self.can_attack = True
+            self.destroy_attack()
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
-            if not 'idle_' in self.status and "attacking" not in self.status:
-                self.status = 'idle_' + self.status 
+            if not 'idle' in self.status and "attack" not in self.status:
+                self.status += '_idle'
                 self.frame_index = 0
 
         if self.is_attacking:
             self.direction.x = self.direction.y = 0
 
-            if not "attacking" in self.status:
+            if not "attack" in self.status:
                 if "idle" in self.status:
-                    self.status = self.status.replace("idle", "attacking")
+                    self.status = self.status.replace("idle", "attack")
                 else:
-                    self.status = "attacking_" + self.status
+                    self.status += "_attack"
                 self.frame_index = 0
                     
         else:
-            if "attacking" in self.status:
-                self.status = self.status.replace("attacking_", "")
+            if "attack" in self.status:
+                self.status = self.status.replace("_attack", "")
                 self.frame_index = 0
                 
 
@@ -126,6 +132,7 @@ class Player(pygame.sprite.Sprite):
             self.frame_index = 0
             if self.is_attacking:
                 self.is_attacking = False
+                self.destroy_attack()
 
         # set the image
         self.image = animation[floor(self.frame_index)]

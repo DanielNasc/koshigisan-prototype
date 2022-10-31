@@ -23,13 +23,19 @@ def import_sprites(path):
     # estão contidas nelas e as colocar no dict de animations
 
     for folder in animation_folders: # para cada pasta do diretório passado
-        animations[folder] = []
         anim_folder = join(path, folder)
+        animations[folder] = import_animations_from_folder(anim_folder)
 
-        for _,__,images in walk(anim_folder):
-            for image in sorted(images): # manter as animações na ordem
-                image_path = join(path, folder, image)
-                animations[folder].append(pygame.image.load(image_path).convert_alpha())
+        
     
     return animations
     
+def import_animations_from_folder(anim_folder):
+    folder_animations = []
+
+    for _,__,images in walk(anim_folder):
+            for image in sorted(images): # manter as animações na ordem
+                image_path = join(anim_folder, image)
+                folder_animations.append(pygame.image.load(image_path).convert_alpha())
+
+    return folder_animations
