@@ -28,7 +28,7 @@ class Weapon(pygame.sprite.Sprite):
                                         center=
                                             player.rect.center 
                                             + pygame.math.Vector2(
-                                                                28 * (1 if self.direction != "left" else -1), 0)
+                                                                14 * PLAYER_ZOOM * (1 if self.direction != "left" else -1), 0)
                                                                 )
 
         self.index = 0
