@@ -114,7 +114,7 @@ class Player(pygame.sprite.Sprite):
                 self.frame_index = 0
                 
 
-    def move(self, speed: int=5):
+    def move(self, speed: int=10):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 

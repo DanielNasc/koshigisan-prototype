@@ -27,6 +27,7 @@ class Level:
             'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv'),
             'grass': import_positions('assets/positions/Skymap_Grass.csv'),
             'tree': import_positions('assets/positions/Skymap_Trees.csv'),
+            'tree2': import_positions('assets/positions/Skymap_Trees2.csv'),
             'ice': import_positions('assets/positions/Skymap_Water.csv')
         }
 
@@ -50,7 +51,7 @@ class Level:
                             random_grass = pygame.transform.scale(random_grass, grass_size * .5)
                             random_grass.get_rect(center=random_grass.get_rect().midbottom)
                             Tile((x, y), (self.visible_sprites), 'grass', random_grass)
-                        elif style == "tree" and data == "t":
+                        elif (style == "tree" or style == "tree2") and data == "t":
                             random_tree = choice(graphics["trees"])
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', random_tree)
                         elif style == "ice":
