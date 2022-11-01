@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
 
         self.status = 'down'
         self.frame_index = 0
-        self.animation_speed = ATTACK_SPEED
+        #self.animation_speed = ATTACK_SPEED
 
         #### Ataques
 
@@ -47,6 +47,15 @@ class Player(pygame.sprite.Sprite):
 
         self.obstacle_sprites = obstacles
         self.slippery_sprites = slippery_sprites
+
+        #------------- Maluzinha ------------------
+        #### Estatísticas
+        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': ATTACK_SPEED}
+        self.health = self.stats['health']
+        self.mana = self.stats['mana']
+        self.exp = 123 ## teste
+        self.animation_speed = self.stats['speed']
+
 
     def input(self):
         if self.is_blocked:

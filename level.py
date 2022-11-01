@@ -7,6 +7,7 @@ from player import Player
 from settings import *
 from support import import_animations_from_folder, import_positions
 from weapon import Weapon
+from ui import UI
 
 class Level:
     def __init__(self) -> None:
@@ -21,6 +22,10 @@ class Level:
 
         # setup sprite
         self.create_map()
+
+        # -------------- Maluzinha ------------
+        # user interface
+        self.ui = UI()
 
     def create_map(self):
         layouts = {
@@ -72,3 +77,6 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+
+        # -------------- Maluzinha ---------
+        self.ui.display(self.player)
