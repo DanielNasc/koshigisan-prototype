@@ -27,7 +27,8 @@ class Player(pygame.sprite.Sprite):
         #### Ataques
 
         self.can_attack = True
-        self.is_attacking = False
+        self.is_blocked = False
+        self.is_sliding = False
         self.attack_cooldown = 1000
         self.attack_time = 0
         self.create_attack = create_attack
@@ -46,7 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstacles
 
     def input(self):
-        if self.is_attacking:
+        if self.is_blocked:
             self.direction.x = self.direction.y = 0
             return
 
@@ -71,13 +72,13 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = 0
 
         if keys[pygame.K_x] and self.can_attack:
-            self.is_attacking = True
+            self.is_blocked = True
             self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
             self.create_attack()
 
         if keys[pygame.K_z] and self.can_attack:
-            self.is_attacking = True
+            self.is_blocked = True
             self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
             print("magic")
@@ -86,7 +87,7 @@ class Player(pygame.sprite.Sprite):
         curr_time = pygame.time.get_ticks()
 
         if (curr_time - self.attack_time >= self.attack_cooldown):
-            self.is_attacking = False
+            self.is_blocked = False
             self.can_attack = True
             self.destroy_attack()
     
@@ -96,7 +97,7 @@ class Player(pygame.sprite.Sprite):
                 self.status += '_idle'
                 self.frame_index = 0
 
-        if self.is_attacking:
+        if self.is_blocked:
             self.direction.x = self.direction.y = 0
 
             if not "attack" in self.status:
@@ -130,8 +131,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.frame_index >= len(animation):
             self.frame_index = 0
-            if self.is_attacking:
-                self.is_attacking = False
+            if self.is_blocked:
+                self.is_blocked = False
                 self.destroy_attack()
 
         # set the image
@@ -156,7 +157,6 @@ class Player(pygame.sprite.Sprite):
                     elif self.direction.y < 0: # andando para cima
                         self.hitbox.top = sprite.hitbox.bottom
 
-            
 
     def update(self):
         self.cooldown()

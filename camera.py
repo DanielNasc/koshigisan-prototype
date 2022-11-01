@@ -14,7 +14,7 @@ mas você pode mudar adicionar novos metodos ou mudar os existentes extendendo a
 """
 
 def gambiarra_weapon(sprite: pygame.sprite.Sprite):
-    return sprite.rect.y if not isinstance(sprite,Weapon) else 10000000000
+    return sprite.rect.bottom if not isinstance(sprite,Weapon) else 10000000000
 
 class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
     def __init__(self):

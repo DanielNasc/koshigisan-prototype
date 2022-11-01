@@ -1,10 +1,11 @@
+from random import choice
 import pygame
 
 from Tile import Tile
 from camera import YSortCameraGroup
 from player import Player
 from settings import *
-from support import import_positions
+from support import import_animations_from_folder, import_positions
 from weapon import Weapon
 
 class Level:
@@ -14,7 +15,7 @@ class Level:
         # setup sprite groups
         self.visible_sprites = YSortCameraGroup() 
         self.obstacle_sprites = pygame.sprite.Group()
-
+        self.sliding_sprites = pygame.sprite.Group()
 
         self.curr_attack = None
 
@@ -23,7 +24,14 @@ class Level:
 
     def create_map(self):
         layouts = {
-            'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv')
+            'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv'),
+            'grass': import_positions('assets/positions/Skymap_Grass.csv'),
+            'tree': import_positions('assets/positions/Skymap_Trees.csv')
+        }
+
+        graphics = {
+            'grass': import_animations_from_folder("assets/sprites/grass"),
+            'trees': import_animations_from_folder("assets/sprites/trees")
         }
 
         for style,layout in layouts.items():
@@ -35,6 +43,16 @@ class Level:
 
                         if style == 'boundary':
                             Tile((x, y), (self.obstacle_sprites), 'invisible')
+                        elif style == 'grass':
+                            random_grass = choice(graphics['grass'])
+                            grass_size =  pygame.math.Vector2(random_grass.get_size())
+                            random_grass = pygame.transform.scale(random_grass, grass_size * .5)
+                            random_grass.get_rect(center=random_grass.get_rect().midbottom)
+                            Tile((x, y), (self.visible_sprites), 'grass', random_grass)
+                        elif style == "tree" and data == "t":
+                            random_tree = choice(graphics["trees"])
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', random_tree)
+                        
                             
                         
         self.player = Player(PLAYER_SPAWN, (self.visible_sprites), self.obstacle_sprites, self.create_attack, self.destroy_attack)

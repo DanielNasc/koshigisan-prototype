@@ -7,5 +7,5 @@ class Tile(pygame.sprite.Sprite):
         # self.image = pygame.image.load("assets/sprites/placeholder.png")
         self.image = surface
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0, -5)
+        self.hitbox = self.rect.inflate(0, -(self.rect.height * .6))
         self.sprite_type = sprite_type
