@@ -15,7 +15,7 @@ class Level:
         # setup sprite groups
         self.visible_sprites = YSortCameraGroup() 
         self.obstacle_sprites = pygame.sprite.Group()
-        self.sliding_sprites = pygame.sprite.Group()
+        self.slippery_sprites = pygame.sprite.Group()
 
         self.curr_attack = None
 
@@ -26,7 +26,8 @@ class Level:
         layouts = {
             'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv'),
             'grass': import_positions('assets/positions/Skymap_Grass.csv'),
-            'tree': import_positions('assets/positions/Skymap_Trees.csv')
+            'tree': import_positions('assets/positions/Skymap_Trees.csv'),
+            'ice': import_positions('assets/positions/Skymap_Water.csv')
         }
 
         graphics = {
@@ -52,10 +53,12 @@ class Level:
                         elif style == "tree" and data == "t":
                             random_tree = choice(graphics["trees"])
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', random_tree)
+                        elif style == "ice":
+                            Tile((x, y), (self.slippery_sprites), 'ice')
                         
                             
                         
-        self.player = Player(PLAYER_SPAWN, (self.visible_sprites), self.obstacle_sprites, self.create_attack, self.destroy_attack)
+        self.player = Player(PLAYER_SPAWN, (self.visible_sprites), self.obstacle_sprites, self.slippery_sprites, self.create_attack, self.destroy_attack)
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites])
