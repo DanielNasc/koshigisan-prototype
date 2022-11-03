@@ -4,6 +4,7 @@ from os import walk, listdir
 from os.path import join 
 
 def import_positions(path):
+    path = convert_path(path)
     position_map = []
     with open(path) as csv_file:
         dunno = reader(csv_file, delimiter = ',')
@@ -16,6 +17,7 @@ def import_positions(path):
 def import_sprites(path):
 
     # key: nome da pasta - value: array de surfaces criadas a partir das imagens dessa pasta
+    path = convert_path(path)
     animations = {}
     animation_folders = listdir(path)
 
@@ -31,6 +33,7 @@ def import_sprites(path):
     return animations
     
 def import_animations_from_folder(anim_folder):
+    anim_folder = convert_path(anim_folder)
     folder_animations = []
 
     for _,__,images in walk(anim_folder):
@@ -39,3 +42,6 @@ def import_animations_from_folder(anim_folder):
                 folder_animations.append(pygame.image.load(image_path).convert_alpha())
 
     return folder_animations
+
+def convert_path(path: str):
+    return join(*(path.split("/")))
