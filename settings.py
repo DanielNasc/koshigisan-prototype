@@ -31,6 +31,10 @@ weapons_data = {
     "sword": { "cooldown": 100, "damage": 15, "graphics": "assets/sprites/weapons/sword" }
 }
 
+magic_data = {
+    "flame": { "strength": 25, "cost": 25, "graphics": "assets/sprites/magic/fireball" }
+}
+
 # ------------- Maluzinha ---------------
 
 weapons_ui_data = {
