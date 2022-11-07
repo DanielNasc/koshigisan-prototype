@@ -37,6 +37,20 @@ magic_data = {
     "flame": { "strength": 25, "cost": 25, "graphics": convert_path("assets/sprites/magic/fireball") }
 }
 
+monsters_data = {
+    "nukekubi": { 
+            "health": 100, 
+            "exp": 100,
+            "damage": 20,
+            "attack_type": "dash",
+            "speed": 3, 
+            "resistance": 3,
+            "attack_radius": 30,
+            "notice_radius": 360 ,
+            "scale": .5
+        }
+}
+
 # ------------- Maluzinha ---------------
 
 weapons_ui_data = {

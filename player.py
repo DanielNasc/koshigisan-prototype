@@ -2,8 +2,9 @@ from math import floor
 import pygame
 from settings import *
 from support import import_sprites
+from entity import Entity
 
-class Player(pygame.sprite.Sprite):
+class Player(Entity):
     def __init__(self, pos, groups, obstacles: pygame.sprite.Group, slippery_sprites: pygame.sprite.Group, 
                 create_attack, destroy_attack, create_magic):
         super().__init__(groups)
@@ -22,7 +23,6 @@ class Player(pygame.sprite.Sprite):
         self.image = self.anim["down_idle"][0]
 
         self.status = 'down'
-        self.frame_index = 0
         #self.animation_speed = ATTACK_SPEED
 
         #### Ataques
@@ -53,18 +53,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0, -10) # Hitbox com altura menor que o rect para possibiltar o efeito de overlay
 
-        self.direction = pygame.math.Vector2() 
-
         self.obstacle_sprites = obstacles
         self.slippery_sprites = slippery_sprites
 
         #------------- Maluzinha ------------------
         #### Estatísticas
-        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': ATTACK_SPEED}
+        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2}
         self.health = self.stats['health']
         self.mana = self.stats['mana']
         self.exp = 123 ## teste
-        self.animation_speed = self.stats['speed']
 
 
     def input(self):
@@ -158,21 +155,6 @@ class Player(pygame.sprite.Sprite):
                 self.frame_index = 0
                 
 
-    def move(self, speed: int=10):
-        if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
-
-        if (self.is_sliding):
-            speed *= 1.25
-
-        self.hitbox.x += self.direction.x * speed
-        self.detect_collision("horizontal")
-
-        self.hitbox.y += self.direction.y * speed
-        self.detect_collision("vertical")
-
-        self.rect.center = self.hitbox.center
-
     def animate(self):
         if (self.is_sliding): return
         
@@ -189,35 +171,6 @@ class Player(pygame.sprite.Sprite):
         # set the image
         self.image = animation[floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
-
-    def detect_collision(self, direction):
-
-        if direction == "horizontal":
-            for sprite in self.obstacle_sprites:
-                if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.x > 0: # andando para a direita
-                        self.hitbox.right = sprite.hitbox.left
-                    elif self.direction.x < 0: # andando para a esquerda
-                        self.hitbox.left = sprite.hitbox.right
-                    self.direction.x = 0
-
-        if direction == "vertical":
-            for sprite in self.obstacle_sprites:
-                if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.y > 0: # andando para baixo
-                        self.hitbox.bottom = sprite.hitbox.top
-                    elif self.direction.y < 0: # andando para cima
-                        self.hitbox.top = sprite.hitbox.bottom
-                    self.direction.y = 0
-        
-        is_colliding_slippery_sprite = False
-        for sprite in self.slippery_sprites:
-            if sprite.hitbox.colliderect(self.hitbox):
-                is_colliding_slippery_sprite = True
-                break
-
-        self.is_sliding = is_colliding_slippery_sprite
-
 
     def update_blocked(self):
         self.is_blocked = self.is_attacking or self.is_attacking_w_magic
