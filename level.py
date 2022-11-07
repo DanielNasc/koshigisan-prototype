@@ -34,9 +34,9 @@ class Level:
             'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv'),
             'grass': import_positions('assets/positions/Skymap_Grass.csv'),
             'tree': import_positions('assets/positions/Skymap_Trees.csv'),
-            'entities': import_positions('assets/positions/Skymap_Trees2.csv'),
+            'tree2': import_positions('assets/positions/Skymap_Trees2.csv'),
             'ice': import_positions('assets/positions/Skymap_Water.csv'),
-            # 'entities': import_positions('ass')
+            'entities': import_positions('assets/positions/Spawn_Positions.csv')
         }
 
         graphics = {
@@ -69,20 +69,24 @@ class Level:
                             Tile((x, y), (self.slippery_sprites), 'ice')
                         
                         elif style == "entities":
-                            if data == "t":
+                            if data == "p":
+                                self.player = Player(
+                                        (x, y),
+                                        (self.visible_sprites),
+                                        self.obstacle_sprites,
+                                        self.slippery_sprites,
+                                        self.create_attack,
+                                        self.destroy_attack,
+                                        self.create_magic
+                                    )
+                            # elif data == "14":
+                            #     Enemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                            else:
                                 Enemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                         
                             
                         
-        self.player = Player(
-                        PLAYER_SPAWN,
-                        (self.visible_sprites),
-                        self.obstacle_sprites,
-                        self.slippery_sprites,
-                        self.create_attack,
-                        self.destroy_attack,
-                        self.create_magic
-                    )
+        
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites])

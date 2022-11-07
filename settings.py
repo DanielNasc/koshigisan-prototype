@@ -42,12 +42,23 @@ monsters_data = {
             "health": 100, 
             "exp": 100,
             "damage": 20,
-            "attack_type": "dash",
+            "attack_type": "continuous",
             "speed": 3, 
             "resistance": 3,
             "attack_radius": 30,
             "notice_radius": 360 ,
-            "scale": .5
+            "scale": .5,
+        },
+    "eagle": { 
+            "health": 250, 
+            "exp": 150,
+            "damage": 30,
+            "attack_type": "dash",
+            "speed": 3, 
+            "resistance": 3,
+            "attack_radius":60,
+            "notice_radius": 120,
+            "scale": .5,
         }
 }
 
