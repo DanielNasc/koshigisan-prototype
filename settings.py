@@ -61,7 +61,7 @@ monsters_data = {
             "notice_radius": 240,
             "scale": .5,
             "preparing_duration": 1000,
-            "attack_cooldown": 3000
+            "attack_cooldown": 5000
         }
 }
 

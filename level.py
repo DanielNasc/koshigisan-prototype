@@ -79,14 +79,10 @@ class Level:
                                         self.destroy_attack,
                                         self.create_magic
                                     )
-                            # elif data == "14":
-                            #     Enemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                            elif data == "14":
+                                DashEnemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                             else:
                                 ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
-                        
-                            
-                        
-        
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites])
