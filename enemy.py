@@ -1,10 +1,25 @@
 import pygame
-from math import floor
+import math
 
 from player import Player
 from entity import Entity
 from support import import_sprites
 from settings import monsters_data
+
+"""
+Estagios: [0] Idle, [1] Notar, [2] Preparar, [3] Atacar
+
+[0] Idle: fica parado, esperando o player entrar em seu notice_radius
+[1] Notar: Se movimenta quando o player entra em seu notice_radius
+[2] Preparar: Fica estático por pouco tempo, dando a ideia de estar se preparando e dando tempo do player se esquivar
+[3] Atacar: Efetua o ataque
+
+"""
+
+IDLE = 0
+NOTICE = 1
+PREPARE = 2
+ATTACK = 3
 
 class Enemy(Entity):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
@@ -13,7 +28,7 @@ class Enemy(Entity):
         # general
         self.sprite_type = "enemy"
         self.obstacle_sprites = obstacle_sprites
-        self.slippery_sprites = slippery_sprites
+        self.slippery_sprites = slippery_sprites    
 
         # stats
         self.monster_name = monster_name
@@ -43,7 +58,14 @@ class Enemy(Entity):
         # player interaction
         self.can_attack = True
         self.is_attacking = False
+        self.is_preparing = False
+        self.is_blocked = False
         self.attack_cooldown = 10000
+        self.preparing_time = None
+        self.preparing_duration = 1000
+        self.stage = IDLE
+
+
 
     def import_graphics(self, monster_name):
         self.anim = import_sprites(f"assets/sprites/monsters/{self.monster_name}", self.scale)
@@ -57,6 +79,8 @@ class Enemy(Entity):
 
         return (distance, direction)
 
+
+    # pega o status da animação
     def get_status(self, player: Player):
         distance = self.get_player_distance_and_direction(player)[0]
         direction = "down"
@@ -70,6 +94,9 @@ class Enemy(Entity):
         else:
             self.status = direction + "_idle"
         
+    def get_stage(self, player):
+        distance, direction = self.get_player_distance_and_direction(player)
+
     def actions(self, player):
         if "attack" in self.status:
             self.attack_time = pygame.time.get_ticks()
@@ -86,11 +113,16 @@ class Enemy(Entity):
             self.direction = pygame.math.Vector2()
 
     def cooldown(self):
+        curr_time = pygame.time.get_ticks()
+
         if not self.can_attack:
-            curr_time = pygame.time.get_ticks()
             if curr_time - self.attack_time >= self.attack_cooldown:
                 self.can_attack = True
                 self.is_attacking = False
+
+        # if self.is_preparing:
+        #     if curr_time - self.preparing_time >= self.preparing_duration:
+        #         self.
 
     def animate(self):
         if (self.is_sliding): return
@@ -104,11 +136,12 @@ class Enemy(Entity):
             self.frame_index = 0
 
         # set the image
-        self.image = animation[floor(self.frame_index)]
+        self.image = animation[math.floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def update(self):
-        self.move(self.speed * self.speed_boost)
+        if (not self.is_blocked):
+            self.move(self.speed * self.speed_boost)
         self.animate()
         self.cooldown()
 

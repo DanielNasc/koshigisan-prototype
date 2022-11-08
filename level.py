@@ -8,7 +8,7 @@ from settings import *
 from support import import_animations_from_folder, import_positions
 from weapon import Weapon
 from ui import UI
-from enemy import Enemy
+from enemy import *
 
 class Level:
     def __init__(self) -> None:
@@ -79,8 +79,8 @@ class Level:
                                         self.destroy_attack,
                                         self.create_magic
                                     )
-                            # elif data == "14":
-                            #     Enemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                            elif data == "14":
+                                Enemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                             else:
                                 Enemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                         
