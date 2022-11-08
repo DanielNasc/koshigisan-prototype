@@ -58,8 +58,8 @@ class Enemy(Entity):
 
         # player interaction
         self.can_attack = True
-        self.is_attacking = False
         self.is_blocked = False
+        self.is_preparing = False
         self.attack_cooldown = 1000
         self.attack_duration = 2000
         self.preparing_time = None
@@ -98,7 +98,7 @@ class Enemy(Entity):
             if self.attack_type == "continuous":
                 self.direction = pygame.math.Vector2()
             else:
-                self.speed_boost =  2 if self.attack_type == "dash" else 1
+                self.speed_boost = 3 if self.attack_type == "dash" else 1
 
         elif "move" in self.status:
             self.direction = self.get_player_distance_and_direction(player)[1]
@@ -111,18 +111,16 @@ class Enemy(Entity):
         if not self.can_attack:
             if curr_time - self.attack_time >= self.attack_cooldown:
                 self.can_attack = True
-                self.is_attacking = False
 
         if self.stage == ATTACK:
-            if curr_time - self.attack_duration >= self.is_attacking:
+            if curr_time - self.attack_time >= self.attack_duration:
                 self.stage = IDLE
-                self.is_attacking = False
 
         if self.stage == PREPARE:
             if curr_time - self.preparing_time >= self.preparing_duration:
                 self.stage = ATTACK
-                self.is_blocked = False
-                self.is_attacking = True
+                self.is_blocked = self.is_preparing = False
+                # self.attack_time
 
     def animate(self):
         if (self.is_sliding): return
@@ -191,8 +189,9 @@ class DashEnemy(Enemy):
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
 
-        if distance <= self.attack_radius:
-            self.stage = ATTACK
+        if distance <= self.attack_radius and self.can_attack:
+            if self.stage != ATTACK:
+                self.stage = PREPARE
         elif distance <= self.notice_radius:
             self.stage = NOTICE
         else:
@@ -203,8 +202,15 @@ class DashEnemy(Enemy):
 
         if self.stage == ATTACK:
             self.attack_time = pygame.time.get_ticks()
-            self.speed_boost = 2
-            
+            self.speed_boost = 3
+
+        elif self.stage == PREPARE:
+            if (self.is_preparing):
+                return
+
+            self.preparing_time = pygame.time.get_ticks()
+            self.is_blocked = self.is_preparing = True
+
         elif "move" in self.status:
             self.direction = self.get_player_distance_and_direction(player)[1]
         else:
@@ -220,16 +226,3 @@ class DashEnemy(Enemy):
         self.get_stage(player)
         self.get_status()
         self.actions(player)
-
-# if "attack" in self.status:
-#             self.attack_time = pygame.time.get_ticks()
-            
-#             if self.attack_type == "continuous":
-#                 self.direction = pygame.math.Vector2()
-#             else:
-#                 self.speed_boost =  2 if self.attack_type == "dash" else 1
-
-#         elif "move" in self.status:
-#             self.direction = self.get_player_distance_and_direction(player)[1]
-#         else:
-#             self.direction = pygame.math.Vector2()
