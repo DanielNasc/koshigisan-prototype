@@ -3,6 +3,7 @@ import pygame
 from player import Player
 from settings import HEIGHT, WIDTH, ZOOM
 from weapon import Weapon
+from support import convert_path
 
 """
 as principais funções dos grupos são
@@ -37,7 +38,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         self.internal_rect = self.internal_surf.get_rect()
 
         # criando o floor
-        self.floor_surface = pygame.image.load('assets/sprites/background/map.png').convert()
+        self.floor_surface = pygame.image.load(convert_path('assets/sprites/background/map.png')).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft = (0,0))
 
     def custom_draw(self, player: Player):
@@ -57,3 +58,8 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         scaled_rect = scaled_surf.get_rect(center = (self.half_w, self.half_h))
 
         self.display_surface.blit(scaled_surf, scaled_rect)
+
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == "enemy" ]
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)
