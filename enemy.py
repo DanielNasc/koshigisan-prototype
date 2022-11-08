@@ -147,6 +147,15 @@ class Enemy(Entity):
         self.get_status()
         self.actions(player)
 
+
+"""
+
+Inimigo com ataque Continuo (Nukekubi)
+Não tem o Stage de preparação
+
+"""
+
+
 class ContinuousEnemy(Enemy):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
         super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites)
@@ -181,6 +190,10 @@ class ContinuousEnemy(Enemy):
         self.get_stage(player)
         self.get_status()
         self.actions(player)
+
+"""
+Inimigo com ataque de Dash (Águia)
+"""
 
 class DashEnemy(Enemy):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:

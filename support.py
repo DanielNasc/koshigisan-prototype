@@ -37,13 +37,20 @@ def import_animations_from_folder(anim_folder, scale=None):
     for _,__,images in walk(anim_folder):
             for image in sorted(images): # manter as animações na ordem
                 image_path = join(anim_folder, image)
-                img = pygame.image.load(image_path).convert_alpha()
-                if (scale):
-                    img_size = pygame.math.Vector2(img.get_size())
-                    img = pygame.transform.scale(img, img_size * scale)
-                folder_animations.append(img)
+                
+                folder_animations.append(import_a_single_sprite(image_path, scale))
 
     return folder_animations
+
+def import_a_single_sprite(image_path, scale=None):
+    image_path = convert_path(image_path)
+    img = pygame.image.load(image_path).convert_alpha()
+    if (scale):
+        img_size = pygame.math.Vector2(img.get_size())
+        img = pygame.transform.scale(img, img_size * scale)
+
+    return img
+
 
 def convert_path(path: str):
     return join(*(path.split("/")))

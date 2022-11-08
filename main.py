@@ -29,7 +29,6 @@ class Game:
             debug((self.level.player.status, self.level.player.can_attack_w_magic, self.level.player.is_attacking_w_magic))
             pygame.display.update()
             self.clock.tick(FPS)
-            
 
 if __name__ == "__main__":
     game = Game()

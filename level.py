@@ -5,7 +5,7 @@ from Tile import Tile
 from camera import YSortCameraGroup
 from player import Player
 from settings import *
-from support import import_animations_from_folder, import_positions
+from support import import_animations_from_folder, import_positions, import_a_single_sprite
 from weapon import Weapon
 from ui import UI
 from enemy import *
@@ -36,12 +36,14 @@ class Level:
             'tree': import_positions('assets/positions/Skymap_Trees.csv'),
             'tree2': import_positions('assets/positions/Skymap_Trees2.csv'),
             'ice': import_positions('assets/positions/Skymap_Water.csv'),
-            'entities': import_positions('assets/positions/Spawn_Positions.csv')
+            'entities': import_positions('assets/positions/Spawn_Positions.csv'),
+            'houses': import_positions('assets/positions/Skymap_Houses.csv')
         }
 
         graphics = {
             'grass': import_animations_from_folder("assets/sprites/grass"),
-            'trees': import_animations_from_folder("assets/sprites/trees")
+            'trees': import_animations_from_folder("assets/sprites/trees"),
+            'houses': import_animations_from_folder("assets/sprites/houses")
         }
 
         for style,layout in layouts.items():
@@ -83,6 +85,27 @@ class Level:
                                 DashEnemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                             else:
                                 ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+
+                        elif style == "houses":
+                            house = None
+                            if (data == "gr"):
+                                house = import_a_single_sprite('assets/sprites/houses/gr.png')
+                            elif (data == "gb"):
+                                house = import_a_single_sprite('assets/sprites/houses/gb.png')
+                            elif (data == "gn"):
+                                house = import_a_single_sprite('assets/sprites/houses/gn.png', 1.2)
+                            elif (data == "sn"):
+                                house = import_a_single_sprite('assets/sprites/houses/sn.png', 1.5)
+                            elif (data == "sn2"):
+                                house = import_a_single_sprite('assets/sprites/houses/sn2.png', 1.5)
+                            elif (data == "n"):
+                                house = import_a_single_sprite('assets/sprites/houses/n.png',1.2)
+                            elif (data == "k"):
+                                house = import_a_single_sprite('assets/sprites/houses/koshigi.png')
+                            elif (data == "b"):
+                                house = import_a_single_sprite('assets/sprites/houses/budah.png')
+                            if (house):
+                                Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites])
