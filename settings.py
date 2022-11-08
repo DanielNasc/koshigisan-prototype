@@ -48,7 +48,7 @@ monsters_data = {
             "attack_radius": 30,
             "notice_radius": 360 ,
             "scale": .5,
-            "preparing_duration": 0
+            "preparing_duration": 0,
         },
     "eagle": { 
             "health": 250, 
@@ -60,7 +60,8 @@ monsters_data = {
             "attack_radius":120,
             "notice_radius": 240,
             "scale": .5,
-            "preparing_duration": 1000
+            "preparing_duration": 1000,
+            "attack_cooldown": 3000
         }
 }
 

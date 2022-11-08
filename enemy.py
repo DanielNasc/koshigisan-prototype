@@ -43,6 +43,7 @@ class Enemy(Entity):
         self.attack_radius = monster_info["attack_radius"]
         self.notice_radius = monster_info["notice_radius"]
         self.scale = monster_info["scale"]
+        self.preparing_duration = monster_info["preparing_duration"]
         self.is_sliding = False
  
         # graphics
@@ -58,13 +59,11 @@ class Enemy(Entity):
         # player interaction
         self.can_attack = True
         self.is_attacking = False
-        self.is_preparing = False
         self.is_blocked = False
-        self.attack_cooldown = 10000
+        self.attack_cooldown = 1000
+        self.attack_duration = 2000
         self.preparing_time = None
-        self.preparing_duration = 1000
         self.stage = IDLE
-
 
 
     def import_graphics(self, monster_name):
@@ -79,23 +78,18 @@ class Enemy(Entity):
 
         return (distance, direction)
 
-
     # pega o status da animação
-    def get_status(self, player: Player):
-        distance = self.get_player_distance_and_direction(player)[0]
+    def get_status(self):
         direction = "down"
 
-        if (distance <= self.attack_radius and self.can_attack) or self.is_attacking:
+        if self.stage == ATTACK:
             if "attack" not in self.status:
                 self.frame_index = 0
             self.status = direction + "_attack"
-        elif distance <= self.notice_radius:
+        elif self.stage == NOTICE:
             self.status = direction + "_move"
         else:
             self.status = direction + "_idle"
-        
-    def get_stage(self, player):
-        distance, direction = self.get_player_distance_and_direction(player)
 
     def actions(self, player):
         if "attack" in self.status:
@@ -104,7 +98,6 @@ class Enemy(Entity):
             if self.attack_type == "continuous":
                 self.direction = pygame.math.Vector2()
             else:
-
                 self.speed_boost =  2 if self.attack_type == "dash" else 1
 
         elif "move" in self.status:
@@ -120,9 +113,17 @@ class Enemy(Entity):
                 self.can_attack = True
                 self.is_attacking = False
 
-        # if self.is_preparing:
-        #     if curr_time - self.preparing_time >= self.preparing_duration:
-        #         self.
+        if self.stage == ATTACK:
+            if curr_time - self.attack_duration >= self.is_attacking:
+                self.stage = IDLE
+                self.is_attacking = False
+
+        if self.stage == PREPARE:
+            if curr_time - self.preparing_time >= self.preparing_duration:
+                self.stage = ATTACK
+                self.is_blocked = False
+                self.is_attacking = True
+
 
     def animate(self):
         if (self.is_sliding): return
@@ -131,7 +132,7 @@ class Enemy(Entity):
         self.frame_index += self.animation_speed
 
         if self.frame_index >= len(animation):
-            if "attack" in self.status and self.attack_type != "continuous":
+            if self.stage == ATTACK and self.attack_type != "continuous":
                 self.can_attack = False
             self.frame_index = 0
 
@@ -148,3 +149,52 @@ class Enemy(Entity):
     def enemy_update(self, player):
         self.get_status(player)
         self.actions(player)
+
+class ContinuousEnemy(Enemy):
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites)
+
+    def get_stage(self, player):
+        distance, direction = self.get_player_distance_and_direction(player)
+
+        if distance <= self.attack_radius:
+            self.stage = ATTACK
+        elif distance <= self.notice_radius:
+            self.stage = NOTICE
+        else:
+            self.stage = IDLE
+
+    def actions(self, player):
+        if self.stage == ATTACK:
+            self.attack_time = pygame.time.get_ticks()
+            self.direction = pygame.math.Vector2()
+            
+        elif "move" in self.status:
+            self.direction = self.get_player_distance_and_direction(player)[1]
+        else:
+            self.direction = pygame.math.Vector2()
+
+    def update(self):
+        if (not self.is_blocked):
+            self.move(self.speed * self.speed_boost)
+        self.animate()
+        self.cooldown()
+
+    def enemy_update(self, player):
+        self.get_stage(player)
+        self.get_status()
+        self.actions(player)
+
+    
+# if "attack" in self.status:
+#             self.attack_time = pygame.time.get_ticks()
+            
+#             if self.attack_type == "continuous":
+#                 self.direction = pygame.math.Vector2()
+#             else:
+#                 self.speed_boost =  2 if self.attack_type == "dash" else 1
+
+#         elif "move" in self.status:
+#             self.direction = self.get_player_distance_and_direction(player)[1]
+#         else:
+#             self.direction = pygame.math.Vector2()

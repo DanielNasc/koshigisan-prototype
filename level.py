@@ -79,10 +79,10 @@ class Level:
                                         self.destroy_attack,
                                         self.create_magic
                                     )
-                            elif data == "14":
-                                Enemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                            # elif data == "14":
+                            #     Enemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                             else:
-                                Enemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
                         
                             
                         
