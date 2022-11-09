@@ -38,7 +38,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         self.internal_rect = self.internal_surf.get_rect()
 
         # criando o floor
-        self.floor_surface = pygame.image.load(convert_path('assets/sprites/background/map.png')).convert()
+        self.floor_surface = pygame.image.load(convert_path('assets/sprites/background/Sky.png')).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft = (0,0))
 
     def custom_draw(self, player: Player):
