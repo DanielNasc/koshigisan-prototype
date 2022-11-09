@@ -2,7 +2,7 @@ from support import convert_path
 
 WIDTH=1280
 HEIGHT=720
-FPS=60
+FPS=100
 TILESIZE=32
 ZOOM=3
 
@@ -47,7 +47,7 @@ monsters_data = {
             "resistance": 3,
             "attack_radius": 30,
             "notice_radius": 360 ,
-            "scale": .5,
+            "scale": 1,
             "preparing_duration": 0,
         },
     "eagle": { 
@@ -59,7 +59,7 @@ monsters_data = {
             "resistance": 3,
             "attack_radius":120,
             "notice_radius": 240,
-            "scale": .5,
+            "scale": 1,
             "preparing_duration": 1000,
             "attack_cooldown": 5000
         }

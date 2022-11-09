@@ -31,13 +31,12 @@ class Level:
 
     def create_map(self):
         layouts = {
-            'boundary': import_positions('assets/positions/Skymap_FloorBlocks.csv'),
-            'grass': import_positions('assets/positions/Skymap_Grass.csv'),
-            'tree': import_positions('assets/positions/Skymap_Trees.csv'),
-            'tree2': import_positions('assets/positions/Skymap_Trees2.csv'),
-            'ice': import_positions('assets/positions/Skymap_Water.csv'),
-            'entities': import_positions('assets/positions/Spawn_Positions.csv'),
-            'houses': import_positions('assets/positions/Skymap_Houses.csv')
+            'boundary': import_positions('assets/positions/Sky/Skymap_FloorBlocks.csv'),
+            'grass': import_positions('assets/positions/Sky/Skymap_Grass.csv'),
+            'tree': import_positions('assets/positions/Sky/Skymap_Trees.csv'),
+            'tree2': import_positions('assets/positions/Sky/Skymap_Trees2.csv'),
+            'ice': import_positions('assets/positions/Sky/Skymap_Water.csv'),
+            'entities': import_positions('assets/positions/Sky/Spawn_Positions.csv')
         }
 
         graphics = {

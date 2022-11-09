@@ -26,7 +26,7 @@ class Game:
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
 
-            debug((self.level.player.status, self.level.player.can_attack_w_magic, self.level.player.is_attacking_w_magic))
+            debug(self.clock.get_fps())
             pygame.display.update()
             self.clock.tick(FPS)
 
