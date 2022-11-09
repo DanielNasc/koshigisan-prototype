@@ -11,11 +11,14 @@ from ui import UI
 from enemy import *
 
 class Level:
-    def __init__(self) -> None:
+    def __init__(self, curr_level) -> None:
         self.display_suface = pygame.display.get_surface()
 
+        # Levels
+        self.curr_level = curr_level
+
         # setup sprite groups
-        self.visible_sprites = YSortCameraGroup() 
+        self.visible_sprites = YSortCameraGroup(self.curr_level) 
         self.obstacle_sprites = pygame.sprite.Group()
         self.slippery_sprites = pygame.sprite.Group()
         self.enemies_sprites = pygame.sprite.Group()
@@ -23,21 +26,33 @@ class Level:
         self.curr_attack = None
 
         # setup sprite
+        self.create_layouts()
         self.create_map()
 
         # -------------- Maluzinha ------------
         # user interface
         self.ui = UI()
 
-    def create_map(self):
-        layouts = {
-            'boundary': import_positions('assets/positions/Sky/Skymap_FloorBlocks.csv'),
-            'grass': import_positions('assets/positions/Sky/Skymap_Grass.csv'),
-            'tree': import_positions('assets/positions/Sky/Skymap_Trees.csv'),
-            'tree2': import_positions('assets/positions/Sky/Skymap_Trees2.csv'),
-            'ice': import_positions('assets/positions/Sky/Skymap_Water.csv'),
-            'entities': import_positions('assets/positions/Sky/Spawn_Positions.csv')
+    def create_layouts(self):
+        self.layouts = {
+            'boundary': import_positions(f'assets/positions/{self.curr_level}/{self.curr_level}map_FloorBlocks.csv'),
+            'entities': import_positions(f'assets/positions/{self.curr_level}/Spawn_Positions.csv')
         }
+
+        if (self.curr_level == "Sky"):
+            self.layouts.update({
+                'grass': import_positions('assets/positions/Sky/Skymap_Grass.csv'),
+                'tree': import_positions('assets/positions/Sky/Skymap_Trees.csv'),
+                'tree2': import_positions('assets/positions/Sky/Skymap_Trees2.csv'),
+                'ice': import_positions('assets/positions/Sky/Skymap_Water.csv'),
+                'house': import_positions('assets/positions/Sky/Skymap_Houses.csv')
+            })
+        # elif (self.curr_level == "Hell"):
+        #     self.layouts.update({
+
+        #     })
+
+    def create_map(self):
 
         graphics = {
             'grass': import_animations_from_folder("assets/sprites/grass"),
@@ -45,7 +60,7 @@ class Level:
             'houses': import_animations_from_folder("assets/sprites/houses")
         }
 
-        for style,layout in layouts.items():
+        for style,layout in self.layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, data in enumerate(row):
                     if data != '-1':
@@ -85,7 +100,7 @@ class Level:
                             else:
                                 ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
 
-                        elif style == "houses":
+                        elif style == "house":
                             house = None
                             if (data == "gr"):
                                 house = import_a_single_sprite('assets/sprites/houses/gr.png')
@@ -103,6 +118,7 @@ class Level:
                                 house = import_a_single_sprite('assets/sprites/houses/koshigi.png')
                             elif (data == "b"):
                                 house = import_a_single_sprite('assets/sprites/houses/budah.png')
+
                             if (house):
                                 Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
 

@@ -13,8 +13,14 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # This function will create a display Surface
         self.clock = pygame.time.Clock()
 
-        self.level = Level() # create a instance of Level class
+        self.levels = ["Sky", "Hell"]
+        self.level_index = 0
+        self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
+    def update_level(self):
+        self.level_index += 1
+        
+        self.level = Level(self.levels[self.level_index])
 
     def run(self):
         while True:
@@ -26,7 +32,13 @@ class Game:
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
 
-            debug(self.clock.get_fps())
+            p_topleft = self.level.player.rect.topleft
+
+            # gambiarra temporária
+            if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 0:
+                self.update_level()
+
+            debug(self.level.player.rect.topleft)
             pygame.display.update()
             self.clock.tick(FPS)
 

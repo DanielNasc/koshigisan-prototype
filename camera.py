@@ -18,7 +18,7 @@ def gambiarra_weapon(sprite: pygame.sprite.Sprite):
     return sprite.rect.bottom if not isinstance(sprite,Weapon) else 10000000000
 
 class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
-    def __init__(self):
+    def __init__(self, level):
         super().__init__()
 
         # pegar a surface do display
@@ -38,7 +38,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         self.internal_rect = self.internal_surf.get_rect()
 
         # criando o floor
-        self.floor_surface = pygame.image.load(convert_path('assets/sprites/background/Sky.png')).convert()
+        self.floor_surface = pygame.image.load(convert_path(f'assets/sprites/background/{level}.png')).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft = (0,0))
 
     def custom_draw(self, player: Player):
