@@ -148,7 +148,7 @@ class Enemy(Entity):
 #--------------Lonalt--------
     def get_damage(self, player,attack_type):
         if self.vulnerable:
-            self.direction = self.get_player_distance_and_direction(player)[]
+            self.direction = self.get_player_distance_and_direction(player)[1]
             if attack_type == 'weapon':
                 self.health -= player.get_full_weapon_damage()
             else:
