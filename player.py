@@ -108,7 +108,7 @@ class Player(Entity):
     def cooldown(self):
         curr_time = pygame.time.get_ticks()
 
-        if (curr_time - self.attack_time >= self.attack_cooldown):
+        if (curr_time - self.attack_time >= self.attack_cooldown + weapons_data[self.weapon]['cooldown']):
             self.is_attacking = False
             self.can_attack = True
             self.destroy_attack()
@@ -177,6 +177,12 @@ class Player(Entity):
         
         if self.is_sliding:
             self.is_blocked = not ( self.direction.x == 0 and self.direction.y == 0 and self.is_sliding )
+
+#----------------Lonalt-------------
+    def get_full_weapon_damage(self):
+        base_damage = self.stats['attack']
+        weapon_damage = weapons_data[self.weapon]['damage']
+        return base_damage + weapon_damage
 
     def update(self):
         self.cooldown()

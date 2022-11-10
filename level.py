@@ -106,7 +106,7 @@ class Level:
                 collision_sprites = pygame.sprite.spritecollide(attack_sprites,self.attackble_sprites,False)
                 if collision_sprites:
                     for target_sprit in collision_sprites:
-                        target_sprit.kill()
+                        target_sprit.get_damage(self.player,attack_sprites.sprite_type)
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
