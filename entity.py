@@ -1,4 +1,6 @@
 import pygame   
+from math import sin
+
 
 class Entity(pygame.sprite.Sprite):
     def __init__(self, groups) -> None:
@@ -49,3 +51,10 @@ class Entity(pygame.sprite.Sprite):
                 break
 
         self.is_sliding = is_colliding_slippery_sprite
+
+    def wave_value(self):
+        value = sin(pygame.time.get_ticks())
+        if value >= 0:
+            return 255
+        else:
+            return 0
