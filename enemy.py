@@ -145,6 +145,13 @@ class Enemy(Entity):
         self.image = animation[math.floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+        # flickering image
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
 #--------------Lonalt--------
     def get_damage(self, player,attack_type):
         if self.vulnerable:
