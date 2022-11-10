@@ -65,6 +65,11 @@ class Enemy(Entity):
         self.preparing_time = None
         self.stage = IDLE
 
+        # invincibility timer
+        self.vulnerable = True
+        self.hit_time = None
+        self.invincibility_duration = 300
+
 
     def import_graphics(self, monster_name):
         self.anim = import_sprites(f"assets/sprites/monsters/{self.monster_name}", self.scale)
@@ -105,7 +110,7 @@ class Enemy(Entity):
         else:
             self.direction = pygame.math.Vector2()
 
-    def cooldown(self):
+    def cooldowns(self):
         curr_time = pygame.time.get_ticks()
 
         if not self.can_attack:
@@ -121,6 +126,9 @@ class Enemy(Entity):
                 self.stage = ATTACK
                 self.is_blocked = self.is_preparing = False
                 # self.attack_time
+        if not self.vulnerable:
+            if curr_time - self.hit_time >= self.invincibility_duration:
+                self.vulnerable = True
 
     def animate(self):
         if (self.is_sliding): return
@@ -139,20 +147,28 @@ class Enemy(Entity):
 
 #--------------Lonalt--------
     def get_damage(self, player,attack_type):
-        if attack_type == 'weapon':
-            self.health -= player.get_full_weapon_damage()
-        else:
-            pass
+        if self.vulnerable:
+            self.direction = self.get_player_distance_and_direction(player)[1]
+            if attack_type == 'weapon':
+                self.health -= player.get_full_weapon_damage()
+            else:
+                pass
+            self.hit_time = pygame.time.get_ticks()
+            self.vulnerable = False
 
     def check_death(self):
         if self.health <= 0:
             self.kill()
+    
+    def hit_reaction(self):
+        if not self.vulnerable:
+            self.direction *= (-self.resistance * 10)
 
     def update(self):
         if (not self.is_blocked):
             self.move(self.speed * self.speed_boost)
         self.animate()
-        self.cooldown()
+        self.cooldowns()
 
     def enemy_update(self, player):
         self.get_status()
@@ -182,22 +198,12 @@ class ContinuousEnemy(Enemy):
         else:
             self.direction = pygame.math.Vector2()
 
-#--------------Lonalt--------
-    # def get_damage(self, player,attack_type):
-    #     if attack_type == 'weapon':
-    #         self.health -= player.get_full_weapon_damage()
-    #     else:
-    #         pass
-
-    # def check_death(self):
-    #     if self.health <= 0:
-    #         self.kill()
-
     def update(self):
+        self.hit_reaction()
         if (not self.is_blocked):
             self.move(self.speed * self.speed_boost)
         self.animate()
-        self.cooldown()
+        self.cooldowns()
         self.check_death()
 
     def enemy_update(self, player):
@@ -240,23 +246,12 @@ class DashEnemy(Enemy):
             self.direction = pygame.math.Vector2()
 
 
-# -------------Lonalt-------
-#     def get_damage(self, player,attack_type):
-#         if attack_type == 'weapon':
-#             self.health -= player.get_full_weapon_damage()
-#         else:
-#             pass
-
-#     def check_death(self):
-#         if self.health <= 0:
-#             self.kill()
-
-
     def update(self):
+        self.hit_reaction()
         if (not self.is_blocked):
             self.move(self.speed * self.speed_boost)
         self.animate()
-        self.cooldown()
+        self.cooldowns()
         self.check_death()
 
     def enemy_update(self, player):
