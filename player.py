@@ -63,6 +63,11 @@ class Player(Entity):
         self.mana = self.stats['mana']
         self.exp = 123 ## teste
 
+        #-------------Lonalt-------------------
+        # flickering time
+        self.vulnerable = True
+        self.hurt_time = None
+        self.invulnerability_duration = 500
 
     def input(self):
         if self.is_blocked:
@@ -117,6 +122,9 @@ class Player(Entity):
             self.is_attacking_w_magic = False
             self.can_attack = True
 
+        if not self.vulnerable:
+            if curr_time - self.hurt_time >= self.invulnerability_duration:
+                self.vulnerable = True
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
@@ -171,6 +179,13 @@ class Player(Entity):
         # set the image
         self.image = animation[floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
+
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
 
     def update_blocked(self):
         self.is_blocked = self.is_attacking or self.is_attacking_w_magic

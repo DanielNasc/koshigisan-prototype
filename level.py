@@ -84,9 +84,9 @@ class Level:
                                         self.create_magic
                                     )
                             elif data == "14":
-                                DashEnemy("eagle", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites)
+                                DashEnemy("eagle", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player)
                             else:
-                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites)
+                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player)
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites,self.attack_sprites])
@@ -107,6 +107,15 @@ class Level:
                 if collision_sprites:
                     for target_sprit in collision_sprites:
                         target_sprit.get_damage(self.player,attack_sprites.sprite_type)
+
+    def damage_player(self,amount,attack_type):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.hurt_time = pygame.time.get_ticks()
+            # spawn particles
+
+
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)

@@ -22,7 +22,7 @@ PREPARE = 2
 ATTACK = 3
 
 class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
         super().__init__(groups)
 
         # general
@@ -64,6 +64,7 @@ class Enemy(Entity):
         self.attack_duration = 2000
         self.preparing_time = None
         self.stage = IDLE
+        self.damage_player = damage_player
 
         # invincibility timer
         self.vulnerable = True
@@ -99,7 +100,7 @@ class Enemy(Entity):
     def actions(self, player):
         if "attack" in self.status:
             self.attack_time = pygame.time.get_ticks()
-            
+            self.damage_player(self.damage,self.attack_type)
             if self.attack_type == "continuous":
                 self.direction = pygame.math.Vector2()
             else:
@@ -182,8 +183,8 @@ class Enemy(Entity):
         self.actions(player)
 
 class ContinuousEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player)
 
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
@@ -219,8 +220,8 @@ class ContinuousEnemy(Enemy):
         self.actions(player)
 
 class DashEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player)
 
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
