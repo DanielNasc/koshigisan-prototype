@@ -9,6 +9,7 @@ from support import import_animations_from_folder, import_positions, import_a_si
 from weapon import Weapon
 from ui import UI
 from enemy import *
+from particles import AnimationController
 
 class Level:
     def __init__(self, curr_level) -> None:
@@ -32,6 +33,9 @@ class Level:
         # -------------- Maluzinha ------------
         # user interface
         self.ui = UI()
+
+        # particles
+        self.animation_controller = AnimationController()
 
     def create_layouts(self):
         self.layouts = {
