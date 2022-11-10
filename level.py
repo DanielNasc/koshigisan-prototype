@@ -97,6 +97,9 @@ class Level:
                                     )
                             elif data == "14":
                                 DashEnemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                            elif data == "A":
+                                akuma = import_a_single_sprite('assets/sprites/monsters/akuma_front.png', 2)
+                                Tile((x, y), [self.visible_sprites], 'boss', akuma)
                             else:
                                 ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
 

@@ -62,6 +62,19 @@ monsters_data = {
             "scale": 1,
             "preparing_duration": 1000,
             "attack_cooldown": 5000
+        },
+        "akuma": { 
+            "health": 250000000000, 
+            "exp": 1500000,
+            "damage": 300000,
+            "attack_type": "dash",
+            "speed": 3, 
+            "resistance": 32323,
+            "attack_radius":120,
+            "notice_radius": 240,
+            "scale": 1,
+            "preparing_duration": 1000,
+            "attack_cooldown": 5000
         }
 }
 

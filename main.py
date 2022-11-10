@@ -14,7 +14,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.levels = ["Sky", "Hell"]
-        self.level_index = 0
+        self.level_index = 1
         self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
     def update_level(self):
