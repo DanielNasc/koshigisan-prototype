@@ -22,7 +22,7 @@ PREPARE = 2
 ATTACK = 3
 
 class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
         super().__init__(groups)
 
         # general
@@ -64,6 +64,12 @@ class Enemy(Entity):
         self.attack_duration = 2000
         self.preparing_time = None
         self.stage = IDLE
+        self.damage_player = damage_player
+
+        # invincibility timer
+        self.vulnerable = True
+        self.hit_time = None
+        self.invincibility_duration = 300
 
 
     def import_graphics(self, monster_name):
@@ -94,7 +100,7 @@ class Enemy(Entity):
     def actions(self, player):
         if "attack" in self.status:
             self.attack_time = pygame.time.get_ticks()
-            
+            self.damage_player(self.damage,self.attack_type)
             if self.attack_type == "continuous":
                 self.direction = pygame.math.Vector2()
             else:
@@ -105,7 +111,7 @@ class Enemy(Entity):
         else:
             self.direction = pygame.math.Vector2()
 
-    def cooldown(self):
+    def cooldowns(self):
         curr_time = pygame.time.get_ticks()
 
         if not self.can_attack:
@@ -121,6 +127,9 @@ class Enemy(Entity):
                 self.stage = ATTACK
                 self.is_blocked = self.is_preparing = False
                 # self.attack_time
+        if not self.vulnerable:
+            if curr_time - self.hit_time >= self.invincibility_duration:
+                self.vulnerable = True
 
     def animate(self):
         if (self.is_sliding): return
@@ -137,11 +146,37 @@ class Enemy(Entity):
         self.image = animation[math.floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+        # flickering image
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
+#--------------Lonalt--------
+    def get_damage(self, player,attack_type):
+        if self.vulnerable:
+            self.direction = self.get_player_distance_and_direction(player)[1]
+            if attack_type == 'weapon':
+                self.health -= player.get_full_weapon_damage()
+            else:
+                pass
+            self.hit_time = pygame.time.get_ticks()
+            self.vulnerable = False
+
+    def check_death(self):
+        if self.health <= 0:
+            self.kill()
+    
+    def hit_reaction(self):
+        if not self.vulnerable:
+            self.direction *= -self.resistance
+
     def update(self):
         if (not self.is_blocked):
             self.move(self.speed * self.speed_boost)
         self.animate()
-        self.cooldown()
+        self.cooldowns()
 
     def enemy_update(self, player):
         self.get_status()
@@ -157,8 +192,8 @@ Não tem o Stage de preparação
 
 
 class ContinuousEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player)
 
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
@@ -181,10 +216,12 @@ class ContinuousEnemy(Enemy):
             self.direction = pygame.math.Vector2()
 
     def update(self):
+        self.hit_reaction()
         if (not self.is_blocked):
             self.move(self.speed * self.speed_boost)
         self.animate()
-        self.cooldown()
+        self.cooldowns()
+        self.check_death()
 
     def enemy_update(self, player):
         self.get_stage(player)
@@ -196,8 +233,8 @@ Inimigo com ataque de Dash (Águia)
 """
 
 class DashEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player)
 
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
@@ -229,11 +266,14 @@ class DashEnemy(Enemy):
         else:
             self.direction = pygame.math.Vector2()
 
+
     def update(self):
+        self.hit_reaction()
         if (not self.is_blocked):
             self.move(self.speed * self.speed_boost)
         self.animate()
-        self.cooldown()
+        self.cooldowns()
+        self.check_death()
 
     def enemy_update(self, player):
         self.get_stage(player)

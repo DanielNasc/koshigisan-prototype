@@ -63,6 +63,11 @@ class Player(Entity):
         self.mana = self.stats['mana']
         self.exp = 123 ## teste
 
+        #-------------Lonalt-------------------
+        # flickering time
+        self.vulnerable = True
+        self.hurt_time = None
+        self.invulnerability_duration = 500
 
     def input(self):
         if self.is_blocked:
@@ -108,7 +113,7 @@ class Player(Entity):
     def cooldown(self):
         curr_time = pygame.time.get_ticks()
 
-        if (curr_time - self.attack_time >= self.attack_cooldown):
+        if (curr_time - self.attack_time >= self.attack_cooldown + weapons_data[self.weapon]['cooldown']):
             self.is_attacking = False
             self.can_attack = True
             self.destroy_attack()
@@ -117,6 +122,9 @@ class Player(Entity):
             self.is_attacking_w_magic = False
             self.can_attack = True
 
+        if not self.vulnerable:
+            if curr_time - self.hurt_time >= self.invulnerability_duration:
+                self.vulnerable = True
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
@@ -172,11 +180,24 @@ class Player(Entity):
         self.image = animation[floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
+
     def update_blocked(self):
         self.is_blocked = self.is_attacking or self.is_attacking_w_magic
         
         if self.is_sliding:
             self.is_blocked = not ( self.direction.x == 0 and self.direction.y == 0 and self.is_sliding )
+
+#----------------Lonalt-------------
+    def get_full_weapon_damage(self):
+        base_damage = self.stats['attack']
+        weapon_damage = weapons_data[self.weapon]['damage']
+        return base_damage + weapon_damage
 
     def update(self):
         self.cooldown()

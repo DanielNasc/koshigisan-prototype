@@ -24,7 +24,11 @@ class Level:
         self.slippery_sprites = pygame.sprite.Group()
         self.enemies_sprites = pygame.sprite.Group()
 
+        # attack sprites
         self.curr_attack = None
+        #---------------Lonalt-------------------
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackble_sprites = pygame.sprite.Group()
 
         # setup sprite
         self.create_layouts()
@@ -100,12 +104,12 @@ class Level:
                                         self.create_magic
                                     )
                             elif data == "14":
-                                DashEnemy("eagle", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                                DashEnemy("eagle", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player)
                             elif data == "A":
                                 akuma = import_a_single_sprite('assets/sprites/monsters/akuma_front.png', 2)
                                 Tile((x, y), [self.visible_sprites], 'boss', akuma)
                             else:
-                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites], self.obstacle_sprites, self.slippery_sprites)
+                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player)
 
                         elif style == "house":
                             house = None
@@ -130,7 +134,7 @@ class Level:
                                 Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
 
     def create_attack(self):
-        self.curr_attack = Weapon(self.player, [self.visible_sprites])
+        self.curr_attack = Weapon(self.player, [self.visible_sprites,self.attack_sprites])
 
     def create_magic(self, style, strength, cost):
         pass
@@ -140,10 +144,31 @@ class Level:
             self.curr_attack.kill()
         self.curr_attack = None
 
+    #--------------Lonalt-------------------
+    def player_attack_logic(self):
+        if self.attack_sprites:
+            for attack_sprites in self.attack_sprites:
+                collision_sprites = pygame.sprite.spritecollide(attack_sprites,self.attackble_sprites,False)
+                if collision_sprites:
+                    for target_sprit in collision_sprites:
+                        target_sprit.get_damage(self.player,attack_sprites.sprite_type)
+
+    def damage_player(self,amount,attack_type):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.hurt_time = pygame.time.get_ticks()
+            # spawn particles
+
+
+
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
+
+        #---------------Lonalt------------
+        self.player_attack_logic()
 
         # -------------- Maluzinha ---------
         self.ui.display(self.player)
