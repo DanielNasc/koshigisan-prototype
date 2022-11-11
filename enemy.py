@@ -252,7 +252,7 @@ class DashEnemy(Enemy):
 
         if self.stage == ATTACK:
             self.attack_time = pygame.time.get_ticks()
-            self.speed_boost = 3
+            self.speed_boost = 2
 
         elif self.stage == PREPARE:
             if (self.is_preparing):
