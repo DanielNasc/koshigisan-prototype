@@ -100,7 +100,6 @@ class Enemy(Entity):
     def actions(self, player):
         if "attack" in self.status:
             self.attack_time = pygame.time.get_ticks()
-            self.damage_player(self.damage,self.attack_type)
             if self.attack_type == "continuous":
                 self.direction = pygame.math.Vector2()
             else:
@@ -209,7 +208,7 @@ class ContinuousEnemy(Enemy):
         if self.stage == ATTACK:
             self.attack_time = pygame.time.get_ticks()
             self.direction = pygame.math.Vector2()
-            
+            self.damage_player(self.damage,self.attack_type)
         elif "move" in self.status:
             self.direction = self.get_player_distance_and_direction(player)[1]
         else:
@@ -253,6 +252,7 @@ class DashEnemy(Enemy):
         if self.stage == ATTACK:
             self.attack_time = pygame.time.get_ticks()
             self.speed_boost = 2
+            self.damage_player(self.damage,self.attack_type)
 
         elif self.stage == PREPARE:
             if (self.is_preparing):
