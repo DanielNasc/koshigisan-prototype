@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, randint
 import pygame
 
 from Tile import Tile
@@ -53,7 +53,10 @@ class Level:
                 'tree': import_positions('assets/positions/Sky/Skymap_Trees.csv'),
                 'tree2': import_positions('assets/positions/Sky/Skymap_Trees2.csv'),
                 'ice': import_positions('assets/positions/Sky/Skymap_Water.csv'),
-                'house': import_positions('assets/positions/Sky/Skymap_Houses.csv')
+                'house': import_positions('assets/positions/Sky/Skymap_Houses.csv'),
+
+                #----------------- Maluzinha ----------------------
+                'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
             })
         # elif (self.curr_level == "Hell"):
         #     self.layouts.update({
@@ -65,7 +68,11 @@ class Level:
         graphics = {
             'grass': import_animations_from_folder("assets/sprites/grass"),
             'trees': import_animations_from_folder("assets/sprites/trees"),
-            'houses': import_animations_from_folder("assets/sprites/houses")
+            'houses': import_animations_from_folder("assets/sprites/houses"),
+
+            #------------------ Maluzinha --------------------------
+            'bamboo': import_animations_from_folder("assets/sprites/canBreak")
+
         }
 
         for style,layout in self.layouts.items():
@@ -84,6 +91,14 @@ class Level:
                             random_grass = pygame.transform.scale(random_grass, grass_size * .5)
                             random_grass.get_rect(center=random_grass.get_rect().midbottom)
                             Tile((x, y), (self.visible_sprites), 'grass', random_grass)
+
+                        #---------------- Maluzinha --------------
+                        elif style == 'bamboo':
+                            bamboo = graphics['bamboo'][0]
+                            bamboo_size =  pygame.math.Vector2(bamboo.get_size())
+                            bamboo = pygame.transform.scale(bamboo, bamboo_size * 0.5)
+                            bamboo.get_rect(center=bamboo.get_rect().midbottom)
+                            Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', bamboo)
 
                         elif (style == "tree" or style == "tree2") and data == "t":
                             random_tree = choice(graphics["trees"])
@@ -147,11 +162,21 @@ class Level:
     #--------------Lonalt-------------------
     def player_attack_logic(self):
         if self.attack_sprites:
-            for attack_sprites in self.attack_sprites:
-                collision_sprites = pygame.sprite.spritecollide(attack_sprites,self.attackble_sprites,False)
+            for attack_sprite in self.attack_sprites:
+                collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackble_sprites,False)
                 if collision_sprites:
-                    for target_sprit in collision_sprites:
-                        target_sprit.get_damage(self.player,attack_sprites.sprite_type)
+                    for target_sprite in collision_sprites:
+                        #target_sprite.get_damage(self.player,attack_sprites.sprite_type)
+
+                        #------------------ Maluzinha  ------------------------
+                        if target_sprite.sprite_type ==  "bamboo":
+                            pos = target_sprite.rect.center
+                            offset = pygame.math.Vector2(0,25)
+                            for leaf in range(randint(3,6)):
+                                self.animation_controller.create_bamboo_particles(pos - offset,[self.visible_sprites])
+                            target_sprite.kill()
+                        else:
+                            target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
     def damage_player(self,amount,attack_type):
         if self.player.vulnerable:
