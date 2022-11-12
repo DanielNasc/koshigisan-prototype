@@ -234,8 +234,8 @@ Inimigo com ataque de Dash (Águia)
 """
 
 class DashEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player,  trigger_death_particles)
         self.can_apply_damage = True
     
     def detect_collision(self, direction, player: Player = None):

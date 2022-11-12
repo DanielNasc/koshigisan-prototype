@@ -119,9 +119,19 @@ class Level:
                                         self.create_magic
                                     )
                             elif data == "14":
-                                DashEnemy("eagle", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
+                                DashEnemy(  "eagle", 
+                                            (x, y), 
+                                            [self.visible_sprites,self.attackble_sprites], 
+                                            self.obstacle_sprites, self.slippery_sprites,
+                                            self.damage_player,self.trigger_death_particles
+                                        )
                             elif data == "A":
-                                DashEnemy("akuma", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
+                                DashEnemy(  "akuma",   
+                                            (x, y), 
+                                            [self.visible_sprites,self.attackble_sprites], 
+                                            self.obstacle_sprites, self.slippery_sprites,
+                                            self.damage_player,self.trigger_death_particles
+                                        )
                             else:
                                 ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
 
