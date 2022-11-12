@@ -10,6 +10,7 @@ from weapon import Weapon
 from ui import UI
 from enemy import *
 from particles import AnimationController
+from magic import PlayerMagic
 
 class Level:
     def __init__(self, curr_level) -> None:
@@ -41,6 +42,8 @@ class Level:
         # particles
         self.animation_controller = AnimationController()
 
+        self.player_magic = PlayerMagic(self.animation_controller)
+
     def create_layouts(self):
         self.layouts = {
             'boundary': import_positions(f'assets/positions/{self.curr_level}/{self.curr_level}map_FloorBlocks.csv'),
@@ -66,7 +69,7 @@ class Level:
     def create_map(self):
 
         graphics = {
-            'grass': import_animations_from_folder("assets/sprites/grass"),
+            'grass': import_animations_from_folder("assets/sprites/grass", .5),
             'trees': import_animations_from_folder("assets/sprites/trees"),
             'houses': import_animations_from_folder("assets/sprites/houses"),
 
@@ -87,9 +90,6 @@ class Level:
 
                         elif style == 'grass':
                             random_grass = choice(graphics['grass'])
-                            grass_size =  pygame.math.Vector2(random_grass.get_size())
-                            random_grass = pygame.transform.scale(random_grass, grass_size * .5)
-                            random_grass.get_rect(center=random_grass.get_rect().midbottom)
                             Tile((x, y), (self.visible_sprites), 'grass', random_grass)
 
                         #---------------- Maluzinha --------------
@@ -151,7 +151,10 @@ class Level:
         self.curr_attack = Weapon(self.player, [self.visible_sprites,self.attack_sprites])
 
     def create_magic(self, style, strength, cost):
-        pass
+        if style == "heal":
+            self.player_magic.heal()
+        elif style == "flame":
+            self.player_magic.flame(self.player, cost, [self.visible_sprites, self.attack_sprites])
     
     def destroy_attack(self):
         if self.curr_attack:

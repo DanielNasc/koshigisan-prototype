@@ -58,7 +58,7 @@ class Player(Entity):
 
         #------------- Maluzinha ------------------
         #### Estatísticas
-        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2}
+        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2, "magic": 4}
         self.health = self.stats['health']
         self.mana = self.stats['mana']
         self.exp = 123 ## teste
@@ -193,13 +193,25 @@ class Player(Entity):
         if self.is_sliding:
             self.is_blocked = not ( self.direction.x == 0 and self.direction.y == 0 and self.is_sliding )
 
+    def recovery_mana(self, recovery_value):
+        if self.mana < self.stats["mana"]:
+            self.mana += recovery_value * self.stats["magic"] 
+
 #----------------Lonalt-------------
     def get_full_weapon_damage(self):
         base_damage = self.stats['attack']
         weapon_damage = weapons_data[self.weapon]['damage']
         return base_damage + weapon_damage
 
+    
+    def get_full_magic_damage(self):
+        base_damage = self.stats['magic']
+        spell_damage = magic_data[self.magic]['strength']
+        return base_damage + spell_damage
+
+
     def update(self):
+        self.recovery_mana(.1)
         self.cooldown()
         self.update_blocked()
         self.input()

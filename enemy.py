@@ -154,13 +154,13 @@ class Enemy(Entity):
             self.image.set_alpha(255)
 
 #--------------Lonalt--------
-    def get_damage(self, player,attack_type):
+    def get_damage(self, player: Player,attack_type):
         if self.vulnerable:
             self.direction = self.get_player_distance_and_direction(player)[1]
             if attack_type == 'weapon':
                 self.health -= player.get_full_weapon_damage()
-            else:
-                pass
+            elif attack_type == 'magic':
+                self.health -= player.get_full_magic_damage()
             self.hit_time = pygame.time.get_ticks()
             self.vulnerable = False
 

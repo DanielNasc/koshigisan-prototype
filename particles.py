@@ -1,11 +1,11 @@
 import pygame
 from support import import_animations_from_folder
-from spritesheet import SpriteSheet
 from random import choice
 
 class ParticleEffect(pygame.sprite.Sprite):
     def __init__(self,pos,animation_frames,groups):
         super().__init__(groups)
+        self.sprite_type = "magic"
         self.frame_index = 0
         self.animation_speed = 0.20
         self.frames = animation_frames
@@ -28,6 +28,7 @@ class AnimationController:
             # attacks
             'dash': import_animations_from_folder('assets/FX/particles/slash', 0.5),
             'continuous': import_animations_from_folder('assets/FX/particles/continuous', 0.5),
+            'flame': import_animations_from_folder('assets/FX/particles/flame'),
 
             # monsters deaths
             'nukekubi': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
