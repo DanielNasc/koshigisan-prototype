@@ -65,9 +65,11 @@ class Player(Entity):
         #------------- Maluzinha ------------------
         #### Estatísticas
         self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2, "magic": 4}
+        self.max_stats = {'health': 300, 'mana': 140, 'attack': 20, 'speed': 6, "magic": 10}
+        self.upgrade_cost = {'health': 100, 'mana': 100, 'attack': 100, 'speed': 100, "magic": 100}
         self.health = self.stats['health']
         self.mana = self.stats['mana']
-        self.exp = 123 ## teste
+        self.exp = 500
 
         #-------------Lonalt-------------------
         # flickering time

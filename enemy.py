@@ -22,7 +22,7 @@ PREPARE = 2
 ATTACK = 3
 
 class Enemy(Entity):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles) -> None:
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp) -> None:
         super().__init__(groups)
 
         # general
@@ -66,6 +66,7 @@ class Enemy(Entity):
         self.stage = IDLE
         self.damage_player = damage_player
         self.trigger_death_particles = trigger_death_particles
+        self.add_exp = add_exp
 
         # invincibility timer
         self.vulnerable = True
@@ -168,6 +169,7 @@ class Enemy(Entity):
         if self.health <= 0:
             self.kill()
             self.trigger_death_particles(self.rect.center,self.monster_name)
+            self.add_exp(self.exp)
     
     def hit_reaction(self):
         if not self.vulnerable:
@@ -193,8 +195,8 @@ Não tem o Stage de preparação
 
 
 class ContinuousEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp)
 
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
@@ -234,8 +236,8 @@ Inimigo com ataque de Dash (Águia)
 """
 
 class DashEnemy(Enemy):
-    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles) -> None:
-        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player,  trigger_death_particles)
+    def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp) -> None:
+        super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player,  trigger_death_particles, add_exp)
         self.can_apply_damage = True
     
     def detect_collision(self, direction, player: Player = None):
