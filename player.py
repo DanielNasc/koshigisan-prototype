@@ -30,12 +30,15 @@ class Player(Entity):
 
         self.can_attack = True
         self.can_attack_w_magic = True
+        self.can_tp = True
         self.is_attacking = False
         self.is_attacking_w_magic = False
         self.is_blocked = False
         self.is_sliding = False
         self.attack_cooldown = 1000
         self.magic_cooldown = 600
+        self.tp_cooldown = 300
+        self.tp_time = None
         self.attack_time = 0
         self.magic_time = 0
         self.create_attack = create_attack
@@ -114,7 +117,7 @@ class Player(Entity):
             self.create_magic(style, strength, cost)
 
         if keys[pygame.K_LSHIFT] and self.can_interact_with:
-            if self.can_interact_with.sprite_type == "ladder":
+            if "tp" in self.can_interact_with.sprite_type:
                 tp_pos = self.can_interact_with.tp_destination_pos
                 self.rect.center = self.hitbox.center = tp_pos
 
@@ -133,6 +136,10 @@ class Player(Entity):
         if not self.vulnerable:
             if curr_time - self.hurt_time >= self.invulnerability_duration:
                 self.vulnerable = True
+
+        if not self.can_tp:
+            if curr_time - self.tp_time >= self.tp_cooldown:
+                self.can_tp = True
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
@@ -221,7 +228,9 @@ class Player(Entity):
     def detect_collision(self, direction):
         self.can_interact_with = None
         for sprite in self.interactive_sprites:
-            if sprite.hitbox.colliderect(self.hitbox):
+            if sprite.hitbox.colliderect(self.hitbox) and self.can_tp:
+                self.can_tp = False
+                self.tp_time = pygame.time.get_ticks()
                 self.can_interact_with = sprite
                 break
         return super().detect_collision(direction)

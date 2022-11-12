@@ -61,6 +61,7 @@ class Level:
                 'ice': import_positions('assets/positions/Sky/Skymap_Water.csv'),
                 'house': import_positions('assets/positions/Sky/Skymap_Houses.csv'),
                 'ladder': import_positions('assets/positions/Sky/Skymap_Ladder.csv'),
+                'entrie': import_positions('assets/positions/Sky/Skymap_Entries.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -80,6 +81,8 @@ class Level:
             'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
             'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png'),
             'ladder_bottom': import_a_single_sprite('assets/sprites/ladder/ladder_bottom.png'),
+
+            'entrie': import_a_single_sprite('assets/sprites/entrie/entrie.png'),
 
             #------------------ Maluzinha --------------------------
             'bamboo': import_animations_from_folder("assets/sprites/canBreak")
@@ -122,14 +125,26 @@ class Level:
 
                             if "top" in data:
                                 self.teleport_pairs[key].append(
-                                        Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'ladder', (0, -1), graphics['ladder_top'])
+                                        Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'ladder_tp', (0, -1), graphics['ladder_top'])
                                     )
                             elif "bottom" in data:
                                 self.teleport_pairs[key].append(
-                                        Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'ladder', (0, 1), graphics['ladder_bottom'])
+                                        Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'ladder_tp', (0, 1), graphics['ladder_bottom'])
                                 )
                             else:
                                 Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'ladder', graphics['ladder'])
+
+                        elif style == "entrie":
+                            if not "e" in data: continue
+
+                            key = data.split("_")[0]
+                            if not key in self.teleport_pairs and "middle" not in key:
+                                self.teleport_pairs[key] = []
+
+                            self.teleport_pairs[key].append(
+                                    Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'entrie_tp', (0, 1), graphics['entrie'])
+                            )
+
                         
                         elif style == "entities":
                             if data == "p":
