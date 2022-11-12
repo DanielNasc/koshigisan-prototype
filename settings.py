@@ -53,7 +53,7 @@ monsters_data = {
     "eagle": { 
             "health": 250, 
             "exp": 150,
-            "damage": 30,
+            "damage": 10,
             "attack_type": "dash",
             "speed": 3, 
             "resistance": 3,
