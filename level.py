@@ -119,12 +119,11 @@ class Level:
                                         self.create_magic
                                     )
                             elif data == "14":
-                                DashEnemy("eagle", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player)
+                                DashEnemy("eagle", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
                             elif data == "A":
-                                akuma = import_a_single_sprite('assets/sprites/monsters/akuma_front.png', 2)
-                                Tile((x, y), [self.visible_sprites], 'boss', akuma)
+                                DashEnemy("akuma", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
                             else:
-                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player)
+                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
 
                         elif style == "house":
                             house = None
@@ -183,9 +182,11 @@ class Level:
             self.player.health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
-            # spawn particles
+            self.animation_controller.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
-
+    #-------------- Maluzinha -------------------
+    def trigger_death_particles(self,pos,particle_type):
+        self.animation_controller.create_particles(particle_type,pos,self.visible_sprites)
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
