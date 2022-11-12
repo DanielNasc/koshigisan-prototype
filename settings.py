@@ -64,17 +64,16 @@ monsters_data = {
             "attack_cooldown": 4000
         },
         "akuma": { 
-            "health": 250000000000, 
+            "health": 2500, 
             "exp": 1500000,
             "damage": 300000,
             "attack_type": "dash",
-            "speed": 3, 
-            "resistance": 32323,
+            "speed": 1, 
+            "resistance": 32,
             "attack_radius":120,
-            "notice_radius": 240,
+            "notice_radius": 360,
             "scale": 1,
-            "preparing_duration": 1000,
-            "attack_cooldown": 5000
+            "preparing_duration": 0,
         }
 }
 
@@ -82,4 +81,7 @@ monsters_data = {
 
 weapons_ui_data = {
     "katana": {'graphic': convert_path('assets/sprites/weapons/ui/katana.png')}
+}
+magics_ui_data = {
+    'fire_ball': {'graphic': convert_path('assets/sprites/magic/ui/fire.png')}
 }

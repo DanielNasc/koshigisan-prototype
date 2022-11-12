@@ -27,27 +27,34 @@ class AnimationController:
         self.frames = {
             # attacks
             'dash': import_animations_from_folder('assets/FX/particles/slash', 0.5),
-            'continuous': import_animations_from_folder('assets/FX/particles/continuous', 0.5),
+            'continuous': import_animations_from_folder('assets/FX/particles/continuous', 1),
 
             # monsters deaths
             'nukekubi': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
-            'eagle': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
-            'akuma': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
+            'eagle': import_animations_from_folder('assets/FX/particles/smoke_orange', 0.25),
+            'akuma': import_animations_from_folder('assets/FX/particles/smoke', 2),
 
             # leafs
+            'leafs': (
+                import_animations_from_folder('assets/FX/particles/leaf1', 0.32),
+                import_animations_from_folder('assets/FX/particles/leaf2', 0.32),
+                import_animations_from_folder('assets/FX/particles/leaf3', 0.32),
+                import_animations_from_folder('assets/FX/particles/leaf4', 0.32),
+                import_animations_from_folder('assets/FX/particles/leaf5', 0.32),
+                import_animations_from_folder('assets/FX/particles/leaf6', 0.32),
+                self.invert(import_animations_from_folder('assets/FX/particles/leaf1', 0.32)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leaf2', 0.32)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leaf3', 0.32)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leaf4', 0.32)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leaf5', 0.32)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leaf6', 0.32)),
+            ),
+
             'bamboo': (
-                import_animations_from_folder('assets/FX/particles/leaf1', 0.5),
-                import_animations_from_folder('assets/FX/particles/leaf2', 0.5),
-                import_animations_from_folder('assets/FX/particles/leaf3', 0.5),
-                import_animations_from_folder('assets/FX/particles/leaf4', 0.5),
-                import_animations_from_folder('assets/FX/particles/leaf5', 0.5),
-                import_animations_from_folder('assets/FX/particles/leaf6', 0.5),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf1', 0.25)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf2', 0.25)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf3', 0.25)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf4', 0.25)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf5', 0.25)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf6', 0.25)),
+                import_animations_from_folder('assets/FX/particles/bamboo1', 1.25),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboo1', 1.25)),
+                import_animations_from_folder('assets/FX/particles/bamboo2', 1.25),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboo2', 1.25))
             )
 
         }
