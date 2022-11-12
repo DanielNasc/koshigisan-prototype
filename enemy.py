@@ -221,6 +221,16 @@ class ContinuousEnemy(Enemy):
 class DashEnemy(Enemy):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player) -> None:
         super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player)
+        self.can_apply_damage = True
+    
+    def detect_collision(self, direction, player: Player = None):
+        if (player):
+            if(player.hitbox.colliderect(self.hitbox) and self.can_apply_damage):
+                self.damage_player(self.damage,self.attack_type)
+                self.can_apply_damage = False
+            else:
+                self.can_apply_damage = True
+        return super().detect_collision(direction)
 
     def get_stage(self, player):
         distance, direction = self.get_player_distance_and_direction(player)
@@ -239,7 +249,6 @@ class DashEnemy(Enemy):
         if self.stage == ATTACK:
             self.attack_time = pygame.time.get_ticks()
             self.speed_boost = 3
-            self.damage_player(self.damage,self.attack_type)
 
         elif self.stage == PREPARE:
             if (self.is_preparing):
@@ -263,6 +272,7 @@ class DashEnemy(Enemy):
         self.check_death()
 
     def enemy_update(self, player):
+        self.detect_collision(self.direction, player)
         self.get_stage(player)
         self.get_status()
         self.actions(player)
