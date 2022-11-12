@@ -64,9 +64,9 @@ class Player(Entity):
 
         #------------- Maluzinha ------------------
         #### Estatísticas
-        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2, "magic": 4}
-        self.max_stats = {'health': 300, 'mana': 140, 'attack': 20, 'speed': 6, "magic": 10}
-        self.upgrade_cost = {'health': 100, 'mana': 100, 'attack': 100, 'speed': 100, "magic": 100}
+        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2, 'magic': 4}
+        self.max_stats = {'health': 300, 'mana': 140, 'attack': 20, 'speed': 6, 'magic': 10}
+        self.upgrade_cost = {'health': 100, 'mana': 100, 'attack': 100, 'speed': 100, 'magic': 100}
         self.health = self.stats['health']
         self.mana = self.stats['mana']
         self.exp = 500
@@ -234,6 +234,13 @@ class Player(Entity):
                 self.can_interact_with = sprite
                 break
         return super().detect_collision(direction)
+
+
+    def get_value_by_index(self,index):
+        return list(self.stats.values())[index]
+
+    def get_cost_by_index(self,index):
+        return list(self.upgrade_cost.values())[index]
 
     def update(self):
         self.recovery_mana(.005)
