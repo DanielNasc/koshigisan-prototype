@@ -15,6 +15,8 @@ from magic import PlayerMagic
 class Level:
     def __init__(self, curr_level) -> None:
         self.display_suface = pygame.display.get_surface()
+        self.game_paused = False
+
 
         # Levels
         self.curr_level = curr_level
@@ -266,17 +268,25 @@ class Level:
     def add_exp(self,amount):
         self.player.exp += amount
 
+    def toggle_menu(self):
+        self.game_paused = not self.game_paused
+
     #-------------- Maluzinha -------------------
     def trigger_death_particles(self,pos,particle_type):
         self.animation_controller.create_particles(particle_type,pos,self.visible_sprites)
 
     def run(self):
-        self.visible_sprites.custom_draw(self.player)
-        self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
-
-        #---------------Lonalt------------
-        self.player_attack_logic()
+        self.visible_sprites.custom_draw(self.player)  
 
         # -------------- Maluzinha ---------
         self.ui.display(self.player)
+
+        #---------------Lonalt------------
+        if self.game_paused:
+            pass
+        else:
+            self.visible_sprites.update()
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
+
+
