@@ -5,7 +5,8 @@ from support import import_sprites
 from entity import Entity
 
 class Player(Entity):
-    def __init__(self, pos, groups, obstacles: pygame.sprite.Group, slippery_sprites: pygame.sprite.Group, 
+    def __init__(self, pos, groups, obstacles: pygame.sprite.Group, slippery_sprites: pygame.sprite.Group,
+                interactive_sprites: pygame.sprite.Group,
                 create_attack, destroy_attack, create_magic):
         super().__init__(groups)
 
@@ -39,6 +40,7 @@ class Player(Entity):
         self.magic_time = 0
         self.create_attack = create_attack
         self.destroy_attack = destroy_attack
+        self.can_interact_with = None
 
         self.weapon_index = 0
         self.weapon = list(weapons_data.keys())[self.weapon_index]
@@ -55,6 +57,7 @@ class Player(Entity):
 
         self.obstacle_sprites = obstacles
         self.slippery_sprites = slippery_sprites
+        self.interactive_sprites = interactive_sprites
 
         #------------- Maluzinha ------------------
         #### Estatísticas
@@ -109,6 +112,11 @@ class Player(Entity):
             cost = self.selected_magic["cost"]
 
             self.create_magic(style, strength, cost)
+
+        if keys[pygame.K_LSHIFT] and self.can_interact_with:
+            if self.can_interact_with.sprite_type == "ladder":
+                tp_pos = self.can_interact_with.tp_destination_pos
+                self.rect.center = self.hitbox.center = tp_pos
 
     def cooldown(self):
         curr_time = pygame.time.get_ticks()
@@ -209,6 +217,14 @@ class Player(Entity):
         spell_damage = magic_data[self.magic]['strength']
         return base_damage + spell_damage
 
+
+    def detect_collision(self, direction):
+        self.can_interact_with = None
+        for sprite in self.interactive_sprites:
+            if sprite.hitbox.colliderect(self.hitbox):
+                self.can_interact_with = sprite
+                break
+        return super().detect_collision(direction)
 
     def update(self):
         self.recovery_mana(.005)

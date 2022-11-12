@@ -1,7 +1,7 @@
 from random import choice, randint
 import pygame
 
-from Tile import Tile
+from Tile import *
 from camera import YSortCameraGroup
 from player import Player
 from settings import *
@@ -24,6 +24,9 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.slippery_sprites = pygame.sprite.Group()
         self.enemies_sprites = pygame.sprite.Group()
+        self.interactive_sprites = pygame.sprite.Group()
+
+        self.teleport_pairs = {}
 
         # attack sprites
         self.curr_attack = None
@@ -57,6 +60,7 @@ class Level:
                 'tree2': import_positions('assets/positions/Sky/Skymap_Trees2.csv'),
                 'ice': import_positions('assets/positions/Sky/Skymap_Water.csv'),
                 'house': import_positions('assets/positions/Sky/Skymap_Houses.csv'),
+                'ladder': import_positions('assets/positions/Sky/Skymap_Ladder.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -72,6 +76,10 @@ class Level:
             'grass': import_animations_from_folder("assets/sprites/grass", .5),
             'trees': import_animations_from_folder("assets/sprites/trees"),
             'houses': import_animations_from_folder("assets/sprites/houses"),
+
+            'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
+            'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png'),
+            'ladder_bottom': import_a_single_sprite('assets/sprites/ladder/ladder_bottom.png'),
 
             #------------------ Maluzinha --------------------------
             'bamboo': import_animations_from_folder("assets/sprites/canBreak")
@@ -106,6 +114,22 @@ class Level:
 
                         elif style == "ice":
                             Tile((x, y), (self.slippery_sprites), 'ice')
+
+                        elif style == "ladder":
+                            key = data.split("_")[0]
+                            if not key in self.teleport_pairs and "middle" not in key:
+                                self.teleport_pairs[key] = []
+
+                            if "top" in data:
+                                self.teleport_pairs[key].append(
+                                        Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'ladder', (0, -1), graphics['ladder_top'])
+                                    )
+                            elif "bottom" in data:
+                                self.teleport_pairs[key].append(
+                                        Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'ladder', (0, 1), graphics['ladder_bottom'])
+                                )
+                            else:
+                                Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'ladder', graphics['ladder'])
                         
                         elif style == "entities":
                             if data == "p":
@@ -114,6 +138,7 @@ class Level:
                                         (self.visible_sprites),
                                         self.obstacle_sprites,
                                         self.slippery_sprites,
+                                        self.interactive_sprites,
                                         self.create_attack,
                                         self.destroy_attack,
                                         self.create_magic
@@ -156,6 +181,18 @@ class Level:
 
                             if (house):
                                 Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
+
+        self.update_teleport_pairs()
+
+    def update_teleport_pairs(self):
+        for key in self.teleport_pairs.keys():
+            pair = self.teleport_pairs[key]
+            tp_pos_0 = pair[0].my_tp_pos
+            tp_pos_1 = pair[1].my_tp_pos
+
+            pair[0].update_tp_destination(tp_pos_1)
+            pair[1].update_tp_destination(tp_pos_0)
+
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites,self.attack_sprites])
