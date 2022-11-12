@@ -189,6 +189,8 @@ class Level:
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
+                            if attack_sprite.sprite_type == "weapon":
+                                self.player.recovery_mana(.05)
 
     def damage_player(self,amount,attack_type):
         if self.player.vulnerable:

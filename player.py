@@ -211,7 +211,7 @@ class Player(Entity):
 
 
     def update(self):
-        self.recovery_mana(.1)
+        self.recovery_mana(.005)
         self.cooldown()
         self.update_blocked()
         self.input()
