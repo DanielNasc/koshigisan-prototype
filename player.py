@@ -118,6 +118,8 @@ class Player(Entity):
 
         if keys[pygame.K_LSHIFT] and self.can_interact_with:
             if "tp" in self.can_interact_with.sprite_type:
+                self.can_tp = False
+                self.tp_time = pygame.time.get_ticks()
                 tp_pos = self.can_interact_with.tp_destination_pos
                 self.rect.center = self.hitbox.center = tp_pos
 
@@ -228,9 +230,7 @@ class Player(Entity):
     def detect_collision(self, direction):
         self.can_interact_with = None
         for sprite in self.interactive_sprites:
-            if sprite.hitbox.colliderect(self.hitbox) and self.can_tp:
-                self.can_tp = False
-                self.tp_time = pygame.time.get_ticks()
+            if sprite.hitbox.colliderect(self.hitbox):
                 self.can_interact_with = sprite
                 break
         return super().detect_collision(direction)

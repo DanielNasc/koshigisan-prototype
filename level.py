@@ -116,6 +116,10 @@ class Level:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', random_tree)
 
                         elif style == "ice":
+                            if (data == "ice_down"):
+                                Tile((x, y), (self.slippery_sprites), 'ice_down')
+                                continue
+                                
                             Tile((x, y), (self.slippery_sprites), 'ice')
 
                         elif style == "ladder":

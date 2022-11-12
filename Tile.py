@@ -7,7 +7,14 @@ class Tile(pygame.sprite.Sprite):
         # self.image = pygame.image.load("assets/sprites/placeholder.png")
         self.image = surface
         self.rect = self.image.get_rect(topleft = pos)
-        if sprite_type != "house":
+
+        if "ladder" in sprite_type:
+            self.hitbox = self.rect
+        elif sprite_type == "ice_down":
+            self.hitbox = self.rect.inflate(0, (self.rect.height * 1.2))
+        elif "entrie" in sprite_type:
+            self.hitbox = self.rect.inflate(0, -(self.rect.height * .4)) 
+        elif sprite_type != "house":
             self.hitbox = self.rect.inflate(0, -(self.rect.height * .6))
         else:
             height = self.rect.height
@@ -17,7 +24,6 @@ class Tile(pygame.sprite.Sprite):
 class Teleporter(Tile):
     def __init__(self, pos, groups, sprite_type, direction, surface=pygame.Surface((TILESIZE, TILESIZE))):
         super().__init__(pos, groups, sprite_type, surface)
-        self.hitbox = self.rect
         self.direction = direction
 
         x = self.rect.centerx + (32 * self.direction[0])
