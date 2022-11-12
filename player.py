@@ -222,12 +222,10 @@ class Player(Entity):
         weapon_damage = weapons_data[self.weapon]['damage']
         return base_damage + weapon_damage
 
-    
     def get_full_magic_damage(self):
         base_damage = self.stats['magic']
         spell_damage = magic_data[self.magic]['strength']
         return base_damage + spell_damage
-
 
     def detect_collision(self, direction):
         self.can_interact_with = None
