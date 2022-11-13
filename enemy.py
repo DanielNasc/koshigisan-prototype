@@ -132,8 +132,6 @@ class Enemy(Entity):
                 self.vulnerable = True
 
     def animate(self):
-        if (self.is_sliding): return
-        
         animation = self.anim[self.status]
         self.frame_index += self.animation_speed
 

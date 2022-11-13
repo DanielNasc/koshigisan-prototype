@@ -181,8 +181,14 @@ class Player(Entity):
                 
 
     def animate(self):
-        if (self.is_sliding): return
-        
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
+        if self.is_sliding: return
+
         animation = self.anim[self.status]
         self.frame_index += self.animation_speed
 
@@ -197,11 +203,6 @@ class Player(Entity):
         self.image = animation[floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
-        if not self.vulnerable:
-            alpha = self.wave_value()
-            self.image.set_alpha(alpha)
-        else:
-            self.image.set_alpha(255)
 
 
     def update_blocked(self):

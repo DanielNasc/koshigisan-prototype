@@ -65,6 +65,7 @@ class Level:
                 'water_objects': import_positions('assets/positions/Sky/Skymap_Water_Objects.csv'),
                 'rocks': import_positions('assets/positions/Sky/Skymap_Rocks.csv'),
                 'decoration': import_positions('assets/positions/Sky/Skymap_HouseAcessories.csv'),
+                'torii': import_positions('assets/positions/Sky/Skymap_Torii.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -82,6 +83,7 @@ class Level:
             'houses': import_animations_from_folder("assets/sprites/houses"),
             'rocks': import_sprites_as_dict('assets/sprites/rocks'),
             'decoration': import_sprites_as_dict('assets/sprites/decoration'),
+            'torii': import_sprites_as_dict('assets/sprites/torii'),
 
             'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
             'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png'),
@@ -226,6 +228,11 @@ class Level:
 
                             if (house):
                                 Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
+                            
+                        elif style == "torii":
+                            if not "torii" in data:
+                                    continue
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), data, graphics['torii'][data])
 
         self.update_teleport_pairs()
 

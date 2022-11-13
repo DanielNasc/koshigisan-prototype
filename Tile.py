@@ -6,10 +6,16 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(groups)
         # self.image = pygame.image.load("assets/sprites/placeholder.png")
         self.image = surface
+
+        if sprite_type == "torii_right":
+            pos = (pos[0] - 16, pos[1])
+    
         self.rect = self.image.get_rect(topleft = pos)
 
         if "ladder" in sprite_type:
             self.hitbox = self.rect
+        elif "torii" in sprite_type:
+            self.hitbox = self.rect.inflate(-(self.rect.height * .6), -(self.rect.height * .6))
         elif sprite_type == "ice_down":
             self.hitbox = self.rect.inflate(0, (self.rect.height * 1.2))
         elif sprite_type == "tree":
