@@ -76,7 +76,7 @@ class Item:
         self.font = font
 
     def display_names(self,surface,name,cost,selected):
-        color = TEXT_COLOR_SELECTED if selected else TEXT_COLOR
+        color = TEXT_COLOR_SELECTED if selected else UPGRADE_BG_COLOR_SELECTED
 
 
         #title
@@ -92,8 +92,23 @@ class Item:
         surface.blit(title_surf,title_rect)
         surface.blit(cost_surf,cost_rect)
 
+    def display_bar(self,surface,value,max_value,selected):
+        
+        #drawing setup
+        top = self.rect.midtop + pygame.math.Vector2(0,60)
+        bottom = self.rect.midbottom - pygame.math.Vector2(0,60)
+        color = BAR_COLOR_SELECTED if selected else BAR_COLOR
+
+        #draw elements
+        pygame.draw.line(surface,color,top,bottom,5)
+
+
     def display(self,surface,selection_num,name, value,max_value,cost):
         if self.index == selection_num:
-            pass
-        pygame.draw.rect(surface, UI_BG_COLOR,self.rect)
+            pygame.draw.rect(surface, UPGRADE_BG_COLOR_SELECTED ,self.rect)
+            pygame.draw.rect(surface, UPGRADE_BORDER_COLOR_ACTIVE,self.rect,4)
+        else:
+            pygame.draw.rect(surface, UI_BG_COLOR,self.rect)
+            pygame.draw.rect(surface, UPGRADE_BORDER_COLOR_ACTIVE,self.rect,4)
         self.display_names(surface,name,cost, self.index == selection_num)
+        self.display_bar(surface,value,max_value,self.index == selection_num)
