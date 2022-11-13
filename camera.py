@@ -37,6 +37,10 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         self.internal_surf_size_vector = pygame.math.Vector2(self.internal_surf_size)
         self.internal_rect = self.internal_surf.get_rect()
 
+        self.filter_surf = pygame.Surface((WIDTH, HEIGHT))
+        self.filter_surf.fill((50, 50, 100))
+        self.filter_surf.set_alpha(75)
+
         # criando o floor
         self.floor_surface = pygame.image.load(convert_path(f'assets/sprites/background/{level}.png')).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft = (0,0))
@@ -58,6 +62,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         scaled_rect = scaled_surf.get_rect(center = (self.half_w, self.half_h))
 
         self.display_surface.blit(scaled_surf, scaled_rect)
+        self.display_surface.blit(self.filter_surf, (0, 0))
 
     def enemy_update(self, player):
         enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == "enemy" ]

@@ -63,6 +63,8 @@ class Level:
                 'ladder': import_positions('assets/positions/Sky/Skymap_Ladder.csv'),
                 'entrie': import_positions('assets/positions/Sky/Skymap_Entries.csv'),
                 'water_objects': import_positions('assets/positions/Sky/Skymap_Water_Objects.csv'),
+                'rocks': import_positions('assets/positions/Sky/Skymap_Rocks.csv'),
+                'decoration': import_positions('assets/positions/Sky/Skymap_HouseAcessories.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -78,6 +80,8 @@ class Level:
             'grass': import_animations_from_folder("assets/sprites/grass", .5),
             'tree': import_sprites_as_dict('assets/sprites/trees'),
             'houses': import_animations_from_folder("assets/sprites/houses"),
+            'rocks': import_sprites_as_dict('assets/sprites/rocks'),
+            'decoration': import_sprites_as_dict('assets/sprites/decoration'),
 
             'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
             'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png'),
@@ -109,6 +113,16 @@ class Level:
                         elif style == 'grass':
                             random_grass = choice(graphics['grass'])
                             Tile((x, y), (self.visible_sprites), 'grass', random_grass)
+
+                        elif style == "rocks":
+                            if "r" not in data:
+                                continue
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'rock', graphics['rocks'][data])
+
+                        elif style == "decoration":
+                            if "deco" not in data:
+                                continue
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'decoration', graphics['decoration'][data])
 
                         #---------------- Maluzinha --------------
                         elif style == 'bamboo':

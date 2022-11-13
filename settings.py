@@ -4,7 +4,7 @@ WIDTH=1280
 HEIGHT=720
 FPS=100
 TILESIZE=32
-ZOOM=3
+ZOOM=2
 
 PLAYER_SPAWN=(1260, 820)
 PLAYER_ZOOM=1
@@ -65,7 +65,7 @@ monsters_data = {
         },
         "akuma": { 
             "health": 2500, 
-            "exp": 1500000,
+            "exp": 25000,
             "damage": 300000,
             "attack_type": "dash",
             "speed": 1, 
