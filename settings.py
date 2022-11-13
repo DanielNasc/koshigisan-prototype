@@ -29,6 +29,16 @@ HEALTH_COLOR = '#f23535'
 MANA_COLOR = '#3372d6'
 UI_BORDER_COLOR_ACTIVE = 'gold'
 
+#--------Lonalt-------
+#upgrade menu
+TEXT_COLOR_SELECTED = '#8b5e0a'
+BAR_COLOR = '#a8adb0'
+BAR_COLOR_SELECTED = '#8b5e0a'
+UPGRADE_BG_COLOR_SELECTED = '#a8adb0'
+UPGRADE_BORDER_COLOR_ACTIVE = '#DAA520'
+
+
+
 weapons_data = {
     "sword": { "cooldown": 100, "damage": 15, "graphics": convert_path("assets/sprites/weapons/sword") }
 }

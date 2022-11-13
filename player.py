@@ -71,9 +71,11 @@ class Player(Entity):
                         'speed': calculate_property_by_difficult(2), 
                         'magic': calculate_property_by_difficult(4)
                     }
+        self.max_stats = {'health': 300, 'mana': 140, 'attack': 20, 'speed': 10, 'magic': 10}
+        self.upgrade_cost = {'health': 100, 'mana': 100, 'attack': 100, 'speed': 100, 'magic': 100}
         self.health = self.stats['health']
         self.mana = self.stats['mana']
-        self.exp = 123 ## teste
+        self.exp = 5000
 
         #-------------Lonalt-------------------
         # flickering time
@@ -227,12 +229,10 @@ class Player(Entity):
         weapon_damage = weapons_data[self.weapon]['damage']
         return base_damage + weapon_damage
 
-    
     def get_full_magic_damage(self):
         base_damage = self.stats['magic']
         spell_damage = magic_data[self.magic]['strength']
         return base_damage + spell_damage
-
 
     def detect_collision(self, direction):
         self.can_interact_with = None
@@ -242,6 +242,13 @@ class Player(Entity):
                 break
         return super().detect_collision(direction)
 
+
+    def get_value_by_index(self,index):
+        return list(self.stats.values())[index]
+
+    def get_cost_by_index(self,index):
+        return list(self.upgrade_cost.values())[index]
+
     def update(self):
         self.recovery_mana(.007)
         self.cooldown()
@@ -249,4 +256,4 @@ class Player(Entity):
         self.input()
         self.get_status()
         self.animate()
-        self.move()
+        self.move(self.stats['speed'])

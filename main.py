@@ -28,6 +28,9 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_m:
+                        self.level.toggle_menu()
 
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
