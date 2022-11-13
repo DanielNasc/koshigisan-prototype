@@ -11,10 +11,13 @@ from enemy import *
 from particles import AnimationController
 from magic import PlayerMagic
 from weapon import Weapon
+from upgrade import Upgrade
 
 class Level:
     def __init__(self, curr_level) -> None:
         self.display_suface = pygame.display.get_surface()
+        self.game_paused = False
+
 
         # Levels
         self.curr_level = curr_level
@@ -41,6 +44,7 @@ class Level:
         # -------------- Maluzinha ------------
         # user interface
         self.ui = UI()
+        self.upgrade = Upgrade(self.player)
 
         # particles
         self.animation_controller = AnimationController()
@@ -203,17 +207,25 @@ class Level:
                                             (x, y), 
                                             [self.visible_sprites,self.attackble_sprites], 
                                             self.obstacle_sprites, self.slippery_sprites,
-                                            self.damage_player,self.trigger_death_particles
+                                            self.damage_player,self.trigger_death_particles,
+                                            self.add_exp
                                         )
                             elif data == "A":
                                 DashEnemy(  "akuma",   
                                             (x, y), 
                                             [self.visible_sprites,self.attackble_sprites], 
                                             self.obstacle_sprites, self.slippery_sprites,
-                                            self.damage_player,self.trigger_death_particles
+                                            self.damage_player,self.trigger_death_particles,
+                                            self.add_exp
                                         )
                             else:
-                                ContinuousEnemy("nukekubi", (x, y), [self.visible_sprites,self.attackble_sprites], self.obstacle_sprites, self.slippery_sprites,self.damage_player,self.trigger_death_particles)
+                                ContinuousEnemy(    "nukekubi",
+                                                    (x, y),
+                                                    [self.visible_sprites,self.attackble_sprites],
+                                                    self.obstacle_sprites, self.slippery_sprites,
+                                                    self.damage_player,self.trigger_death_particles,
+                                                    self.add_exp
+                                                )
 
                         elif style == "house":
                             house = None
@@ -308,17 +320,28 @@ class Level:
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_controller.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
+    def add_exp(self,amount):
+        self.player.exp += amount
+
+    def toggle_menu(self):
+        self.game_paused = not self.game_paused
+
     #-------------- Maluzinha -------------------
     def trigger_death_particles(self,pos,particle_type):
         self.animation_controller.create_particles(particle_type,pos,self.visible_sprites)
 
     def run(self):
-        self.visible_sprites.custom_draw(self.player)
-        self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
-
-        #---------------Lonalt------------
-        self.player_attack_logic()
+        self.visible_sprites.custom_draw(self.player)  
 
         # -------------- Maluzinha ---------
         self.ui.display(self.player)
+
+        #---------------Lonalt------------
+        if self.game_paused:
+            self.upgrade.display()
+        else:
+            self.visible_sprites.update()
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
+
+
