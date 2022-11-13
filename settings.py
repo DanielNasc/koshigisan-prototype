@@ -89,14 +89,14 @@ monsters_data = {
             "health": 90, 
             "exp": 150,
             "damage": 15,
-            "attack_type": "dash",
+            "attack_type": "snow",
             "speed": 2, 
             "resistance": 3,
             "attack_radius":150,
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
-            "attack_cooldown": 4000
+            "attack_cooldown": 1000
         }
 }
 

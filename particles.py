@@ -29,10 +29,14 @@ class AnimationController:
             'dash': import_animations_from_folder('assets/FX/particles/slash', 0.5),
             'flame': import_animations_from_folder('assets/FX/particles/flame'),
             'continuous': import_animations_from_folder('assets/FX/particles/continuous', 1),
+            'snow': import_animations_from_folder('assets/FX/particles/snow'),
+            'thunder': import_animations_from_folder('assets/FX/particles/thunder'),
+            'fire': import_animations_from_folder('assets/FX/particles/fire'),
 
             # monsters deaths
             'nukekubi': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
             'eagle': import_animations_from_folder('assets/FX/particles/smoke_orange', 0.25),
+            'snow_skeleton': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
             'akuma': import_animations_from_folder('assets/FX/particles/smoke', 2),
 
             # leafs
