@@ -1,7 +1,7 @@
 from math import floor
 import pygame
 from settings import *
-from support import import_sprites
+from support import import_sprites, calculate_property_by_difficult
 from entity import Entity
 
 class Player(Entity):
@@ -64,7 +64,13 @@ class Player(Entity):
 
         #------------- Maluzinha ------------------
         #### Estatísticas
-        self.stats = {'health': 100, 'mana': 60, 'attack': 10, 'speed': 2, "magic": 4}
+        self.stats = {
+                        'health': calculate_property_by_difficult(100), 
+                        'mana': 60, 
+                        'attack': calculate_property_by_difficult(10), 
+                        'speed': calculate_property_by_difficult(2), 
+                        'magic': calculate_property_by_difficult(4)
+                    }
         self.health = self.stats['health']
         self.mana = self.stats['mana']
         self.exp = 123 ## teste
@@ -111,8 +117,8 @@ class Player(Entity):
             self.magic_time = pygame.time.get_ticks()
 
             style = list(magic_data.keys())[self.magic_index]
-            strength = self.selected_magic["strength"]
-            cost = self.selected_magic["cost"]
+            strength = calculate_property_by_difficult(self.selected_magic["strength"])
+            cost = calculate_property_by_difficult(self.selected_magic["cost"], True)
 
             self.create_magic(style, strength, cost)
 
@@ -237,7 +243,7 @@ class Player(Entity):
         return super().detect_collision(direction)
 
     def update(self):
-        self.recovery_mana(.005)
+        self.recovery_mana(.007)
         self.cooldown()
         self.update_blocked()
         self.input()

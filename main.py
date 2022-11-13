@@ -38,7 +38,7 @@ class Game:
             if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 0:
                 self.update_level()
 
-            debug(self.level.player.rect.topleft)
+            debug(self.level.player.health)
             pygame.display.update()
             self.clock.tick(FPS)
 

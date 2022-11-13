@@ -2,6 +2,7 @@ import pygame
 from csv import reader
 from os import walk, listdir
 from os.path import join
+from game_stats_settings import DIFFICULT, DIFFICULT_VALUES_VARIATION_PERCENTAGE
 
 def import_positions(path):
     path = convert_path(path)
@@ -71,3 +72,6 @@ def import_a_single_sprite(image_path, scale=None):
 
 def convert_path(path: str):
     return join(*(path.split("/")))
+
+def calculate_property_by_difficult(prop, invert_sign=False):
+    return prop + ( prop * DIFFICULT_VALUES_VARIATION_PERCENTAGE * DIFFICULT * (-1 if invert_sign else 1) )
