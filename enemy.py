@@ -3,7 +3,7 @@ import math
 
 from player import Player
 from entity import Entity
-from support import import_sprites
+from support import *
 from settings import monsters_data
 from support import calculate_property_by_difficult
 
@@ -27,6 +27,7 @@ class Enemy(Entity):
         super().__init__(groups)
 
         # general
+        self.angle = 0
         self.sprite_type = "enemy"
         self.obstacle_sprites = obstacle_sprites
         self.slippery_sprites = slippery_sprites    
@@ -51,7 +52,7 @@ class Enemy(Entity):
         self.import_graphics(monster_name)
         self.status = "down_idle"
         self.image = self.anim[self.status][self.frame_index]
-        self.rect = self.image.get_rect(topleft = pos)
+        self.sprite_dir = "down"
 
         # movement
         self.rect = self.image.get_rect(topleft=pos)
@@ -80,25 +81,44 @@ class Enemy(Entity):
 
     def get_player_distance_and_direction(self, player: Player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
-        player_vec = pygame.math.Vector2(player.rect.center) 
+        player_vec = pygame.math.Vector2(player.rect.center)
+        
+        xp = player.rect.centerx 
+        xe = self.rect.centerx
+        yp = - player.rect.centery
+        ye = - self.rect.centery
+
+        angle = math.degrees(math.atan2(ye - yp, xe -xp)) % 360
 
         distance = (player_vec - enemy_vec).magnitude()
         direction = (player_vec - enemy_vec).normalize() if distance > 0 else pygame.math.Vector2()
 
-        return (distance, direction)
+        return (distance, direction, angle)
+
+    def get_direction(self, player):
+        _, _, angle = self.get_player_distance_and_direction(player)
+        self.angle = angle
+
+        if angle <= 45 or angle >= 315:
+            self.sprite_dir = "left"
+        elif angle > 45 and angle <= 135:
+            self.sprite_dir = "down"
+        elif angle > 135 and angle <= 225:
+            self.sprite_dir = "right"
+        else:
+            self.sprite_dir = "up"
+        
 
     # pega o status da animação
     def get_status(self):
-        direction = "down"
-
         if self.stage == ATTACK:
             if "attack" not in self.status:
                 self.frame_index = 0
-            self.status = direction + "_attack"
+            self.status = self.sprite_dir + "_attack"
         elif self.stage == NOTICE:
-            self.status = direction + "_move"
+            self.status = self.sprite_dir + "_move"
         else:
-            self.status = direction + "_idle"
+            self.status = self.sprite_dir + "_idle"
 
     def actions(self, player):
         if "attack" in self.status:
@@ -183,6 +203,7 @@ class Enemy(Entity):
     def enemy_update(self, player):
         self.get_status()
         self.actions(player)
+        self.get_direction(player)
 
 
 """
@@ -198,7 +219,7 @@ class ContinuousEnemy(Enemy):
         super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp)
 
     def get_stage(self, player):
-        distance, direction = self.get_player_distance_and_direction(player)
+        distance = self.get_player_distance_and_direction(player)[0]
 
         if distance <= self.attack_radius:
             self.stage = ATTACK
@@ -226,6 +247,7 @@ class ContinuousEnemy(Enemy):
         self.check_death()
 
     def enemy_update(self, player):
+        self.get_direction(player)
         self.get_stage(player)
         self.get_status()
         self.actions(player)
@@ -249,7 +271,7 @@ class DashEnemy(Enemy):
         return super().detect_collision(direction)
 
     def get_stage(self, player):
-        distance, direction = self.get_player_distance_and_direction(player)
+        distance = self.get_player_distance_and_direction(player)[0]
 
         if distance <= self.attack_radius and self.can_attack:
             if self.stage != ATTACK:
@@ -288,6 +310,7 @@ class DashEnemy(Enemy):
         self.check_death()
 
     def enemy_update(self, player):
+        self.get_direction(player)
         self.detect_collision(self.direction, player)
         self.get_stage(player)
         self.get_status()
