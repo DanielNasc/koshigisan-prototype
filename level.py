@@ -219,7 +219,16 @@ class Level:
                                             self.add_exp
                                         )
                             elif data == "ske":
-                                DashEnemy(  "snow_skeleton",   
+                                if self.curr_level == "Sky":
+                                    DashEnemy(  "snow_skeleton",   
+                                            (x, y), 
+                                            [self.visible_sprites,self.attackble_sprites], 
+                                            self.obstacle_sprites, self.slippery_sprites,
+                                            self.damage_player,self.trigger_death_particles,
+                                            self.add_exp
+                                        )
+                                else:
+                                    DashEnemy(  choice(("snow_skeleton", "fire_skeleton", "thunder_skeleton")),   
                                             (x, y), 
                                             [self.visible_sprites,self.attackble_sprites], 
                                             self.obstacle_sprites, self.slippery_sprites,
