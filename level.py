@@ -5,12 +5,12 @@ from Tile import *
 from camera import YSortCameraGroup
 from player import Player
 from settings import *
-from support import import_animations_from_folder, import_positions, import_a_single_sprite
-from weapon import Weapon
+from support import *
 from ui import UI
 from enemy import *
 from particles import AnimationController
 from magic import PlayerMagic
+from weapon import Weapon
 
 class Level:
     def __init__(self, curr_level) -> None:
@@ -62,6 +62,7 @@ class Level:
                 'house': import_positions('assets/positions/Sky/Skymap_Houses.csv'),
                 'ladder': import_positions('assets/positions/Sky/Skymap_Ladder.csv'),
                 'entrie': import_positions('assets/positions/Sky/Skymap_Entries.csv'),
+                'water_objects': import_positions('assets/positions/Sky/Skymap_Water_Objects.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -75,7 +76,7 @@ class Level:
 
         graphics = {
             'grass': import_animations_from_folder("assets/sprites/grass", .5),
-            'trees': import_animations_from_folder("assets/sprites/trees"),
+            'tree': import_sprites_as_dict('assets/sprites/trees'),
             'houses': import_animations_from_folder("assets/sprites/houses"),
 
             'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
@@ -84,6 +85,12 @@ class Level:
 
             'entrie': import_a_single_sprite('assets/sprites/entrie/entrie.png'),
 
+            # water
+            'boat': import_a_single_sprite('assets/sprites/water_objects/boat.png'),
+            'r': import_a_single_sprite('assets/sprites/water_objects/r.png'),
+            'gr': import_a_single_sprite('assets/sprites/water_objects/gr.png'),
+            'trunk': import_a_single_sprite('assets/sprites/water_objects/trunk.png'),
+            
             #------------------ Maluzinha --------------------------
             'bamboo': import_animations_from_folder("assets/sprites/canBreak")
 
@@ -111,9 +118,8 @@ class Level:
                             bamboo.get_rect(center=bamboo.get_rect().midbottom)
                             Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', bamboo)
 
-                        elif (style == "tree" or style == "tree2") and data == "t":
-                            random_tree = choice(graphics["trees"])
-                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', random_tree)
+                        elif (style == "tree" or style == "tree2") and "t" in data:
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', graphics['tree'][data])
 
                         elif style == "ice":
                             if (data == "ice_down"):
@@ -121,6 +127,12 @@ class Level:
                                 continue
                                 
                             Tile((x, y), (self.slippery_sprites), 'ice')
+
+                        elif style == "water_objects":
+                            try:
+                                int(data)
+                            except:
+                                Tile((x,y), (self.visible_sprites, self.obstacle_sprites), 'water_object', graphics[data])
 
                         elif style == "ladder":
                             key = data.split("_")[0]

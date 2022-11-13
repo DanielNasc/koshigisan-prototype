@@ -70,8 +70,8 @@ monsters_data = {
             "attack_type": "dash",
             "speed": 1, 
             "resistance": 32,
-            "attack_radius":120,
-            "notice_radius": 360,
+            "attack_radius":460,
+            "notice_radius": 400,
             "scale": 1,
             "preparing_duration": 0,
         }

@@ -1,7 +1,7 @@
 import pygame
 from csv import reader
 from os import walk, listdir
-from os.path import join 
+from os.path import join
 
 def import_positions(path):
     path = convert_path(path)
@@ -41,6 +41,23 @@ def import_animations_from_folder(anim_folder, scale=None):
                 folder_animations.append(import_a_single_sprite(image_path, scale))
 
     return folder_animations
+
+def import_sprites_as_dict(anim_folder, scale=None):
+    anim_folder = convert_path(anim_folder)
+    sprites = {}
+    
+    for image in listdir(anim_folder):
+        img_name = image.split(".")[0]
+
+        img = pygame.image.load(join(anim_folder, image)).convert_alpha()
+        if (scale):
+            img_size = pygame.math.Vector2(img.get_size())
+            img = pygame.transform.scale(img, img_size * scale)
+
+        sprites[img_name] = img
+
+    return sprites
+
 
 def import_a_single_sprite(image_path, scale=None):
     image_path = convert_path(image_path)

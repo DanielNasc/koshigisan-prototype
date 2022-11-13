@@ -12,6 +12,8 @@ class Tile(pygame.sprite.Sprite):
             self.hitbox = self.rect
         elif sprite_type == "ice_down":
             self.hitbox = self.rect.inflate(0, (self.rect.height * 1.2))
+        elif sprite_type == "tree":
+            self.hitbox = self.rect.inflate(0, -(self.rect.height * .4))
         elif "entrie" in sprite_type:
             self.hitbox = self.rect.inflate(0, -(self.rect.height * .4)) 
         elif sprite_type != "house":
