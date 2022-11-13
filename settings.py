@@ -65,7 +65,7 @@ monsters_data = {
         },
         "akuma": { 
             "health": 2500, 
-            "exp": 1500000,
+            "exp": 25000,
             "damage": 300000,
             "attack_type": "dash",
             "speed": 1, 

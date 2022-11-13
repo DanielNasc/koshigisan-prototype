@@ -63,6 +63,9 @@ class Level:
                 'ladder': import_positions('assets/positions/Sky/Skymap_Ladder.csv'),
                 'entrie': import_positions('assets/positions/Sky/Skymap_Entries.csv'),
                 'water_objects': import_positions('assets/positions/Sky/Skymap_Water_Objects.csv'),
+                'rocks': import_positions('assets/positions/Sky/Skymap_Rocks.csv'),
+                'decoration': import_positions('assets/positions/Sky/Skymap_HouseAcessories.csv'),
+                'torii': import_positions('assets/positions/Sky/Skymap_Torii.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'sky': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -78,6 +81,9 @@ class Level:
             'grass': import_animations_from_folder("assets/sprites/grass"),
             'tree': import_sprites_as_dict('assets/sprites/trees'),
             'houses': import_animations_from_folder("assets/sprites/houses"),
+            'rocks': import_sprites_as_dict('assets/sprites/rocks'),
+            'decoration': import_sprites_as_dict('assets/sprites/decoration'),
+            'torii': import_sprites_as_dict('assets/sprites/torii'),
 
             'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
             'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png'),
@@ -93,7 +99,7 @@ class Level:
             
             #------------------ Maluzinha --------------------------
             'bamboo': import_animations_from_folder("assets/sprites/canBreak/grass"),
-            'rocks': import_animations_from_folder("assets/sprites/canBreak/rocks")
+            'little_rocks': import_animations_from_folder("assets/sprites/canBreak/rocks")
 
         }
 
@@ -114,18 +120,28 @@ class Level:
                         #---------------- Maluzinha (Gambiarra) --------------
                         elif style == 'sky':
                             bamboo = choice(graphics['bamboo'])
-                            rock = choice(graphics['rocks'])
+                            rock = choice(graphics['little_rocks'])
                             random = [bamboo,rock]
                             winner = choice(random)
-
+                            
                             if winner == bamboo:
                                 if winner == graphics['bamboo'][0]:
                                     Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', winner)
                                 else:
                                     Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'leafs', winner)
                             else:
-                                Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'rocks', winner)
+                                Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'little_rocks', winner)
                         
+                        elif style == "rocks":
+                            if "r" not in data:
+                                continue
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'rock', graphics['rocks'][data])
+
+                        elif style == "decoration":
+                            if "deco" not in data:
+                                continue
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'decoration', graphics['decoration'][data])
+
                         elif (style == "tree" or style == "tree2") and "t" in data:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', graphics['tree'][data])
 
@@ -220,6 +236,11 @@ class Level:
 
                             if (house):
                                 Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
+                            
+                        elif style == "torii":
+                            if not "torii" in data:
+                                    continue
+                            Tile((x, y), (self.visible_sprites, self.obstacle_sprites), data, graphics['torii'][data])
 
         self.update_teleport_pairs()
 
@@ -269,7 +290,7 @@ class Level:
                             for leaf in range(randint(3,6)):
                                 self.animation_controller.create_leafs_particles(pos - offset,[self.visible_sprites])
                             target_sprite.kill()
-                        elif target_sprite.sprite_type ==  "rocks":
+                        elif target_sprite.sprite_type ==  "little_rocks":
                             pos = target_sprite.rect.center
                             offset = pygame.math.Vector2(0,25)
                             for leaf in range(randint(3,6)):
