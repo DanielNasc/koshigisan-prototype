@@ -84,6 +84,19 @@ monsters_data = {
             "notice_radius": 400,
             "scale": 1,
             "preparing_duration": 0,
+        },
+        "snow_skeleton": { 
+            "health": 90, 
+            "exp": 150,
+            "damage": 15,
+            "attack_type": "dash",
+            "speed": 2, 
+            "resistance": 3,
+            "attack_radius":150,
+            "notice_radius": 240,
+            "scale": 1,
+            "preparing_duration": 500,
+            "attack_cooldown": 4000
         }
 }
 
