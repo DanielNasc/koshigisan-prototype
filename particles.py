@@ -52,10 +52,14 @@ class AnimationController:
             ),
 
             'bamboo': (
-                import_animations_from_folder('assets/FX/particles/bamboo1', 1.25),
-                self.invert(import_animations_from_folder('assets/FX/particles/bamboo1', 1.25)),
-                import_animations_from_folder('assets/FX/particles/bamboo2', 1.25),
-                self.invert(import_animations_from_folder('assets/FX/particles/bamboo2', 1.25))
+                import_animations_from_folder('assets/FX/particles/bamboo1'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboo1')),
+                import_animations_from_folder('assets/FX/particles/bamboo2'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboo2')),
+                import_animations_from_folder('assets/FX/particles/bamboo3'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboo3')),
+                import_animations_from_folder('assets/FX/particles/bamboo4'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboo4'))
             )
 
         }
