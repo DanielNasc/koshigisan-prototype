@@ -76,6 +76,10 @@ class AnimationController:
     def create_bamboo_particles(self,pos,groups):
         animation_frames = choice(self.frames['bamboo'])
         ParticleEffect(pos,animation_frames,groups)
+    
+    def create_leafs_particles(self,pos,groups):
+        animation_frames = choice(self.frames['leafs'])
+        ParticleEffect(pos,animation_frames,groups)
 
     def create_particles(self,animation_type,pos,groups):
         animation_frames = self.frames[animation_type]

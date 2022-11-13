@@ -92,7 +92,7 @@ class Level:
             'trunk': import_a_single_sprite('assets/sprites/water_objects/trunk.png'),
             
             #------------------ Maluzinha --------------------------
-            'bamboo': import_animations_from_folder("assets/sprites/canBreak")
+            'bamboo': import_animations_from_folder("assets/sprites/canBreak/grass", .85)
 
         }
 
@@ -112,12 +112,11 @@ class Level:
 
                         #---------------- Maluzinha --------------
                         elif style == 'bamboo':
-                            bamboo = graphics['bamboo'][0]
-                            bamboo_size =  pygame.math.Vector2(bamboo.get_size())
-                            bamboo = pygame.transform.scale(bamboo, bamboo_size * 0.5)
-                            bamboo.get_rect(center=bamboo.get_rect().midbottom)
-                            Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', bamboo)
-
+                            bamboo = choice(graphics['bamboo'])
+                            if bamboo == graphics['bamboo'][0]:
+                                Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', bamboo)
+                            else:
+                                Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'leafs', bamboo)
                         elif (style == "tree" or style == "tree2") and "t" in data:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', graphics['tree'][data])
 
@@ -254,6 +253,12 @@ class Level:
                             offset = pygame.math.Vector2(0,25)
                             for leaf in range(randint(3,6)):
                                 self.animation_controller.create_bamboo_particles(pos - offset,[self.visible_sprites])
+                            target_sprite.kill()
+                        elif target_sprite.sprite_type ==  "leafs":
+                            pos = target_sprite.rect.center
+                            offset = pygame.math.Vector2(0,25)
+                            for leaf in range(randint(3,6)):
+                                self.animation_controller.create_leafs_particles(pos - offset,[self.visible_sprites])
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)
