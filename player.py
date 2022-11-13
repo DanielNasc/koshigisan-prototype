@@ -71,8 +71,21 @@ class Player(Entity):
                         'speed': calculate_property_by_difficult(2), 
                         'magic': calculate_property_by_difficult(4)
                     }
-        self.max_stats = {'health': 300, 'mana': 140, 'attack': 20, 'speed': 10, 'magic': 10}
-        self.upgrade_cost = {'health': 100, 'mana': 100, 'attack': 100, 'speed': 100, 'magic': 100}
+        self.max_stats = {
+                            'health': calculate_property_by_difficult(300), 
+                            'mana': calculate_property_by_difficult(140), 
+                            'attack': calculate_property_by_difficult(20), 
+                            'speed': calculate_property_by_difficult(10), 
+                            'magic': calculate_property_by_difficult(10)
+                        }
+
+        self.upgrade_cost = {
+                                'health': calculate_property_by_difficult(100, True), 
+                                'mana': calculate_property_by_difficult(100, True),
+                                'attack': calculate_property_by_difficult(100, True), 
+                                'speed': calculate_property_by_difficult(100, True), 
+                                'magic': calculate_property_by_difficult(100, True)
+                            }
         self.health = self.stats['health']
         self.mana = self.stats['mana']
         self.exp = 5000
