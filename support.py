@@ -1,4 +1,5 @@
 import pygame
+import math 
 from csv import reader
 from os import walk, listdir
 from os.path import join
@@ -75,3 +76,34 @@ def convert_path(path: str):
 
 def calculate_property_by_difficult(prop, invert_sign=False):
     return prop + ( prop * DIFFICULT_VALUES_VARIATION_PERCENTAGE * DIFFICULT * (-1 if invert_sign else 1) )
+
+def inner_product(vector1, vector2):
+    """
+    Calcula o produto interno de dois vetores
+    """
+    if len(vector1) != len(vector2):
+        raise ValueError("Vetores de tamanhos diferentes")
+    sum = 0
+    for i in range(len(vector1)):
+        sum += vector1[i] * vector2[i]
+    return sum
+    
+
+def calculate_norm(vector):
+    """
+    Calcula a norma de um vetor
+    """
+    sum = 0
+    for i in range(len(vector)):
+        sum += vector[i]**2
+    return [sum**(1/2), sum]
+
+
+def angle_between_vectors(v1, v2):
+    ip = inner_product(v1, v2)
+    norm_v1 = calculate_norm(v1)[0]
+    norm_v2 = calculate_norm(v2)[0]
+
+    cos_angle = ip / (norm_v1 * norm_v2)
+
+    return math.degrees(math.acos(round(cos_angle, 10)))
