@@ -142,14 +142,6 @@ class Level:
                                 continue
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'decoration', graphics['decoration'][data])
 
-                        #---------------- Maluzinha --------------
-                        elif style == 'bamboo':
-                            bamboo = graphics['bamboo'][0]
-                            bamboo_size =  pygame.math.Vector2(bamboo.get_size())
-                            bamboo = pygame.transform.scale(bamboo, bamboo_size * 0.5)
-                            bamboo.get_rect(center=bamboo.get_rect().midbottom)
-                            Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', bamboo)
-
                         elif (style == "tree" or style == "tree2") and "t" in data:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'tree', graphics['tree'][data])
 
