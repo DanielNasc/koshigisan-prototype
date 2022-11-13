@@ -68,7 +68,7 @@ class Level:
                 'torii': import_positions('assets/positions/Sky/Skymap_Torii.csv'),
 
                 #----------------- Maluzinha ----------------------
-                'bamboo': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
+                'sky': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
             })
         # elif (self.curr_level == "Hell"):
         #     self.layouts.update({
@@ -78,7 +78,7 @@ class Level:
     def create_map(self):
 
         graphics = {
-            'grass': import_animations_from_folder("assets/sprites/grass", .5),
+            'grass': import_animations_from_folder("assets/sprites/grass"),
             'tree': import_sprites_as_dict('assets/sprites/trees'),
             'houses': import_animations_from_folder("assets/sprites/houses"),
             'rocks': import_sprites_as_dict('assets/sprites/rocks'),
@@ -98,7 +98,8 @@ class Level:
             'trunk': import_a_single_sprite('assets/sprites/water_objects/trunk.png'),
             
             #------------------ Maluzinha --------------------------
-            'bamboo': import_animations_from_folder("assets/sprites/canBreak")
+            'bamboo': import_animations_from_folder("assets/sprites/canBreak/grass"),
+            'little_rocks': import_animations_from_folder("assets/sprites/canBreak/rocks")
 
         }
 
@@ -116,6 +117,21 @@ class Level:
                             random_grass = choice(graphics['grass'])
                             Tile((x, y), (self.visible_sprites), 'grass', random_grass)
 
+                        #---------------- Maluzinha (Gambiarra) --------------
+                        elif style == 'sky':
+                            bamboo = choice(graphics['bamboo'])
+                            rock = choice(graphics['little_rocks'])
+                            random = [bamboo,rock]
+                            winner = choice(random)
+                            
+                            if winner == bamboo:
+                                if winner == graphics['bamboo'][0]:
+                                    Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'bamboo', winner)
+                                else:
+                                    Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'leafs', winner)
+                            else:
+                                Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'little_rocks', winner)
+                        
                         elif style == "rocks":
                             if "r" not in data:
                                 continue
@@ -275,6 +291,18 @@ class Level:
                             offset = pygame.math.Vector2(0,25)
                             for leaf in range(randint(3,6)):
                                 self.animation_controller.create_bamboo_particles(pos - offset,[self.visible_sprites])
+                            target_sprite.kill()
+                        elif target_sprite.sprite_type ==  "leafs":
+                            pos = target_sprite.rect.center
+                            offset = pygame.math.Vector2(0,25)
+                            for leaf in range(randint(3,6)):
+                                self.animation_controller.create_leafs_particles(pos - offset,[self.visible_sprites])
+                            target_sprite.kill()
+                        elif target_sprite.sprite_type ==  "little_rocks":
+                            pos = target_sprite.rect.center
+                            offset = pygame.math.Vector2(0,25)
+                            for leaf in range(randint(3,6)):
+                                self.animation_controller.create_rocks_particles(pos - offset,[self.visible_sprites])
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(self.player,attack_sprite.sprite_type)

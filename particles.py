@@ -37,25 +37,40 @@ class AnimationController:
 
             # leafs
             'leafs': (
-                import_animations_from_folder('assets/FX/particles/leaf1', 0.32),
-                import_animations_from_folder('assets/FX/particles/leaf2', 0.32),
-                import_animations_from_folder('assets/FX/particles/leaf3', 0.32),
-                import_animations_from_folder('assets/FX/particles/leaf4', 0.32),
-                import_animations_from_folder('assets/FX/particles/leaf5', 0.32),
-                import_animations_from_folder('assets/FX/particles/leaf6', 0.32),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf1', 0.32)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf2', 0.32)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf3', 0.32)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf4', 0.32)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf5', 0.32)),
-                self.invert(import_animations_from_folder('assets/FX/particles/leaf6', 0.32)),
+                import_animations_from_folder('assets/FX/particles/leafs/leaf1', 0.5),
+                import_animations_from_folder('assets/FX/particles/leafs/leaf2', 0.5),
+                import_animations_from_folder('assets/FX/particles/leafs/leaf3', 0.5),
+                import_animations_from_folder('assets/FX/particles/leafs/leaf4', 0.5),
+                import_animations_from_folder('assets/FX/particles/leafs/leaf5', 0.5),
+                import_animations_from_folder('assets/FX/particles/leafs/leaf6', 0.5),
+                self.invert(import_animations_from_folder('assets/FX/particles/leafs/leaf1', 0.5)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leafs/leaf2', 0.5)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leafs/leaf3', 0.5)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leafs/leaf4', 0.5)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leafs/leaf5', 0.5)),
+                self.invert(import_animations_from_folder('assets/FX/particles/leafs/leaf6', 0.5)),
             ),
 
             'bamboo': (
-                import_animations_from_folder('assets/FX/particles/bamboo1', 1.25),
-                self.invert(import_animations_from_folder('assets/FX/particles/bamboo1', 1.25)),
-                import_animations_from_folder('assets/FX/particles/bamboo2', 1.25),
-                self.invert(import_animations_from_folder('assets/FX/particles/bamboo2', 1.25))
+                import_animations_from_folder('assets/FX/particles/bamboos/bamboo1'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboos/bamboo1')),
+                import_animations_from_folder('assets/FX/particles/bamboos/bamboo2'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboos/bamboo2')),
+                import_animations_from_folder('assets/FX/particles/bamboos/bamboo3'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboos/bamboo3')),
+                import_animations_from_folder('assets/FX/particles/bamboos/bamboo4'),
+                self.invert(import_animations_from_folder('assets/FX/particles/bamboos/bamboo4'))
+            ),
+
+            'rocks': (
+                import_animations_from_folder('assets/FX/particles/rocks/rocks1'),
+                self.invert(import_animations_from_folder('assets/FX/particles/rocks/rocks1')),
+                import_animations_from_folder('assets/FX/particles/rocks/rocks2'),
+                self.invert(import_animations_from_folder('assets/FX/particles/rocks/rocks2')),
+                import_animations_from_folder('assets/FX/particles/rocks/rocks3'),
+                self.invert(import_animations_from_folder('assets/FX/particles/rocks/rocks3')),
+                import_animations_from_folder('assets/FX/particles/rocks/rocks4'),
+                self.invert(import_animations_from_folder('assets/FX/particles/rocks/rocks4'))
             )
 
         }
@@ -72,6 +87,15 @@ class AnimationController:
     def create_bamboo_particles(self,pos,groups):
         animation_frames = choice(self.frames['bamboo'])
         ParticleEffect(pos,animation_frames,groups)
+    
+    def create_leafs_particles(self,pos,groups):
+        animation_frames = choice(self.frames['leafs'])
+        ParticleEffect(pos,animation_frames,groups)
+
+    def create_rocks_particles(self,pos,groups):
+        animation_frames = choice(self.frames['rocks'])
+        ParticleEffect(pos,animation_frames,groups)
+
 
     def create_particles(self,animation_type,pos,groups):
         animation_frames = self.frames[animation_type]
