@@ -1,5 +1,4 @@
-import pygame
-from datetime import datetime as dt
+import pygame, time
 
 from math import floor
 
@@ -26,7 +25,7 @@ class AnimEntity(Entity):
         self.events = data["events"]
 
         self.is_in_event = False
-        self.spawn_time = dt.now().second
+        self.spawn_time = time.time()
 
         self.status = "down_idle"
         self.image = self.anim[self.status][self.frame_index]
@@ -66,7 +65,7 @@ class AnimEntity(Entity):
                 self.frame_index = 0
 
     def event_manager(self):
-        curr_tick = dt.now().second
+        curr_tick = time.time()
 
         for event in self.events:
             if event["time"] + self.spawn_time <= curr_tick:

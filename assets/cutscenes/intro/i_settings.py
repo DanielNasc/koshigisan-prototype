@@ -16,7 +16,7 @@ STAGES = {
                     {
                         "type": "dance",
                         "animation": "down_move",
-                        "time": 17
+                        "time": 16.2
                     }
                 ]
             },
@@ -30,7 +30,7 @@ STAGES = {
                     {
                         "type": "dance",
                         "animation": "down_move",
-                        "time": 17
+                        "time": 16.2
                     }
                 ]
             },
@@ -44,7 +44,7 @@ STAGES = {
                     {
                         "type": "dance",
                         "animation": "down_move",
-                        "time": 17
+                        "time": 16.2
                     }
                 ]
             }
