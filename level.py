@@ -18,7 +18,6 @@ class Level:
         self.display_suface = pygame.display.get_surface()
         self.game_paused = False
 
-
         # Levels
         self.curr_level = curr_level
 

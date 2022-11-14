@@ -1,4 +1,5 @@
 import pygame
+from datetime import datetime as dt
 
 from math import floor
 
@@ -17,11 +18,15 @@ class AnimEntity(Entity):
         super().__init__(groups)
         self.name = name
         
-        self.anim = import_sprites(data["path"], 2)
+        self.anim = import_sprites(data["path"], 3)
         self.anim_type = data["anim_type"]
         self.from_pos = data["from"]
         self.to = data["to"]
         self.animation_after_stopped = data["animation_after_stopped"]
+        self.events = data["events"]
+
+        self.is_in_event = False
+        self.spawn_time = dt.now().second
 
         self.status = "down_idle"
         self.image = self.anim[self.status][self.frame_index]
@@ -35,6 +40,7 @@ class AnimEntity(Entity):
                 self.to[1] - self.from_pos[1]
             )
         )
+
 
         # if self.direction.magnitude() != 0:
         #     self.direction = self.direction.normalize()
@@ -59,6 +65,15 @@ class AnimEntity(Entity):
                 self.status = self.sprite_dir + "_move"
                 self.frame_index = 0
 
+    def event_manager(self):
+        curr_tick = dt.now().second
+
+        for event in self.events:
+            if event["time"] + self.spawn_time <= curr_tick:
+                self.is_in_event = True
+                self.status = event["animation"]
+
+
     def animate(self):
         animation = self.anim[self.status]
         self.frame_index += self.animation_speed
@@ -70,7 +85,7 @@ class AnimEntity(Entity):
         self.image = animation[floor(self.frame_index)]
         self.rect = self.image.get_rect(center = self.rect.center)
 
-    def detect_collision(self, direction):
+    def detect_collision(self, _):
         return 
 
     def movement_controller(self):
@@ -78,8 +93,10 @@ class AnimEntity(Entity):
         self.direction.y = 0 if abs(self.to[1]) <= abs(self.rect.center[1]) else self.direction.y
 
     def update(self) -> None:
+        self.event_manager()
         self.movement_controller()
-        self.get_sprite_direction()
-        self.get_status()
+        if not self.is_in_event:
+            self.get_sprite_direction()
+            self.get_status()
         self.animate()
-        self.move(2)
+        self.move(1)
