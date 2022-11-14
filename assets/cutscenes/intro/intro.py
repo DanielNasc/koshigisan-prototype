@@ -49,6 +49,8 @@ class IntroCutscene(CutsceneController):
                     self.sounds[event["name"]].play()
                     # if event["name"] == "scream":
                     #     self.sounds[event["name"]].set_volume(1)
+                elif event["type"] == "invoke_entity":
+                    AnimEntity(event["name"], event["data"], self.visible_sprites, .1)
                 satisfied_events.append(index)
 
         satisfied_events.reverse()

@@ -12,6 +12,7 @@ STAGES = {
                 "from": (0, HEIGHT // 2),
                 "to": ((WIDTH // 2) + (TILESIZE * 1.5), HEIGHT // 2),
                 "animation_after_stopped": "down_idle",
+                "scale": 3,
                 "events": [
                     {
                         "type": "dance",
@@ -25,6 +26,7 @@ STAGES = {
             },
             "snow_skeleton": {
                 "path": "assets/sprites/monsters/snow_skeleton",
+                "scale": 3,
                 "anim_type": "move",
                 "from": (-(TILESIZE * 1.5), HEIGHT // 2),
                 "to": ((WIDTH // 2), HEIGHT // 2),
@@ -43,6 +45,7 @@ STAGES = {
             },
             "thunder_skeleton": {
                 "path": "assets/sprites/monsters/thunder_skeleton",
+                "scale": 3,
                 "anim_type": "move",
                 "from": (-(TILESIZE * 3), HEIGHT // 2),
                 "to": ((WIDTH // 2) - (TILESIZE * 1.5), HEIGHT // 2),
@@ -64,6 +67,12 @@ STAGES = {
     },
 
     "events": [
+        {
+            "type": "init_sound",
+            "path": "assets/sounds/Intro/hadouken.mp3",
+            "name": "whoosh",
+            "time": 24
+        },
         {
             "type": "invoke_particle",
             "particle": "flame",
@@ -96,6 +105,30 @@ STAGES = {
             "type": "stop_sound",
             "wich": "scream",
             "time": 30,
+        },
+        {
+            "type": "invoke_entity",
+            "time": 32,
+            "name": "Yamato",
+            "data": {
+                "path": "assets/sprites/characteres/yamato/",
+                "anim_type": "move",
+                "scale": 3,
+                "from": (-(TILESIZE * 1.5), HEIGHT // 2),
+                "to": ((WIDTH // 2), HEIGHT // 2),
+                "animation_after_stopped": "peace_and_love",
+                "events": [
+                    {
+                        "type": "rescale",
+                        "required": ["stopped", "animation_after_stopped"],
+                        "new_scale": .12,
+                    }, {
+                        "type": "init_sound",
+                        "required": ["animation_after_stopped"],
+                        "path": "assets/sounds/Intro/yooo.mp3",
+                    }
+                ]
+            }
         }
     ]
 }
