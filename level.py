@@ -219,7 +219,16 @@ class Level:
                                             self.add_exp
                                         )
                             elif data == "ske":
-                                DashEnemy(  "snow_skeleton",   
+                                if self.curr_level == "Sky":
+                                    DashEnemy(  "snow_skeleton",   
+                                            (x, y), 
+                                            [self.visible_sprites,self.attackble_sprites], 
+                                            self.obstacle_sprites, self.slippery_sprites,
+                                            self.damage_player,self.trigger_death_particles,
+                                            self.add_exp
+                                        )
+                                else:
+                                    DashEnemy(  choice(("snow_skeleton", "fire_skeleton", "thunder_skeleton")),   
                                             (x, y), 
                                             [self.visible_sprites,self.attackble_sprites], 
                                             self.obstacle_sprites, self.slippery_sprites,
@@ -351,5 +360,24 @@ class Level:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)
             self.player_attack_logic()
+
+
+class CutsceneController(Level):
+    def __init__(self) -> None:
+        self.visible_sprites = YSortCameraGroup()
+        self.display_suface = pygame.display.get_surface()
+
+        self.create_layouts()
+        self.create_map()
+
+    def create_layouts(self):
+        return 
+
+    def create_map(self):
+        return 
+
+    def run(self):
+        self.visible_sprites.draw(self.display_suface)
+        self.visible_sprites.update()
 
 

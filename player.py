@@ -13,14 +13,7 @@ class Player(Entity):
         #### Animação
 
         # pegar todas as animações dos jogador e colocar na propriedade anim
-        self.anim = import_sprites('assets/sprites/characteres/yamato')
-
-        # ajustar o zoom do sprite do player
-        for anim_array  in self.anim.values():
-            for i in range(len(anim_array)):
-                player_size_vector = pygame.math.Vector2(anim_array[i].get_size())
-                anim_array[i] = pygame.transform.scale(anim_array[i], player_size_vector * PLAYER_ZOOM)
-        
+        self.anim = import_sprites('assets/sprites/characteres/yamato', PLAYER_ZOOM)
         self.image = self.anim["down_idle"][0]
 
         self.status = 'down'

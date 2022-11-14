@@ -97,7 +97,33 @@ monsters_data = {
             "scale": 1,
             "preparing_duration": 500,
             "attack_cooldown": 1000
-        }
+        },
+        "thunder_skeleton": { 
+            "health": 110, 
+            "exp": 150,
+            "damage": 25,
+            "attack_type": "thunder",
+            "speed": 2, 
+            "resistance": 3,
+            "attack_radius":150,
+            "notice_radius": 240,
+            "scale": 1,
+            "preparing_duration": 500,
+            "attack_cooldown": 1000
+        },
+        "fire_skeleton": { 
+            "health": 150, 
+            "exp": 150,
+            "damage": 45,
+            "attack_type": "fire",
+            "speed": 2, 
+            "resistance": 3,
+            "attack_radius":150,
+            "notice_radius": 240,
+            "scale": 1,
+            "preparing_duration": 500,
+            "attack_cooldown": 1000
+        },
 }
 
 # ------------- Maluzinha ---------------

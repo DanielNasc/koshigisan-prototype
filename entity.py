@@ -8,7 +8,8 @@ class Entity(pygame.sprite.Sprite):
         self.frame_index = 0
         self.direction = pygame.math.Vector2() 
         self.animation_speed = .15
-        
+        self.is_sliding = False
+
     def move(self, speed: int=10):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()

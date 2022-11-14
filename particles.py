@@ -37,6 +37,8 @@ class AnimationController:
             'nukekubi': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
             'eagle': import_animations_from_folder('assets/FX/particles/smoke_orange', 0.25),
             'snow_skeleton': import_animations_from_folder('assets/FX/particles/smoke', 0.5),
+            'thunder_skeleton': import_animations_from_folder('assets/FX/particles/smoke_orange', 0.5),
+            'fire_skeleton': import_animations_from_folder('assets/FX/particles/smoke_orange', 0.5),
             'akuma': import_animations_from_folder('assets/FX/particles/smoke', 2),
 
             # leafs
