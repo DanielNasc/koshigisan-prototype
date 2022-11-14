@@ -15,14 +15,23 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.levels = ["Intro","Sky", "Hell"]
-        self.level_index = 0
+        self.level_index = 2
         self.create_level()
 
     def create_level(self):
+        sound_level_1 = pygame.mixer.Sound('assets/SFX/tankoubusi.WAV')
+        sound_level_2 = pygame.mixer.Sound('assets/SFX/kajiya.WAV')
+        sound_level_1.set_volume(0.8)        
+        sound_level_2.set_volume(0.6)        
         if (self.level_index == 0):
             self.level = IntroCutscene()
         else:
+            if self.level_index == 1:
+                sound_level_1.play(loops=-1)
+            else:
+                sound_level_2.play(loops=-1)
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
+            
 
     def update_level(self):
         self.level_index += 1

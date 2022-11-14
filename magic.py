@@ -7,10 +7,14 @@ from random import randint
 class PlayerMagic:
     def __init__(self, animation_controller: AnimationController =None) -> None:
         self.animation_controller = animation_controller
-
+        self.sounds = {
+            'flame': pygame.mixer.Sound('assets/SFX/Magia_de_fogo.wav')
+            }
+    
     def flame(self, player: Player, cost, groups):
         if player.mana >= cost:
             player.mana -= cost
+            self.sounds['flame'].play()
 
             player_dir = player.status.split("_")[0]
 
