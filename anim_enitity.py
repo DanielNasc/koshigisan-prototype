@@ -21,9 +21,11 @@ class AnimEntity(Entity):
         self.anim_type = data["anim_type"]
         self.from_pos = data["from"]
         self.to = data["to"]
+        self.animation_after_stopped = data["animation_after_stopped"]
 
         self.status = "down_idle"
         self.image = self.anim[self.status][self.frame_index]
+        self.sprite_dir = "down"
 
         self.rect = self.hitbox = self.image.get_rect(center = self.from_pos)
 
@@ -36,6 +38,26 @@ class AnimEntity(Entity):
 
         # if self.direction.magnitude() != 0:
         #     self.direction = self.direction.normalize()
+
+    def get_sprite_direction(self):
+        self.sprite_dir = "down"
+
+        if self.direction.y != 0:
+            self.sprite_dir = "down" if self.direction.y < 0 else "up"
+
+        if self.direction.x != 0:
+            self.sprite_dir = "left" if self.direction.x < 0 else "right"
+
+
+    def get_status(self):
+        if self.direction.x == 0 and self.direction.y == 0:
+            if not self.animation_after_stopped in self.status:
+                self.status = self.animation_after_stopped
+                self.frame_index = 0
+        else:
+            if not "move" in self.status:
+                self.status = self.sprite_dir + "_move"
+                self.frame_index = 0
 
     def animate(self):
         animation = self.anim[self.status]
@@ -56,6 +78,8 @@ class AnimEntity(Entity):
         self.direction.y = 0 if abs(self.to[1]) <= abs(self.rect.center[1]) else self.direction.y
 
     def update(self) -> None:
-        self.animate()
         self.movement_controller()
+        self.get_sprite_direction()
+        self.get_status()
+        self.animate()
         self.move(2)
