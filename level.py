@@ -362,3 +362,22 @@ class Level:
             self.player_attack_logic()
 
 
+class CutsceneController(Level):
+    def __init__(self) -> None:
+        self.visible_sprites = YSortCameraGroup()
+        self.display_suface = pygame.display.get_surface()
+
+        self.create_layouts()
+        self.create_map()
+
+    def create_layouts(self):
+        return 
+
+    def create_map(self):
+        return 
+
+    def run(self):
+        self.visible_sprites.draw(self.display_suface)
+        self.visible_sprites.update()
+
+
