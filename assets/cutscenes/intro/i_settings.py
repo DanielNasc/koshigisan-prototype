@@ -17,6 +17,9 @@ STAGES = {
                         "type": "dance",
                         "animation": "down_move",
                         "time": 16.2
+                    }, {
+                        "type": "die",
+                        "time": 26
                     }
                 ]
             },
@@ -31,6 +34,10 @@ STAGES = {
                         "type": "dance",
                         "animation": "down_move",
                         "time": 16.2
+                    },
+                    {
+                        "type": "die",
+                        "time": 26
                     }
                 ]
             },
@@ -45,10 +52,50 @@ STAGES = {
                         "type": "dance",
                         "animation": "down_move",
                         "time": 16.2
+                    },
+                    {
+                        "type": "die",
+                        "time": 26
                     }
                 ]
             }
         },
         
     },
+
+    "events": [
+        {
+            "type": "invoke_particle",
+            "particle": "flame",
+            "amount": 10,
+            "from": (0, (HEIGHT // 2) - 40),
+            "time": 25,
+            "direction": (1, 0),
+            "scale": 10,
+            "spacing": .66
+        },
+        {
+            "type": "stop_sound",
+            "wich": "main",
+            "time": 26,
+        },
+        {
+            "type": "init_sound",
+            "path": "assets/sounds/Intro/scream.mp3",
+            # "volume": 2,
+            "name": "scream",
+            "time": 24.5
+        },
+        {
+            "type": "init_sound",
+            "path": "assets/sounds/Intro/whoosh.mp3",
+            "name": "whoosh",
+            "time": 24.5
+        },
+        {
+            "type": "stop_sound",
+            "wich": "scream",
+            "time": 30,
+        }
+    ]
 }

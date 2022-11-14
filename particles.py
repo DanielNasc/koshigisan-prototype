@@ -3,11 +3,11 @@ from support import import_animations_from_folder
 from random import choice
 
 class ParticleEffect(pygame.sprite.Sprite):
-    def __init__(self,pos,animation_frames,groups):
+    def __init__(self,pos,animation_frames,groups, anim_speed=None):
         super().__init__(groups)
         self.sprite_type = "magic"
         self.frame_index = 0
-        self.animation_speed = 0.20
+        self.animation_speed = 0.25 if not anim_speed else anim_speed
         self.frames = animation_frames
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(center = pos)
@@ -101,7 +101,6 @@ class AnimationController:
     def create_rocks_particles(self,pos,groups):
         animation_frames = choice(self.frames['rocks'])
         ParticleEffect(pos,animation_frames,groups)
-
 
     def create_particles(self,animation_type,pos,groups):
         animation_frames = self.frames[animation_type]

@@ -66,11 +66,20 @@ class AnimEntity(Entity):
 
     def event_manager(self):
         curr_tick = time.time()
+        satisfied_events = []
 
-        for event in self.events:
+        for index, event in enumerate(self.events):
             if event["time"] + self.spawn_time <= curr_tick:
                 self.is_in_event = True
-                self.status = event["animation"]
+                if event["type"] == "dance":
+                    self.status = event["animation"]
+                elif event["type"] == "die":
+                    self.kill()
+                satisfied_events.append(index)
+
+        satisfied_events.reverse()
+        for index in satisfied_events:
+            self.events.pop(index)
 
 
     def animate(self):

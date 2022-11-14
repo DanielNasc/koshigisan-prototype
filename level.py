@@ -363,7 +363,7 @@ class Level:
 
 class CutsceneController(Level):
     def __init__(self) -> None:
-        self.visible_sprites = YSortCameraGroup()
+        self.visible_sprites = pygame.sprite.Group()
         self.display_suface = pygame.display.get_surface()
 
         self.create_layouts()
@@ -376,6 +376,7 @@ class CutsceneController(Level):
         return 
 
     def run(self):
+        self.display_suface.fill((0, 0, 0))
         self.visible_sprites.draw(self.display_suface)
         self.visible_sprites.update()
 
