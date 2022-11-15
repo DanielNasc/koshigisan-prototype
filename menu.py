@@ -1,24 +1,42 @@
 import pygame
+from datetime import datetime as dt
 from camera import YSortCameraGroup
 from support import import_animations_from_folder
 from settings import *
 
 class Menu:
-    def __init__(self, level = None, has_animated_background = False):
 
-        self.visible_sprites = YSortCameraGroup('Menu') 
+    def __init__(self):
+        self.visible_sprites = pygame.sprite.Group()
         self.display_suface = pygame.display.get_surface()
-        self.has_animated_background = has_animated_background
+        MenuBackground(self.visible_sprites)
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)
         self.visible_sprites.update()
 
-    def load_background(self,has_animated_background):
-        if has_animated_background:
-            self.animation = import_animations_from_folder('assets/sprites/background/{self.level}')
-            self.anim_index = 0 
-            self.floor_surface = self.animation[0]
+class MenuBackground(pygame.sprite.Sprite):
+    def __init__(self,groups):
+        super().__init__(groups)
+
+        hour = dt.now().hour
+
+        if hour < 12:
+            self.wallpaper = 'Morning'
+        elif hour >= 12 and hour < 18:
+            self.wallpaper = 'Afternoon'
+        else:
+            self.wallpaper = 'Night'
+        
+        self.animation = import_animations_from_folder(f'assets/sprites/backgroung/Menu/{self.wallpaper}')
+        self.anim_index = 0
+        self.image = self.animation[0]
+        self.rect = self.image.get_rect(topleft = (0,0))
+
+
+
+
+
 
 
             

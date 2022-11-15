@@ -5,6 +5,7 @@ from debug import debug
 from settings import *
 from level import *
 from assets.cutscenes.intro.intro import IntroCutscene
+from menu import *
 
 class Game:
     def __init__(self) -> None:
@@ -14,13 +15,13 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # This function will create a display Surface
         self.clock = pygame.time.Clock()
 
-        self.levels = ["Menu","Intro","Sky", "Hell"]
+        self.levels = ["Intro","Sky", "Hell"]
         self.level_index = 0
         self.create_level()
 
     def create_level(self):
         if (self.level_index == 0):
-            self.level = IntroCutscene()
+            self.level = Menu()
         else:
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
