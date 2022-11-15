@@ -16,7 +16,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.levels = ["Intro", "Menu","Sky", "Hell"]
-        self.level_index = 0
+        self.level_index = 1
         self.create_level()
 
     def create_level(self):
