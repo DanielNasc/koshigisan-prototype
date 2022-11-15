@@ -1,11 +1,9 @@
 import pygame
 from datetime import datetime as dt
-from camera import YSortCameraGroup
 from support import import_animations_from_folder
 from settings import *
 
 class Menu:
-
     def __init__(self):
         self.visible_sprites = pygame.sprite.Group()
         self.display_suface = pygame.display.get_surface()
@@ -28,15 +26,21 @@ class MenuBackground(pygame.sprite.Sprite):
         else:
             self.wallpaper = 'Night'
         
-        self.animation = import_animations_from_folder(f'assets/sprites/backgroung/Menu/{self.wallpaper}')
+        self.animation = import_animations_from_folder(f'assets/sprites/background/Menu/{self.wallpaper}')
         self.anim_index = 0
+        self.anim_speed = .045
         self.image = self.animation[0]
         self.rect = self.image.get_rect(topleft = (0,0))
+    
+    def animate(self):
+        self.anim_index += self.anim_speed
 
+        if (self.anim_index > len(self.animation)):
+            self.anim_index = 0
 
+        self.image = self.animation[int(self.anim_index)]
+        self.rect = self.image.get_rect(topleft = (0, 0))
 
-
-
-
-
-            
+    def update(self) -> None:
+        self.animate()
+        
