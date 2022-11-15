@@ -5,7 +5,6 @@ from settings import *
 from level import *
 from assets.cutscenes.intro.intro import IntroCutscene
 from menu import *
-from game_stats_settings import gameStats
 
 class Game:
     def __init__(self) -> None:
@@ -20,20 +19,20 @@ class Game:
         self.create_level()
 
     def create_level(self):
-        sound_level_1 = pygame.mixer.Sound('assets/SFX/tankoubusi.WAV')
-        sound_level_2 = pygame.mixer.Sound('assets/SFX/kajiya.WAV')
-        sound_level_1.set_volume(0.8)        
-        sound_level_2.set_volume(0.6)        
         if (self.level_index == 0):
             self.level = IntroCutscene()
         elif self.level_index == 1:
             self.level = Menu(self.update_level)
         else:
-            if self.level_index == 1:
-                sound_level_1.play(loops=-1)
+            if self.level_index == 2:
+                pygame.mixer.music.load("assets/SFX/tankoubusi.WAV")
+                pygame.mixer.music.set_volume(0.8)
             else:
-                sound_level_2.play(loops=-1)
+                pygame.mixer.music.load("assets/SFX/kajiya.WAV")
+                pygame.mixer.music.set_volume(0.6)
+            pygame.mixer.music.play(loops=-1)
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
+
             
 
     def update_level(self):
@@ -44,6 +43,7 @@ class Game:
             self.level_index = 0
 
         pygame.mixer.stop()
+        pygame.mixer.music.unload()
         
         self.create_level()
 
