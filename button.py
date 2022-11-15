@@ -1,7 +1,8 @@
 import pygame 
+from game_stats_settings import *
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, pos, width, height, text, color, font, text_color, groups):
+    def __init__(self, pos, width, height, text, color, font, text_color, groups, action=None):
         super().__init__(groups)
 
         # button with rounded corners
@@ -16,10 +17,12 @@ class Button(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(center=pos)
 
+        self.action = action
+
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
 
         if self.rect.collidepoint(mouse_pos):
             if mouse_pressed[0]:
-                print("button pressed")
+                self.action()

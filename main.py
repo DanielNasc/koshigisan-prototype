@@ -1,11 +1,11 @@
 import pygame
 import sys
-from debug import debug
 
 from settings import *
 from level import *
 from assets.cutscenes.intro.intro import IntroCutscene
 from menu import *
+from game_stats_settings import gameStats
 
 class Game:
     def __init__(self) -> None:
@@ -23,7 +23,7 @@ class Game:
         if (self.level_index == 0):
             self.level = IntroCutscene()
         elif self.level_index == 1:
-            self.level = Menu()
+            self.level = Menu(self.update_level)
         else:
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
@@ -61,11 +61,9 @@ class Game:
             if (hasattr(self.level, 'player')):
                 p_topleft = self.level.player.rect.topleft
 
-                if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 0:
+                if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 2:
                     self.update_level()
                     
-                debug(self.level.player.health)
-
             pygame.display.update()
             self.clock.tick(FPS)
 

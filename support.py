@@ -3,7 +3,7 @@ import math
 from csv import reader
 from os import walk, listdir
 from os.path import join
-from game_stats_settings import DIFFICULT, DIFFICULT_VALUES_VARIATION_PERCENTAGE
+from game_stats_settings import gameStats
 
 def import_positions(path):
     path = convert_path(path)
@@ -75,7 +75,7 @@ def convert_path(path: str):
     return join(*(path.split("/")))
 
 def calculate_property_by_difficult(prop, invert_sign=False):
-    return prop + ( prop * DIFFICULT_VALUES_VARIATION_PERCENTAGE * DIFFICULT * (-1 if invert_sign else 1) )
+    return prop + ( prop * gameStats.DIFFICULT_VALUES_VARIATION_PERCENTAGE * gameStats.DIFFICULT * (-1 if invert_sign else 1) )
 
 def inner_product(vector1, vector2):
     """
