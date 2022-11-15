@@ -15,20 +15,27 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # This function will create a display Surface
         self.clock = pygame.time.Clock()
 
-        self.levels = ["Intro","Sky", "Hell"]
+        self.levels = ["Intro", "Menu","Sky", "Hell"]
         self.level_index = 0
         self.create_level()
 
     def create_level(self):
         if (self.level_index == 0):
+            self.level = IntroCutscene()
+        elif self.level_index == 1:
             self.level = Menu()
         else:
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
     def update_level(self):
         self.level_index += 1
+
+        if (self.level_index >= len(self.levels)):
+            self.level_index = 0
+
+        pygame.mixer.stop()
         
-        self.level = Level(self.levels[self.level_index])
+        self.create_level()
 
     def run(self):
         while True:
@@ -42,6 +49,11 @@ class Game:
 
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
+
+            pressed_keys = pygame.key.get_pressed()
+
+            if pressed_keys[pygame.K_j]:
+                self.update_level()
 
             # gambiarra temporária
             if (hasattr(self.level, 'player')):
