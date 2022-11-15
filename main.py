@@ -28,6 +28,7 @@ class Game:
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
     def update_level(self):
+        del self.level
         self.level_index += 1
 
         if (self.level_index >= len(self.levels)):
@@ -45,7 +46,8 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_m:
-                        self.level.toggle_menu()
+                        if (hasattr(self.level, "toggle_menu")):
+                            self.level.toggle_menu()
 
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()
