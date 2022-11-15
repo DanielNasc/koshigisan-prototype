@@ -317,6 +317,7 @@ class Level:
                             offset = pygame.math.Vector2(0,25)
                             for leaf in range(randint(3,6)):
                                 self.animation_controller.create_leafs_particles(pos - offset,[self.visible_sprites])
+
                             target_sprite.kill()
                         elif target_sprite.sprite_type ==  "little_rocks":
                             pos = target_sprite.rect.center

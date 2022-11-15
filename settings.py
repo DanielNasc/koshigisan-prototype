@@ -37,8 +37,6 @@ BAR_COLOR_SELECTED = '#8b5e0a'
 UPGRADE_BG_COLOR_SELECTED = '#a8adb0'
 UPGRADE_BORDER_COLOR_ACTIVE = '#DAA520'
 
-
-
 weapons_data = {
     "sword": { "cooldown": 100, "damage": 15, "graphics": convert_path("assets/sprites/weapons/sword") }
 }
@@ -59,6 +57,7 @@ monsters_data = {
             "notice_radius": 240 ,
             "scale": 1,
             "preparing_duration": 0,
+            "attack_sound": "assets/SFX/Nukekubi_attack.wav"
         },
     "eagle": { 
             "health": 250, 
@@ -71,7 +70,8 @@ monsters_data = {
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
-            "attack_cooldown": 4000
+            "attack_cooldown": 4000,
+            "attack_sound": "assets/SFX/Eagle.wav"
         },
         "akuma": { 
             "health": 2500, 
@@ -84,6 +84,7 @@ monsters_data = {
             "notice_radius": 400,
             "scale": 1,
             "preparing_duration": 0,
+            "attack_sound": "assets/SFX/Akuma.wav"
         },
         "snow_skeleton": { 
             "health": 90, 
@@ -96,7 +97,8 @@ monsters_data = {
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
-            "attack_cooldown": 1000
+            "attack_cooldown": 1000,
+            "attack_sound": "assets/SFX/ice_skeleton.wav"
         },
         "thunder_skeleton": { 
             "health": 110, 
@@ -109,7 +111,8 @@ monsters_data = {
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
-            "attack_cooldown": 1000
+            "attack_cooldown": 1000,
+            "attack_sound": "assets/SFX/lightning_skeleton.wav"
         },
         "fire_skeleton": { 
             "health": 150, 
@@ -122,7 +125,8 @@ monsters_data = {
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
-            "attack_cooldown": 1000
+            "attack_cooldown": 1000,
+            "attack_sound": "assets/SFX/fire_skeleton.wav"
         },
 }
 

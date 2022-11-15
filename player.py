@@ -89,6 +89,12 @@ class Player(Entity):
         self.hurt_time = None
         self.invulnerability_duration = 500
 
+        #import a sound
+        self.weapon_attack_sound = pygame.mixer.Sound('assets/SFX/Attack.wav')
+        self.teleport_sound = pygame.mixer.Sound('assets/SFX/Teletransport.wav')
+        self.weapon_attack_sound.set_volume(0.4)
+        self.teleport_sound.set_volume(0.2)
+
     def input(self):
         if self.is_blocked:
             return
@@ -118,6 +124,7 @@ class Player(Entity):
             self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
             self.create_attack()
+            self.weapon_attack_sound.play()
 
         if keys[pygame.K_z] and self.can_attack and not self.is_sliding:
             self.is_attacking_w_magic = True
@@ -136,6 +143,7 @@ class Player(Entity):
                 self.tp_time = pygame.time.get_ticks()
                 tp_pos = self.can_interact_with.tp_destination_pos
                 self.rect.center = self.hitbox.center = tp_pos
+                self.teleport_sound.play()
 
     def cooldown(self):
         curr_time = pygame.time.get_ticks()
