@@ -14,7 +14,7 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # This function will create a display Surface
         self.clock = pygame.time.Clock()
 
-        self.levels = ["Intro","Sky", "Hell"]
+        self.levels = ["Menu","Intro","Sky", "Hell"]
         self.level_index = 0
         self.create_level()
 
