@@ -2,7 +2,7 @@ import pygame
 from datetime import datetime as dt
 
 from debug import debug
-from support import import_animations_from_folder, convert_path
+from support import import_animations_from_folder, convert_path, import_a_single_sprite
 from settings import *
 from button import Button
 from game_stats_settings import *
@@ -14,6 +14,16 @@ class Menu:
         self.buttons = pygame.sprite.Group()
 
         MenuBackground(self.visible_sprites)
+
+        
+        self.filter = pygame.sprite.Sprite(self.visible_sprites)
+        self.filter.image = pygame.surface.Surface((WIDTH, HEIGHT))
+        #self.filter.image.convert_alpha()
+        self.filter.rect = self.filter.image.get_rect(topleft = (0,0))
+        self.filter.image.fill((0,0,0))
+        self.filter.image.set_alpha(101) 
+
+        MenuTitle(self.visible_sprites)
 
         self.middle_w = self.display_suface.get_width() // 2
         self.middle_h = self.display_suface.get_height() // 2
@@ -86,4 +96,43 @@ class MenuBackground(pygame.sprite.Sprite):
 
     def update(self) -> None:
         self.animate()
-        
+
+class MenuTitle(pygame.sprite.Sprite):
+    def __init__(self, groups) -> None:
+        super().__init__(groups)
+
+
+        width = 1000
+        height = 300
+
+        self.image = pygame.surface.Surface((width, height), pygame.SRCALPHA)
+        self.image.convert_alpha()
+        self.rect = self.image.get_rect(center = (WIDTH // 2, 120))
+
+        self.raw_text = "KOSHIG SAN"
+        self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
+        self.font = pygame.font.Font(self.font_path, 90)
+
+        self.text = self.font.render(self.raw_text, True, 'white')
+        self.text_rect = self.text.get_rect(center=(width // 2, height // 2))
+        self.text.convert_alpha()
+
+        # Create a transparent surface.
+        alpha_img = pygame.Surface(self.text.get_size(), pygame.SRCALPHA)
+        # Fill it with white and the desired alpha value.
+        alpha_img.fill((255, 255, 255, 140))
+        # Blit the alpha surface onto the text surface and pass BLEND_RGBA_MULT.
+        self.text.blit(alpha_img, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+        pygame.draw.line(self.image, (255, 255, 255, 140), (0, (height // 2) - 90), (width, (height // 2) - 90), 10)
+        pygame.draw.line(self.image, (255, 255, 255, 140), (0, (height // 2) + 70), (width, (height // 2) + 70), 10)
+
+
+        self.sword = import_a_single_sprite('assets/sprites/background/Title_Sword.png', .8)
+        self.sword_pos = (
+            630, 140
+        )
+        self.sword_rect = self.sword.get_rect(center = self.sword_pos)
+        self.image.blit(self.text, self.text_rect)
+        self.image.blit(self.sword, self.sword_rect)
+
+    

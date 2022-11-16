@@ -391,7 +391,7 @@ class Level:
             self.visible_sprites.enemy_update(self.player)
             self.player_attack_logic()
 
-        for sprite in self.block_areas:
+        for sprite in self.block_areas: 
             # print(sprite.hitbox)
             if sprite.hitbox.colliderect(self.player.hitbox) and not sprite.summoned:
                 for pos in sprite.block_areas:
