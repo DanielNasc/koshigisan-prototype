@@ -116,7 +116,6 @@ class Menu:
     def run(self):
         self.visible_sprites.draw(self.display_suface)
         self.visible_sprites.update()
-        debug(gameStats.DIFFICULT)
 
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self,groups):
@@ -152,7 +151,6 @@ class MenuBackground(pygame.sprite.Sprite):
 class MenuTitle(pygame.sprite.Sprite):
     def __init__(self, groups) -> None:
         super().__init__(groups)
-
 
         width = 1000
         height = 300

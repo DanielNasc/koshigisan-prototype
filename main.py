@@ -23,7 +23,7 @@ class Game:
         self.black_screen_opacity_speed = 3
 
         self.levels = ["Intro", "Menu","Sky", "Hell"]
-        self.level_index = 1
+        self.level_index = 0
         self.create_level()
 
     def create_level(self):
@@ -103,13 +103,10 @@ class Game:
                 if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 2:
                     self.update_level()
 
-                debug(self.level.player.rect.center)
 
                 if (self.level.player.is_dead):
                     self.level_transition(0)
 
-
-            debug(self.level_index, y = 120)
             pygame.display.update()
             self.clock.tick(FPS)
 
