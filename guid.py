@@ -33,28 +33,37 @@ class Guid(pygame.sprite.Sprite):
         Button(button_pos,
                 100, 50, 
                 "Close", 
-                "#C7424F",
+                "#942C4B",
                 self.font, 
                 "white",
                 (self.close_button, self.visible_sprites),
-                20,  (64, 64, 128, 128), "#000000",
+                20,  (148, 44, 75, 128), "#C7424F",
                 self.close)
 
 
     def get_text(self):
-        Press_M = "Press M to open XP windows"
-        Press_Space = "Press Space to buy upgrade"
-        Press_X = "Press X to Sword Attack"
-        Press_Z = "Press Z to Casting Mage"
-        self.create_text(Press_M,2)
-        self.create_text(Press_Space,4) 
-        self.create_text(Press_X,6)
-        self.create_text(Press_Z,8)
+        self.create_text("INSTRUÇÔES:", 0)
+        self.create_act_desc_text("Mover >>", " ↑, →, ↓, ←",2)
+        self.create_act_desc_text("Atacar >>", " X",3) 
+        self.create_act_desc_text("Usar Magia (Consome Mana) >>", " Z",4)
+        self.create_act_desc_text("Interagir >>", " SHIFT",5)
+        self.create_act_desc_text("Abrir/Sair Menu de Upgrade (Consome Moedas) >>", " M",6)
+        self.create_act_desc_text("Aprimorar habilidade >> ", "ESPAÇO",7)
+        self.create_text("0 HP = GAME OVER. Mate todos os inimigos para vencer!",8)
 
+    def create_act_desc_text(self, action, desc, text_pos):
+        act = self.font.render(action, True, '#C7424F')
+        desc = self.font.render(desc, True, 'white')
+
+        act_rect =  act.get_rect(topleft=(self.width // 15, 20 + self.height // 13 * text_pos))
+        desc_rect = self.text.get_rect(topleft=((self.width // 15) + act_rect.width, 20 + self.height // 13 * text_pos))
+
+        self.image.blit(act,act_rect)
+        self.image.blit(desc, desc_rect)
 
     def create_text(self, text, text_pos):
         self.text = self.font.render(text, True, 'white')
-        self.text_rect = self.text.get_rect(topleft=(self.width // 10, 10 + self.height // 10 * text_pos))
+        self.text_rect = self.text.get_rect(topleft=(self.width // 15, 20 + self.height // 13 * text_pos))
         self.image.blit(self.text, self.text_rect)
 
     def close(self):

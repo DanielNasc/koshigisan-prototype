@@ -45,7 +45,7 @@ class Menu:
 
     def create_guid(self):
         Guid((self.middle_w, self.middle_h),
-            800, 300,
+            900, 300,
             self.create_buttons,
             (self.guid_surface, self.visible_sprites))
         for button in self.buttons:
