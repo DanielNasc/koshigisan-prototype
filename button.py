@@ -2,13 +2,16 @@ import pygame
 from game_stats_settings import *
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, pos, width, height, text, color, font, text_color, groups, action=None):
+    def __init__(self, pos, width, height, text, color, color2, font, text_color, groups, action=None):
         super().__init__(groups)
 
         # button with rounded corners
         self.image = pygame.Surface((width, height), pygame.SRCALPHA)
         self.image.fill((0, 0, 0, 0))
+
         pygame.draw.rect(self.image, color, (0, 0, width, height), border_radius=20)
+        pygame.draw.rect(self.image, color2, (0, 0, width, height), width = 4, border_radius=20)
+
 
         # text
         self.text = font.render(text, True, text_color)

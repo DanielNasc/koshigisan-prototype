@@ -88,7 +88,6 @@ class Item:
     def display_names(self,surface,name,cost,selected):
         color = TEXT_COLOR_SELECTED if selected else UPGRADE_BG_COLOR_SELECTED
 
-
         #title
         title_surf = self.font.render(name,False,color)
         title_rect = title_surf.get_rect(midtop = self.rect.midtop + pygame.math.Vector2(0,20))
@@ -96,7 +95,6 @@ class Item:
         #cost
         cost_surf = self.font.render(f'{int(cost)}',False,color)
         cost_rect = cost_surf.get_rect(midbottom = self.rect.midbottom - pygame.math.Vector2(0,20))
-
 
         #draw
         surface.blit(title_surf,title_rect)
