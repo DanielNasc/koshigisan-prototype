@@ -27,8 +27,10 @@ class Level:
         self.slippery_sprites = pygame.sprite.Group()
         self.enemies_sprites = pygame.sprite.Group()
         self.interactive_sprites = pygame.sprite.Group()
+        self.block_areas = pygame.sprite.Group()
 
         self.teleport_pairs = {}
+        self.block_after_player_pass = {}
 
         # attack sprites
         self.curr_attack = None
@@ -69,6 +71,7 @@ class Level:
                 'rocks': import_positions('assets/positions/Sky/Skymap_Rocks.csv'),
                 'decoration': import_positions('assets/positions/Sky/Skymap_HouseAcessories.csv'),
                 'torii': import_positions('assets/positions/Sky/Skymap_Torii.csv'),
+                'blocka': import_positions('assets/positions/Sky/Skymap_block_after.csv'),
 
                 #----------------- Maluzinha ----------------------
                 'sky': import_positions('assets/positions/Sky/Skymap_ObjectsColisions.csv')
@@ -187,8 +190,27 @@ class Level:
                             self.teleport_pairs[key].append(
                                     Teleporter((x, y), (self.visible_sprites, self.obstacle_sprites, self.interactive_sprites), 'entrie_tp', (0, 1), graphics['entrie'])
                             )
-
                         
+                        elif style == "blocka":
+                            if not "b" in data: continue
+                            
+                            splitted = data.split("_")
+                            if (len(splitted) != 2):
+                                continue
+
+                            key = splitted[0]
+                            if not key in self.block_after_player_pass:
+                                self.block_after_player_pass[key] = {
+                                    "block_areas": []
+                                }
+
+                            if splitted[1] == "ba":
+                                self.block_after_player_pass[key]["block_areas"].append((x, y))
+                            elif splitted[1] == "init":
+                                self.block_after_player_pass[key]["init"] = (x, y)
+                            elif splitted[1] == "end":
+                                self.block_after_player_pass[key]["end"] = (x + TILESIZE, y + TILESIZE)
+
                         elif style == "entities":
                             if data == "p":
                                 self.player = Player(
@@ -271,6 +293,7 @@ class Level:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), data, graphics['torii'][data])
 
         self.update_teleport_pairs()
+        self.create_block_areas()
 
     def update_teleport_pairs(self):
         for key in self.teleport_pairs.keys():
@@ -281,6 +304,13 @@ class Level:
             pair[0].update_tp_destination(tp_pos_1)
             pair[1].update_tp_destination(tp_pos_0)
 
+    def create_block_areas(self):
+        for key in self.block_after_player_pass:
+            data = self.block_after_player_pass[key]
+
+            size = (data["end"][0] - data["init"][0], data["end"][1] - data["init"][1])
+
+            Block(data["init"], size, data["block_areas"], (self.block_areas))
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites,self.attack_sprites])
@@ -361,6 +391,13 @@ class Level:
             self.visible_sprites.enemy_update(self.player)
             self.player_attack_logic()
 
+        for sprite in self.block_areas:
+            # print(sprite.hitbox)
+            if sprite.hitbox.colliderect(self.player.hitbox) and not sprite.summoned:
+                for pos in sprite.block_areas:
+                    Tile(pos, (self.obstacle_sprites), 'invisible')
+                self.summoned = True
+                
 
 class CutsceneController():
     def __init__(self) -> None:

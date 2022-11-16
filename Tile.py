@@ -12,7 +12,7 @@ class Tile(pygame.sprite.Sprite):
     
         self.rect = self.image.get_rect(topleft = pos)
 
-        if "ladder" in sprite_type:
+        if "ladder" in sprite_type or "block" in sprite_type:
             self.hitbox = self.rect
         elif "torii" in sprite_type:
             self.hitbox = self.rect.inflate(-(self.rect.height * .6), -(self.rect.height * .6))
@@ -39,7 +39,12 @@ class Teleporter(Tile):
 
         self.my_tp_pos = self.tp_destination_pos = (x, y)
 
-
     # update teleport pos
     def update_tp_destination(self, tp_destination_pos):
         self.tp_destination_pos = tp_destination_pos
+
+class Block(Tile):
+    def __init__(self, pos, size, block_areas, groups):
+        super().__init__(pos, groups, 'invisible', pygame.surface.Surface(size))
+        self.summoned = False
+        self.block_areas = block_areas
