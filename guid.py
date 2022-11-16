@@ -29,7 +29,7 @@ class Guid(pygame.sprite.Sprite):
         Press_X = "Press X to Sword Attack"
         Press_Z = "Press Z to Casting Mage"
         self.create_text(Press_M,2)
-        self.create_text(Press_Space,4)
+        self.create_text(Press_Space,4) 
         self.create_text(Press_X,6)
         self.create_text(Press_Z,8)
 
