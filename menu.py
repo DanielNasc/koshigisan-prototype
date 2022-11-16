@@ -7,11 +7,16 @@ from settings import *
 from button import Button
 from game_stats_settings import *
 
+from guid import *
+
 class Menu:
     def __init__(self, start_game):
         self.visible_sprites = pygame.sprite.Group()
         self.display_suface = pygame.display.get_surface()
         self.buttons = pygame.sprite.Group()
+
+        #lonalt
+        self.guid_surface = pygame.sprite.Group()
 
         MenuBackground(self.visible_sprites)
 
@@ -21,13 +26,17 @@ class Menu:
         self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
         self.font = pygame.font.Font(self.font_path, 20)
         self.font_color = "white"
-        self.button_color = "#b3c3d5"
+        self.button_color = '#5391c7'
+        self.button_backgound_color = '#000000'
 
         self.start_game = start_game
 
         self.create_buttons()
 
-        
+    def create_guid(self):
+        Guid((self.middle_w, self.middle_h),
+            500, 200,
+            (self.guid_surface, self.visible_sprites))
 
     def set_difficult(self):
         DIFFICULT += 1
@@ -39,20 +48,42 @@ class Menu:
         Button((self.middle_w, self.middle_h),
                 200, 50, 
                 "Start", 
-                self.button_color, 
+                self.button_color,
+                self.button_backgound_color, 
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
                 self.start_game)
 
-        Button((self.middle_w, self.middle_h + 100),
+        Button((self.middle_w, self.middle_h + 75),
+                200, 50, 
+                "Guid", 
+                self.button_color,
+                self.button_backgound_color,  
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                self.create_guid)
+        
+        Button((self.middle_w, self.middle_h + 150),
                 200, 50, 
                 "Difficult", 
-                self.button_color, 
+                self.button_color,
+                self.button_backgound_color,  
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
                 gameStats.set_difficult)
+
+        Button((self.middle_w, self.middle_h + 225),
+                200, 50, 
+                "Exit", 
+                self.button_color,
+                self.button_backgound_color,  
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                gameStats.close)
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)

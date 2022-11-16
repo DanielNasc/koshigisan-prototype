@@ -1,4 +1,5 @@
 import pygame
+import sys
 import time
 
 class GameStats:
@@ -15,6 +16,10 @@ class GameStats:
             if self.DIFFICULT > 1:
                 self.DIFFICULT = -1
             self.set_difficult_time = time.time()
+    
+    def close(self):
+        pygame.quit()
+        sys.exit()
 
     def get_difficult(self):
         return self.DIFFICULT
