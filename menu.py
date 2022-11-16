@@ -27,13 +27,10 @@ class Menu:
 
         self.create_buttons()
 
-        
-
     def set_difficult(self):
         DIFFICULT += 1
         if (DIFFICULT > 1):
             DIFFICULT = -1
-
 
     def create_buttons(self):
         Button((self.middle_w, self.middle_h),

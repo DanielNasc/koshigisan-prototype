@@ -14,6 +14,14 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT)) # This function will create a display Surface
         self.clock = pygame.time.Clock()
 
+        self.is_in_transition = False
+        self.to = None
+        self.black_screen = pygame.surface.Surface((WIDTH, HEIGHT))
+        self.black_screen.fill((0, 0, 0, 0))
+        self.black_screen_rect = self.black_screen.get_rect(topleft = (0, 0))
+        self.black_screen_opacity = 0
+        self.black_screen_opacity_speed = 5
+
         self.levels = ["Intro", "Menu","Sky", "Hell"]
         self.level_index = 1
         self.create_level()
@@ -33,11 +41,29 @@ class Game:
             pygame.mixer.music.play(loops=-1)
             self.level = Level(self.levels[self.level_index]) # create a instance of Level class
 
-            
 
-    def update_level(self):
+    def level_transition(self, to: int = None):
+        if self.is_in_transition:
+            self.black_screen.set_alpha(self.black_screen_opacity)
+            self.screen.blit(self.black_screen, self.black_screen_rect)
+            self.black_screen_opacity += self.black_screen_opacity_speed
+            if (self.black_screen_opacity > 255):
+                self.is_in_transition = False
+                self.update_level(self.to)
+                self.to = None
+                self.black_screen_opacity = 0
+        else:
+            self.to = to
+            self.is_in_transition = True
+
+
+    def update_level(self, to: int =None):
         del self.level
-        self.level_index += 1
+
+        if (to != None):
+            self.level_index = to
+        else:
+            self.level_index += 1
 
         if (self.level_index >= len(self.levels)):
             self.level_index = 0
@@ -72,7 +98,11 @@ class Game:
 
                 if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 2:
                     self.update_level()
-                    
+
+                if (self.level.player.is_dead):
+                    self.level_transition(0)
+
+            debug(self.level_index, y = 120)
             pygame.display.update()
             self.clock.tick(FPS)
 
