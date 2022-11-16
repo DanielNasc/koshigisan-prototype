@@ -8,7 +8,7 @@ class GameStats:
         self.DIFFICULT_VALUES_VARIATION_PERCENTAGE = .5
 
         self.set_difficult_time = 0
-        self.set_difficult_cooldown = 1
+        self.set_difficult_cooldown = .5
 
     def set_difficult(self):
         if time.time() - self.set_difficult_time > self.set_difficult_cooldown:

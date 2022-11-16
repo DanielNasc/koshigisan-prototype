@@ -57,9 +57,10 @@ class Menu:
             DIFFICULT = -1
 
     def create_buttons(self):
+        diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
         Button((self.middle_w, self.middle_h),
                 200, 50, 
-                "Start", 
+                "Começar", 
                 self.button_color,
                 self.font, 
                 self.font_color,
@@ -69,7 +70,7 @@ class Menu:
 
         Button((self.middle_w, self.middle_h + 75),
                 200, 50, 
-                "Guid", 
+                "Guia", 
                 self.button_color,
                 self.font, 
                 self.font_color,
@@ -77,19 +78,19 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 self.create_guid)
 
-        Button((self.middle_w, self.middle_h + 150),
+        self.dif = Button((self.middle_w, self.middle_h + 150),
                 200, 50, 
-                "Difficult", 
+                diff, 
                 self.button_color,
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
                 20,  (64, 64, 128, 128), self.button_hover_color,
-                gameStats.set_difficult)
+                self.recreate_difficulty_button)
 
         Button((self.middle_w, self.middle_h + 225),
                 200, 50, 
-                "Exit", 
+                "Sair", 
                 self.button_color,
                 self.font, 
                 self.font_color,
@@ -97,6 +98,20 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 gameStats.close)
 
+
+    def recreate_difficulty_button(self):
+        gameStats.set_difficult()
+        self.dif.kill()
+        diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
+        self.dif = Button((self.middle_w, self.middle_h + 150),
+                200, 50, 
+                diff, 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_difficulty_button)
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)
