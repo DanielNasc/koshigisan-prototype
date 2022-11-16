@@ -1,12 +1,14 @@
 import pygame   
 from math import sin
 
+from game_stats_settings import gameStats
+
 class Entity(pygame.sprite.Sprite):
     def __init__(self, groups) -> None:
         super().__init__(groups)
         self.frame_index = 0
         self.direction = pygame.math.Vector2() 
-        self.animation_speed = .15
+        self.animation_speed = .60
         self.is_sliding = False
 
     def move(self, speed: int=10):
@@ -14,12 +16,13 @@ class Entity(pygame.sprite.Sprite):
             self.direction = self.direction.normalize()
 
         if (self.is_sliding):
-            speed *= 1.25
+            speed *= 2
 
-        self.hitbox.x += self.direction.x * speed
+        displacement = speed * 5 * gameStats.dt
+        self.hitbox.x += (self.direction.x * displacement)
         self.detect_collision("horizontal")
 
-        self.hitbox.y += self.direction.y * speed
+        self.hitbox.y += (self.direction.y * displacement)
         self.detect_collision("vertical")
 
         self.rect.center = self.hitbox.center

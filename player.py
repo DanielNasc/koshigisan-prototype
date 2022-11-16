@@ -3,6 +3,7 @@ import pygame
 from settings import *
 from support import import_sprites, calculate_property_by_difficult
 from entity import Entity
+from game_stats_settings import gameStats
 
 class Player(Entity):
     def __init__(self, pos, groups, obstacles: pygame.sprite.Group, slippery_sprites: pygame.sprite.Group,
@@ -217,7 +218,7 @@ class Player(Entity):
         if self.is_sliding: return
 
         animation = self.anim[self.status]
-        self.frame_index += self.animation_speed
+        self.frame_index += self.animation_speed * gameStats.dt
 
         if self.frame_index >= len(animation):
             self.frame_index = 0

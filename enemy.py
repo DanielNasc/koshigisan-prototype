@@ -6,6 +6,7 @@ from entity import Entity
 from support import *
 from settings import monsters_data
 from support import calculate_property_by_difficult
+from game_stats_settings import gameStats
 
 """
 Estagios: [0] Idle, [1] Notar, [2] Preparar, [3] Atacar
@@ -39,7 +40,7 @@ class Enemy(Entity):
         self.exp = calculate_property_by_difficult(monster_info["exp"])
         self.damage = calculate_property_by_difficult(monster_info["damage"], True)
         self.attack_type = monster_info["attack_type"]
-        self.speed = calculate_property_by_difficult(monster_info["speed"])
+        self.speed = monster_info["speed"]
         self.speed_boost = 1
         self.resistance = calculate_property_by_difficult(monster_info["resistance"], True)
         self.attack_radius = monster_info["attack_radius"]
@@ -162,7 +163,7 @@ class Enemy(Entity):
 
     def animate(self):
         animation = self.anim[self.status]
-        self.frame_index += self.animation_speed
+        self.frame_index += self.animation_speed * gameStats.dt
 
         if self.frame_index >= len(animation):
             if self.stage == ATTACK and self.attack_type != "continuous":
@@ -288,8 +289,10 @@ class DashEnemy(Enemy):
             if self.stage != ATTACK:
                 self.stage = PREPARE
         elif distance <= self.notice_radius:
-            self.stage = NOTICE
+            self.is_preparing = self.is_blocked = False
+            self.stage = NOTICE 
         else:
+            self.is_preparing = self.is_blocked = False
             self.stage = IDLE
 
     def actions(self, player):

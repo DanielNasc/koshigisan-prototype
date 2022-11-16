@@ -9,6 +9,8 @@ class GameStats:
         self.set_difficult_time = 0
         self.set_difficult_cooldown = 1
 
+        self.dt = 0
+
     def set_difficult(self):
         if time.time() - self.set_difficult_time > self.set_difficult_cooldown:
             self.DIFFICULT += 1
@@ -18,5 +20,8 @@ class GameStats:
 
     def get_difficult(self):
         return self.DIFFICULT
+
+    def update(self, tick):
+        self.dt = tick / 100
 
 gameStats = GameStats()

@@ -4,6 +4,7 @@ from math import floor
 
 from entity import Entity
 from support import import_sprites
+from game_stats_settings import gameStats
 
 
 """
@@ -13,7 +14,7 @@ from support import import_sprites
 """
 
 class AnimEntity(Entity):
-    def __init__(self, name, data, groups, anim_speed = .15) -> None:
+    def __init__(self, name, data, groups, anim_speed = 1) -> None:
         super().__init__(groups)
         self.name = name
         
@@ -41,6 +42,9 @@ class AnimEntity(Entity):
                 self.to[1] - self.from_pos[1]
             )
         )
+
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
 
         self.stopped = False
 
@@ -112,8 +116,8 @@ class AnimEntity(Entity):
 
 
     def animate(self):
-        animation = self.anim[self.status]
-        self.frame_index += self.animation_speed
+        animation = self.anim[self.status] 
+        self.frame_index += self.animation_speed * gameStats.dt
 
         if self.frame_index >= len(animation):
             self.frame_index = 0
@@ -130,6 +134,11 @@ class AnimEntity(Entity):
         self.direction.x = 0 if abs(self.to[0]) <= abs(self.rect.center[0]) else self.direction.x
         self.direction.y = 0 if abs(self.to[1]) <= abs(self.rect.center[1]) else self.direction.y
 
+    def move(self, speed: int=10):
+        displacement = speed * gameStats.dt
+        self.rect.x += (self.direction.x * displacement)
+        self.rect.y += (self.direction.y * displacement)
+
     def update(self) -> None:
         if not self.is_in_event:
             self.get_sprite_direction()
@@ -137,5 +146,5 @@ class AnimEntity(Entity):
         self.event_manager()
         self.movement_controller()
         self.animate()
-        self.move(1)
+        self.move()
         self.event_manager()

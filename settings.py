@@ -8,7 +8,7 @@ ZOOM=2
 
 PLAYER_SPAWN=(1260, 820)
 PLAYER_ZOOM=1
-ATTACK_SPEED=0.15
+ATTACK_SPEED=0.6
 
 # ---------- Maluzinha ---------
 BAR_HEIGHT = 20
@@ -64,7 +64,7 @@ monsters_data = {
             "exp": 150,
             "damage": 10,
             "attack_type": "dash",
-            "speed": 2, 
+            "speed": 1.4, 
             "resistance": 3,
             "attack_radius":150,
             "notice_radius": 240,
@@ -91,9 +91,9 @@ monsters_data = {
             "exp": 150,
             "damage": 15,
             "attack_type": "snow",
-            "speed": 2, 
+            "speed": 1, 
             "resistance": 3,
-            "attack_radius":150,
+            "attack_radius":90,
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
@@ -105,9 +105,9 @@ monsters_data = {
             "exp": 150,
             "damage": 25,
             "attack_type": "thunder",
-            "speed": 2, 
+            "speed": 1, 
             "resistance": 3,
-            "attack_radius":150,
+            "attack_radius":90,
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,
@@ -119,9 +119,9 @@ monsters_data = {
             "exp": 150,
             "damage": 45,
             "attack_type": "fire",
-            "speed": 2, 
+            "speed": 1, 
             "resistance": 3,
-            "attack_radius":150,
+            "attack_radius":90,
             "notice_radius": 240,
             "scale": 1,
             "preparing_duration": 500,

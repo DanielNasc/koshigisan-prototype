@@ -71,12 +71,12 @@ class MenuBackground(pygame.sprite.Sprite):
         
         self.animation = import_animations_from_folder(f'assets/sprites/background/Menu/{self.wallpaper}')
         self.anim_index = 0
-        self.anim_speed = .045
+        self.anim_speed = .3
         self.image = self.animation[0]
         self.rect = self.image.get_rect(topleft = (0,0))
     
     def animate(self):
-        self.anim_index += self.anim_speed
+        self.anim_index += self.anim_speed * gameStats.dt
 
         if (self.anim_index > len(self.animation)):
             self.anim_index = 0

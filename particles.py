@@ -2,18 +2,20 @@ import pygame
 from support import import_animations_from_folder
 from random import choice
 
+from game_stats_settings import gameStats
+
 class ParticleEffect(pygame.sprite.Sprite):
     def __init__(self,pos,animation_frames,groups, anim_speed=None):
         super().__init__(groups)
         self.sprite_type = "magic"
         self.frame_index = 0
-        self.animation_speed = 0.25 if not anim_speed else anim_speed
+        self.animation_speed = 1 if not anim_speed else anim_speed
         self.frames = animation_frames
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(center = pos)
 
     def animate(self):
-        self.frame_index += self.animation_speed
+        self.frame_index += self.animation_speed  * gameStats.dt
         if self.frame_index >= len(self.frames):
             self.kill()
         else:

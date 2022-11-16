@@ -4,6 +4,7 @@ from os import path
 from player import Player
 from support import import_animations_from_folder
 from settings import ATTACK_SPEED, PLAYER_ZOOM, weapons_data
+from game_stats_settings import gameStats
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, player: Player, groups) -> None:
@@ -39,4 +40,4 @@ class Weapon(pygame.sprite.Sprite):
     def update(self):
         if self.index >= len(self.animations): return
         self.image = self.animations[floor(self.index)]
-        self.index += ATTACK_SPEED
+        self.index += ATTACK_SPEED * gameStats.dt

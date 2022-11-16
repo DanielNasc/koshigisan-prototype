@@ -43,7 +43,7 @@ class IntroCutscene(CutsceneController):
                             initial_pos[0] +  (i * particle_w * event["spacing"] * direction[0]),
                             initial_pos[1] +  (i * particle_h * event["spacing"] * direction[1])
                         )
-                        ParticleEffect(pos, particle_animation, self.visible_sprites, .03)
+                        ParticleEffect(pos, particle_animation, self.visible_sprites, .7)
                 elif event["type"] == "stop_sound":
                     self.sounds[event["wich"]].stop()
                 elif event["type"] == "init_sound":
@@ -52,7 +52,7 @@ class IntroCutscene(CutsceneController):
                     # if event["name"] == "scream":
                     #     self.sounds[event["name"]].set_volume(1)
                 elif event["type"] == "invoke_entity":
-                    AnimEntity(event["name"], event["data"], self.visible_sprites, .1)
+                    AnimEntity(event["name"], event["data"], self.visible_sprites, .3)
 
                 elif event["type"] == "end":
                     self.ended = True
