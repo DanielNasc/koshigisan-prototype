@@ -62,7 +62,7 @@ class Player(Entity):
                         'health': calculate_property_by_difficult(100), 
                         'mana': 60, 
                         'attack': calculate_property_by_difficult(10), 
-                        'speed': calculate_property_by_difficult(2), 
+                        'speed': 2, 
                         'magic': calculate_property_by_difficult(4)
                     }
         self.max_stats = {
@@ -261,7 +261,6 @@ class Player(Entity):
                 self.can_interact_with = sprite
                 break
         return super().detect_collision(direction)
-
 
     def get_value_by_index(self,index):
         return list(self.stats.values())[index]

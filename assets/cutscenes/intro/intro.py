@@ -23,6 +23,8 @@ class IntroCutscene(CutsceneController):
         self.initialization_time = time.time()
         self.major_events = STAGES["events"]
 
+        self.ended = False
+
     def major_events_manager(self):
         curr_tick = time.time()
         satisfied_events = []
@@ -51,6 +53,9 @@ class IntroCutscene(CutsceneController):
                     #     self.sounds[event["name"]].set_volume(1)
                 elif event["type"] == "invoke_entity":
                     AnimEntity(event["name"], event["data"], self.visible_sprites, .1)
+
+                elif event["type"] == "end":
+                    self.ended = True
                 satisfied_events.append(index)
 
         satisfied_events.reverse()

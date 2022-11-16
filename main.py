@@ -20,10 +20,10 @@ class Game:
         self.black_screen.fill((0, 0, 0, 0))
         self.black_screen_rect = self.black_screen.get_rect(topleft = (0, 0))
         self.black_screen_opacity = 0
-        self.black_screen_opacity_speed = 5
+        self.black_screen_opacity_speed = 3
 
         self.levels = ["Intro", "Menu","Sky", "Hell"]
-        self.level_index = 1
+        self.level_index = 0
         self.create_level()
 
     def create_level(self):
@@ -91,6 +91,10 @@ class Game:
 
             if pressed_keys[pygame.K_j]:
                 self.update_level()
+
+            if (hasattr(self.level, "ended")):
+                if self.level.ended:
+                    self.level_transition(1)
 
             # gambiarra temporária
             if (hasattr(self.level, 'player')):
