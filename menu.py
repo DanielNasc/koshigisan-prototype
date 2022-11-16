@@ -36,8 +36,8 @@ class Menu:
         self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
         self.font = pygame.font.Font(self.font_path, 20)
         self.font_color = "white"
-        self.button_color = '#5391c7'
-        self.button_backgound_color = '#000000'
+        self.button_color = '#5C8BA8'
+        self.button_hover_color = (255, 128, 255, 128)
 
         self.start_game = start_game
 
@@ -58,41 +58,42 @@ class Menu:
                 200, 50, 
                 "Start", 
                 self.button_color,
-                self.button_backgound_color, 
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
                 self.start_game)
 
         Button((self.middle_w, self.middle_h + 75),
                 200, 50, 
                 "Guid", 
                 self.button_color,
-                self.button_backgound_color,  
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
                 self.create_guid)
-        
+
         Button((self.middle_w, self.middle_h + 150),
                 200, 50, 
                 "Difficult", 
                 self.button_color,
-                self.button_backgound_color,  
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
                 gameStats.set_difficult)
 
         Button((self.middle_w, self.middle_h + 225),
                 200, 50, 
                 "Exit", 
                 self.button_color,
-                self.button_backgound_color,  
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
                 gameStats.close)
+
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)

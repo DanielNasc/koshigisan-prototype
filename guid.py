@@ -46,13 +46,3 @@ class Guid(pygame.sprite.Sprite):
         if self.rect.collidepoint(mouse_pos):
             if mouse_pressed[0]:
                 self.kill()
-
-        
-
-
-
-
-        
-
-            
-
