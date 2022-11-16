@@ -37,6 +37,7 @@ class Player(Entity):
         self.create_attack = create_attack
         self.destroy_attack = destroy_attack
         self.can_interact_with = None
+        self.is_dead = False
 
         self.weapon_index = 0
         self.weapon = list(weapons_data.keys())[self.weapon_index]
@@ -61,7 +62,7 @@ class Player(Entity):
                         'health': calculate_property_by_difficult(100), 
                         'mana': 60, 
                         'attack': calculate_property_by_difficult(10), 
-                        'speed': calculate_property_by_difficult(2), 
+                        'speed': 2, 
                         'magic': calculate_property_by_difficult(4)
                     }
         self.max_stats = {
@@ -166,6 +167,10 @@ class Player(Entity):
                 self.can_tp = True
     
     def get_status(self):
+        if self.is_dead:
+            self.status = "death_anim"
+            return
+
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status and "attack" not in self.status and not "magic" in self.status:
                 self.status += '_idle'
@@ -219,7 +224,8 @@ class Player(Entity):
             if self.is_attacking:
                 self.is_attacking = False
                 self.destroy_attack()
-
+            if self.is_dead:
+                self.kill()
 
         # set the image
         self.image = animation[floor(self.frame_index)]
@@ -228,7 +234,7 @@ class Player(Entity):
 
 
     def update_blocked(self):
-        self.is_blocked = self.is_attacking or self.is_attacking_w_magic
+        self.is_blocked = self.is_attacking or self.is_attacking_w_magic or self.is_dead
         
         if self.is_sliding:
             self.is_blocked = not ( self.direction.x == 0 and self.direction.y == 0 and self.is_sliding )
@@ -256,14 +262,19 @@ class Player(Entity):
                 break
         return super().detect_collision(direction)
 
-
     def get_value_by_index(self,index):
         return list(self.stats.values())[index]
 
     def get_cost_by_index(self,index):
         return list(self.upgrade_cost.values())[index]
 
+    def check_death(self):
+        if self.health <= 0:
+            self.is_dead = True
+            self.vulnerable = True
+
     def update(self):
+        self.check_death()
         self.recovery_mana(.007)
         self.cooldown()
         self.update_blocked()
