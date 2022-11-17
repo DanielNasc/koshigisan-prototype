@@ -12,9 +12,11 @@ from particles import AnimationController
 from magic import PlayerMagic
 from weapon import Weapon
 from upgrade import Upgrade
+from game_stats_settings import gameStats
+from debug import debug
 
 class Level:
-    def __init__(self, curr_level) -> None:
+    def __init__(self, curr_level, next_level_transition) -> None:
         self.display_suface = pygame.display.get_surface()
         self.game_paused = False
 
@@ -38,10 +40,12 @@ class Level:
         self.attack_sprites = pygame.sprite.Group()
         self.attackble_sprites = pygame.sprite.Group()
 
+        gameStats.enemies_amount = 0
+
         # setup sprite
         self.create_layouts()
         self.create_map()
-
+        
         # -------------- Maluzinha ------------
         # user interface
         self.ui = UI()
@@ -51,6 +55,9 @@ class Level:
         self.animation_controller = AnimationController()
 
         self.player_magic = PlayerMagic(self.animation_controller)
+
+
+        self.next_level_transition = next_level_transition
 
     def create_layouts(self):
         self.layouts = {
@@ -212,6 +219,8 @@ class Level:
                                 self.block_after_player_pass[key]["end"] = (x + TILESIZE, y + TILESIZE)
 
                         elif style == "entities":
+                            if data != "p":
+                                gameStats.enemies_amount += 1
                             if data == "p":
                                 self.player = Player(
                                         (x, y),
@@ -264,7 +273,6 @@ class Level:
                                                     self.damage_player,self.trigger_death_particles,
                                                     self.add_exp
                                                 )
-
                         elif style == "house":
                             house = None
                             if (data == "gr"):
@@ -362,13 +370,13 @@ class Level:
 
     def damage_player(self,amount,attack_type):
         if self.player.vulnerable:
-            self.player.health -= amount
+            gameStats.player_health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_controller.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
     def add_exp(self,amount):
-        self.player.exp += amount
+        gameStats.player_exp += amount
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
@@ -391,12 +399,18 @@ class Level:
             self.visible_sprites.enemy_update(self.player)
             self.player_attack_logic()
 
-        for sprite in self.block_areas: 
-            # print(sprite.hitbox)
-            if sprite.hitbox.colliderect(self.player.hitbox) and not sprite.summoned:
-                for pos in sprite.block_areas:
-                    Tile(pos, (self.obstacle_sprites), 'invisible')
-                self.summoned = True
+        # for sprite in self.block_areas: 
+        #     # print(sprite.hitbox)
+        #     if sprite.hitbox.colliderect(self.player.hitbox) and not sprite.summoned:
+        #         for pos in sprite.block_areas:
+        #             Tile(pos, (self.obstacle_sprites), 'invisible')
+        #         self.summoned = True
+
+        debug(gameStats.enemies_amount)
+
+        if (gameStats.enemies_amount <= 0):
+            self.next_level_transition()
+            
                 
 
 class CutsceneController():

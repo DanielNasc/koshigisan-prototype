@@ -1,5 +1,7 @@
 import pygame
 from settings import *
+from game_stats_settings import gameStats
+from support import import_a_single_sprite
 
 class UI:
     def __init__(self):
@@ -45,10 +47,13 @@ class UI:
         x = self.display_surface.get_width() - 20
         y = self.display_surface.get_height() - 20
         text_rect = text_surf.get_rect(bottomright = (x,y))
+        coin = import_a_single_sprite('assets/sprites/ui/coin.png', 1.5)
 
         pygame.draw.rect(self.display_surface, UI_BG_COLOR,text_rect.inflate(20,20))
         self.display_surface.blit(text_surf,text_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR,text_rect.inflate(20,20),3)
+        coin_rect = coin.get_rect(topleft = (x - 125, y - 35))
+        self.display_surface.blit(coin, coin_rect)
 
     def selection_box(self,left,top, has_switched):
         bg_rect = pygame.Rect(left,top,ITEM_BOX_SIZE,ITEM_BOX_SIZE)
@@ -76,10 +81,10 @@ class UI:
 
 
     def display(self,player):
-        self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
+        self.show_bar(gameStats.player_health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR)
 
-        self.show_exp(player.exp) 
+        self.show_exp(gameStats.player_exp) 
         
         self.weapon_overlay(player.weapon_index, player.is_attacking)
         self.magic_overlay(player.magic_index, player.is_attacking_w_magic)

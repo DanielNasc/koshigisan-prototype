@@ -7,11 +7,16 @@ from settings import *
 from button import Button
 from game_stats_settings import *
 
+from guid import *
+
 class Menu:
     def __init__(self, start_game):
         self.visible_sprites = pygame.sprite.Group()
         self.display_suface = pygame.display.get_surface()
         self.buttons = pygame.sprite.Group()
+
+        #lonalt
+        self.guid_surface = pygame.sprite.Group()
 
         MenuBackground(self.visible_sprites)
 
@@ -31,11 +36,20 @@ class Menu:
         self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
         self.font = pygame.font.Font(self.font_path, 20)
         self.font_color = "white"
-        self.button_color = "#b3c3d5"
+        self.button_color = '#5C8BA8'
+        self.button_hover_color = (255, 128, 255, 128)
 
         self.start_game = start_game
 
         self.create_buttons()
+
+    def create_guid(self):
+        Guid((self.middle_w, self.middle_h),
+            900, 300,
+            self.create_buttons,
+            (self.guid_surface, self.visible_sprites))
+        for button in self.buttons:
+            button.kill()
 
     def set_difficult(self):
         DIFFICULT += 1
@@ -43,28 +57,89 @@ class Menu:
             DIFFICULT = -1
 
     def create_buttons(self):
+        diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
+        #screen = "Janela" if pygame.display.get_caption
         Button((self.middle_w, self.middle_h),
                 200, 50, 
-                "Start", 
-                self.button_color, 
+                "Começar", 
+                self.button_color,
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
                 self.start_game)
 
-        Button((self.middle_w, self.middle_h + 100),
+        Button((self.middle_w, self.middle_h + 75),
                 200, 50, 
-                "Difficult", 
-                self.button_color, 
+                "Guia", 
+                self.button_color,
                 self.font, 
                 self.font_color,
                 (self.buttons, self.visible_sprites),
-                gameStats.set_difficult)
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.create_guid)
+
+        self.dif = Button((self.middle_w, self.middle_h + 150),
+                200, 50, 
+                diff, 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_difficulty_button)
+
+        self.fullsreen_button = Button((self.middle_w, self.middle_h + 225),
+                200, 50, 
+                "Janela", 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_fullscreen_button)
+        
+        Button((self.middle_w, self.middle_h + 300),
+                200, 50, 
+                "Sair", 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                gameStats.close)
+
+    def recreate_fullscreen_button(self):
+        gameStats.change_screen()
+        text = "Tela Cheia" if gameStats.is_fullscreen else "Janela"
+        self.fullsreen_button.kill()
+        self.fullsreen_button = Button((self.middle_w, self.middle_h + 225),
+                200, 50, 
+                text, 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_fullscreen_button)
+
+    def recreate_difficulty_button(self):
+        gameStats.set_difficult()
+        self.dif.kill()
+        diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
+        self.dif = Button((self.middle_w, self.middle_h + 150),
+                200, 50, 
+                diff, 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_difficulty_button)
 
     def run(self):
         self.visible_sprites.draw(self.display_suface)
         self.visible_sprites.update()
-        debug(gameStats.DIFFICULT)
 
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self,groups):
@@ -100,7 +175,6 @@ class MenuBackground(pygame.sprite.Sprite):
 class MenuTitle(pygame.sprite.Sprite):
     def __init__(self, groups) -> None:
         super().__init__(groups)
-
 
         width = 1000
         height = 300

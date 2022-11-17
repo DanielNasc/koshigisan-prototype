@@ -23,7 +23,7 @@ class AnimEntity(Entity):
         self.from_pos = data["from"]
         self.to = data["to"]
         self.animation_after_stopped = data["animation_after_stopped"]
-        self.events = data["events"]
+        self.events = data["events"].copy()
         self.animation_speed = anim_speed
 
         self.is_in_event = False

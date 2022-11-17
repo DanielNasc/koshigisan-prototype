@@ -21,7 +21,7 @@ class IntroCutscene(CutsceneController):
             AnimEntity(name, data, self.visible_sprites)
 
         self.initialization_time = time.time()
-        self.major_events = STAGES["events"]
+        self.major_events = STAGES["events"].copy()
 
         self.ended = False
 

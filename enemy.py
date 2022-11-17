@@ -194,10 +194,14 @@ class Enemy(Entity):
 
     def check_death(self):
         if self.health <= 0:
+            gameStats.enemies_amount -= 1
             self.kill()
             self.trigger_death_particles(self.rect.center,self.monster_name)
             self.add_exp(self.exp)
             self.death_sound.play()
+            gameStats.player_health += 5
+            if gameStats.player_health > gameStats.player_stats["health"]:
+                gameStats.player_health = gameStats.player_stats["health"]
     
     def hit_reaction(self):
         if not self.vulnerable:
@@ -306,10 +310,12 @@ class DashEnemy(Enemy):
             self.preparing_time = pygame.time.get_ticks()
             self.is_blocked = self.is_preparing = True
 
-        elif "move" in self.status:
-            self.direction = self.get_player_distance_and_direction(player)[1]
         else:
-            self.direction = pygame.math.Vector2()
+            self.is_blocked = self.is_preparing = False
+            if "move" in self.status:
+                self.direction = self.get_player_distance_and_direction(player)[1]
+            else:
+                self.direction = pygame.math.Vector2()
 
 
     def update(self):
