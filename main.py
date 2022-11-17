@@ -22,7 +22,7 @@ class Game:
         self.black_screen_opacity_speed = 3
 
         self.levels = ["Intro", "Menu","Sky", "Hell"]
-        self.level_index = 2
+        self.level_index = 0
         self.create_level()
 
     def create_level(self):
