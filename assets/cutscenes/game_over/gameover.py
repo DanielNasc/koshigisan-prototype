@@ -3,9 +3,9 @@ import pygame, time
 from level import CutsceneController
 from anim_enitity import AnimEntity
 
-from assets.cutscenes.intro.i_settings import STAGES
+from assets.cutscenes.game_over.gm_settings import STAGES
 
-class IntroCutscene(CutsceneController):
+class GameOverCutscene(CutsceneController):
     def __init__(self) -> None:
         super().__init__()
 
@@ -22,3 +22,11 @@ class IntroCutscene(CutsceneController):
         self.major_events = STAGES["events"].copy()
 
         self.ended = False
+
+        self.font = pygame.font.Font("assets/fonts/PressStart2P.ttf", 20)
+        self.font_surf = self.font.render("GAME OVER", True, "White")
+        self.font_rect = self.font_surf.get_rect(center = (self.display_suface.get_width() // 2, (self.display_suface.get_height() // 2) - 64 ))
+    
+    def run(self):
+        super().run()
+        self.display_suface.blit(self.font_surf, self.font_rect)

@@ -3,6 +3,7 @@ import pygame
 from settings import *
 from level import *
 from assets.cutscenes.intro.intro import IntroCutscene
+from assets.cutscenes.game_over.gameover import GameOverCutscene
 from menu import *
 
 class Game:
@@ -21,8 +22,8 @@ class Game:
         self.black_screen_opacity = 0
         self.black_screen_opacity_speed = 3
 
-        self.levels = ["Intro", "Menu","Sky", "Hell"]
-        self.level_index = 2
+        self.levels = ["Intro", "Menu","Sky", "Hell", "Game Over"]
+        self.level_index = 4
         self.create_level()
 
     def create_level(self):
@@ -32,7 +33,7 @@ class Game:
         elif self.level_index == 1:
             self.level = Menu(self.update_level)
             gameStats.reset_player_stats()
-        else:
+        elif self.level_index == 2 or self.level_index == 3:
             if self.level_index == 2:
                 pygame.mixer.music.load("assets/SFX/tankoubusi.WAV")
                 pygame.mixer.music.set_volume(0.8)
@@ -41,6 +42,8 @@ class Game:
                 # pygame.mixer.music.set_volume(0.6)
             pygame.mixer.music.play(loops=-1)
             self.level = Level(self.levels[self.level_index], self.level_transition, self.level_index - 1) # create a instance of Level class
+        else:
+            self.level = GameOverCutscene()
 
 
     def level_transition(self, to: int = None):
@@ -101,9 +104,8 @@ class Game:
             if (hasattr(self.level, 'player')):
                 p_topleft = self.level.player.rect.topleft
 
-                if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 2:
-                    self.update_level()
-
+                # if (p_topleft[0] >= 640 and p_topleft[0] <= 768) and p_topleft[1] >= 2050 and self.level_index == 2:
+                #     self.update_level()
 
                 if (self.level.player.is_dead):
                     self.level_transition(0)
