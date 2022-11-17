@@ -3,6 +3,7 @@ import pygame
 from settings import *
 from support import import_sprites, calculate_property_by_difficult
 from entity import Entity
+from game_stats_settings import gameStats
 
 class Player(Entity):
     def __init__(self, pos, groups, obstacles: pygame.sprite.Group, slippery_sprites: pygame.sprite.Group,
@@ -58,13 +59,7 @@ class Player(Entity):
 
         #------------- Maluzinha ------------------
         #### Estatísticas
-        self.stats = {
-                        'health': calculate_property_by_difficult(100), 
-                        'mana': 60, 
-                        'attack': calculate_property_by_difficult(10), 
-                        'speed': 2, 
-                        'magic': calculate_property_by_difficult(4)
-                    }
+        self.stats = gameStats.player_stats
         self.max_stats = {
                             'health': calculate_property_by_difficult(300), 
                             'mana': calculate_property_by_difficult(140), 
@@ -82,7 +77,7 @@ class Player(Entity):
                             }
         self.health = self.stats['health']
         self.mana = self.stats['mana']
-        self.exp = 5000
+        # self.exp = gameStats.player_exp
 
         #-------------Lonalt-------------------
         # flickering time

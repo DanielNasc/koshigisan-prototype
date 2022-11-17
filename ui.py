@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from game_stats_settings import gameStats
 
 class UI:
     def __init__(self):
@@ -79,7 +80,7 @@ class UI:
         self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR)
 
-        self.show_exp(player.exp) 
+        self.show_exp(gameStats.player_exp) 
         
         self.weapon_overlay(player.weapon_index, player.is_attacking)
         self.magic_overlay(player.magic_index, player.is_attacking_w_magic)

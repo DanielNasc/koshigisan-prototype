@@ -368,7 +368,7 @@ class Level:
             self.animation_controller.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
     def add_exp(self,amount):
-        self.player.exp += amount
+        gameStats.player_exp += amount
 
     def toggle_menu(self):
         self.game_paused = not self.game_paused
