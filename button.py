@@ -36,6 +36,8 @@ class Button(pygame.sprite.Sprite):
 
         self.screen = pygame.display.get_surface()
 
+        self.press_time = 0
+
     def update(self):
         mouse_pressed = pygame.mouse.get_pressed()
         mouse_pos = pygame.mouse.get_pos()
@@ -71,6 +73,9 @@ class Button(pygame.sprite.Sprite):
         top_surf.blit(self.text, text_rect)
         self.screen.blit(top_surf, top_rect.topleft)
 
-        if self.rect.collidepoint(mouse_pos):
+        curr_time = pygame.time.get_ticks()
+
+        if self.rect.collidepoint(mouse_pos) and (curr_time - self.press_time >= 500):
             if mouse_pressed[0]:
+                self.press_time = curr_time
                 self.action()

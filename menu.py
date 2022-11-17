@@ -58,6 +58,7 @@ class Menu:
 
     def create_buttons(self):
         diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
+        #screen = "Janela" if pygame.display.get_caption
         Button((self.middle_w, self.middle_h),
                 200, 50, 
                 "Começar", 
@@ -88,7 +89,17 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 self.recreate_difficulty_button)
 
-        Button((self.middle_w, self.middle_h + 225),
+        self.fullsreen_button = Button((self.middle_w, self.middle_h + 225),
+                200, 50, 
+                "Janela", 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_fullscreen_button)
+        
+        Button((self.middle_w, self.middle_h + 300),
                 200, 50, 
                 "Sair", 
                 self.button_color,
@@ -98,6 +109,19 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 gameStats.close)
 
+    def recreate_fullscreen_button(self):
+        gameStats.change_screen()
+        text = "Tela Cheia" if gameStats.is_fullscreen else "Janela"
+        self.fullsreen_button.kill()
+        self.fullsreen_button = Button((self.middle_w, self.middle_h + 225),
+                200, 50, 
+                text, 
+                self.button_color,
+                self.font, 
+                self.font_color,
+                (self.buttons, self.visible_sprites),
+                20,  (64, 64, 128, 128), self.button_hover_color,
+                self.recreate_fullscreen_button)
 
     def recreate_difficulty_button(self):
         gameStats.set_difficult()

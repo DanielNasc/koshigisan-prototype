@@ -310,10 +310,12 @@ class DashEnemy(Enemy):
             self.preparing_time = pygame.time.get_ticks()
             self.is_blocked = self.is_preparing = True
 
-        elif "move" in self.status:
-            self.direction = self.get_player_distance_and_direction(player)[1]
         else:
-            self.direction = pygame.math.Vector2()
+            self.is_blocked = self.is_preparing = False
+            if "move" in self.status:
+                self.direction = self.get_player_distance_and_direction(player)[1]
+            else:
+                self.direction = pygame.math.Vector2()
 
 
     def update(self):

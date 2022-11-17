@@ -24,7 +24,6 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         # pegar a surface do display
         self.display_surface = pygame.display.get_surface()
 
-
         self.offset = pygame.math.Vector2()
 
         # centro da tela

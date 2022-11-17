@@ -13,6 +13,7 @@ from magic import PlayerMagic
 from weapon import Weapon
 from upgrade import Upgrade
 from game_stats_settings import gameStats
+from debug import debug
 
 class Level:
     def __init__(self, curr_level, next_level_transition) -> None:
@@ -405,8 +406,11 @@ class Level:
         #             Tile(pos, (self.obstacle_sprites), 'invisible')
         #         self.summoned = True
 
+        debug(gameStats.enemies_amount)
+
         if (gameStats.enemies_amount <= 0):
             self.next_level_transition()
+            
                 
 
 class CutsceneController():
