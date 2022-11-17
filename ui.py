@@ -9,10 +9,17 @@ class UI:
         # general
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT,UI_FONT_SIZE)
+        self.font_bar = pygame.font.Font(UI_FONT,UI_BAR_FONT_SIZE)
+
+        # icons
+        self.heart = "assets/sprites/ui/heart.png"
+        self.mana = "assets/sprites/ui/mana.png"
+        self.hp_text = "HP"
+        self.mana_text = "MANA"
 
         # setup bar
-        self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
-        self.mana_bar_rect = pygame.Rect(10,34,MANA_BAR_WIDTH,BAR_HEIGHT)
+        self.health_bar_rect = pygame.Rect(70,20,HEALTH_BAR_WIDTH,BAR_HEIGHT)
+        self.mana_bar_rect = pygame.Rect(130,49,MANA_BAR_WIDTH,BAR_HEIGHT)
 
         # convert weapon dictionary
         self.weapon_graphics = []
@@ -28,9 +35,10 @@ class UI:
             magic = pygame.image.load(magic_path).convert_alpha()
             self.magic_graphics.append(magic)
 
-    def show_bar(self,current,max_amount,bg_rect,color):
+    def show_bar(self,current,max_amount,bg_rect,color,path,text):
         # draw bg
         pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect)
+        icon = import_a_single_sprite(path)
 
         # converting stat to pixel
         ratio = current / max_amount
@@ -40,7 +48,19 @@ class UI:
 
         # drawing the bar
         pygame.draw.rect(self.display_surface,color,current_rect)
-        pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,bg_rect,3)
+        border_rect = pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,bg_rect,3)
+        icon_rect = icon.get_rect(topright = (border_rect.topleft[0] - 10, border_rect.topleft[1] - 5))
+        self.display_surface.blit(icon, icon_rect)
+
+        # text
+        text_surf = self.font_bar.render(text,False,TEXT_COLOR)
+        text_rect = text_surf.get_rect(topleft = (border_rect.topright[0] + 10,border_rect.topright[1]))
+        self.display_surface.blit(text_surf,text_rect)
+
+    def bar_rect(self):
+        bg_rect = pygame.Rect(10,10,BAR_RECT_WIDTH,BAR_RECT_HEIGHT)
+        pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect,border_radius = 7)
+        pygame.draw.rect(self.display_surface, UI_BORDER_COLOR,bg_rect.inflate(12,12),3)
 
     def show_exp(self,exp):
         text_surf = self.font.render(str(int(exp)),False,TEXT_COLOR)
@@ -51,8 +71,8 @@ class UI:
 
         pygame.draw.rect(self.display_surface, UI_BG_COLOR,text_rect.inflate(20,20))
         self.display_surface.blit(text_surf,text_rect)
-        pygame.draw.rect(self.display_surface, UI_BORDER_COLOR,text_rect.inflate(20,20),3)
-        coin_rect = coin.get_rect(topleft = (x - 125, y - 35))
+        border_rect = pygame.draw.rect(self.display_surface, UI_BORDER_COLOR,text_rect.inflate(20,20),3)
+        coin_rect = coin.get_rect(topright = (border_rect.topleft[0] - 10, y - 25))
         self.display_surface.blit(coin, coin_rect)
 
     def selection_box(self,left,top, has_switched):
@@ -81,9 +101,9 @@ class UI:
 
 
     def display(self,player):
-        self.show_bar(gameStats.player_health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
-        self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR)
-
+        self.bar_rect()
+        self.show_bar(gameStats.player_health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR,self.heart,self.hp_text)
+        self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR,self.mana,self.mana_text)
         self.show_exp(gameStats.player_exp) 
         
         self.weapon_overlay(player.weapon_index, player.is_attacking)

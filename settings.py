@@ -15,8 +15,11 @@ BAR_HEIGHT = 20
 HEALTH_BAR_WIDTH = 200
 MANA_BAR_WIDTH = 140
 ITEM_BOX_SIZE = 80
+BAR_RECT_HEIGHT = 70
+BAR_RECT_WIDTH = 340
 UI_FONT = convert_path('assets/sprites/font/joystix.ttf')
 UI_FONT_SIZE = 18
+UI_BAR_FONT_SIZE = 16
 
 # general colors
 WATER_COLOR = '#71ddee'
@@ -25,8 +28,8 @@ UI_BORDER_COLOR = '#111111'
 TEXT_COLOR = '#EEEEEE'
 
 # ui colors
-HEALTH_COLOR = '#f23535'
-MANA_COLOR = '#3372d6'
+HEALTH_COLOR = '#C7424F'
+MANA_COLOR = '#4E6679'
 UI_BORDER_COLOR_ACTIVE = 'gold'
 
 #--------Lonalt-------
@@ -76,7 +79,7 @@ monsters_data = {
         "akuma": { 
             "health": 2500, 
             "exp": 25000,
-            "damage": 300000,
+            "damage": 50,
             "attack_type": "dash",
             "speed": 1, 
             "resistance": 32,
