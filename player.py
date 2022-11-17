@@ -61,11 +61,11 @@ class Player(Entity):
         #### Estatísticas
         self.stats = gameStats.player_stats
         self.max_stats = {
-                            'health': calculate_property_by_difficult(300), 
-                            'mana': calculate_property_by_difficult(140), 
-                            'attack': calculate_property_by_difficult(20), 
-                            'speed': calculate_property_by_difficult(10), 
-                            'magic': calculate_property_by_difficult(10)
+                            'health': 300, 
+                            'mana': 140, 
+                            'attack': 20, 
+                            'speed': 10, 
+                            'magic': 10
                         }
 
         self.upgrade_cost = {
@@ -75,6 +75,13 @@ class Player(Entity):
                                 'speed': calculate_property_by_difficult(100, True), 
                                 'magic': calculate_property_by_difficult(100, True)
                             }
+
+
+        print("curr", self.stats)
+        print("max", self.max_stats)
+        print("cost", self.upgrade_cost)
+        print("============")
+
         self.mana = self.stats['mana']
         # self.exp = gameStats.player_exp
 
