@@ -71,12 +71,12 @@ class UI:
         x = self.display_surface.get_width() - 20
         y = self.display_surface.get_height() - 20
         text_rect = text_surf.get_rect(bottomright = (x,y))
-        coin = import_a_single_sprite('assets/sprites/ui/coin.png', 1.5)
+        coin = import_a_single_sprite('assets/sprites/ui/coin.png', 2)
 
         pygame.draw.rect(self.display_surface, UI_BG_COLOR,text_rect.inflate(20,20))
         self.display_surface.blit(text_surf,text_rect)
         border_rect = pygame.draw.rect(self.display_surface, UI_BORDER_COLOR,text_rect.inflate(20,20),3)
-        coin_rect = coin.get_rect(topright = (border_rect.topleft[0] - 10, y - 25))
+        coin_rect = coin.get_rect(topright = (border_rect.topleft[0] - 15, y - 35))
         self.display_surface.blit(coin, coin_rect)
 
     def selection_box(self,left,top, has_switched):
@@ -103,26 +103,26 @@ class UI:
 
         self.display_surface.blit(magic_surf,magic_rect)
 
-    def fish(self,text,x,y,color):
+    def set_text(self,text,x,y,color):
         # text
         text_surf = self.font_controls.render(text,False,color)
         text_rect = text_surf.get_rect(bottomleft = (x,y))
         self.display_surface.blit(text_surf,text_rect)
     
     def controls_text(self):
-        self.fish("Mover:", 20, 140, HEALTH_COLOR)
-        self.fish("[↑, →, ↓, ←]", 20, 155, TEXT_COLOR)
-        self.fish("Atacar:", 20, 175, HEALTH_COLOR)
-        self.fish("[X]", 90, 180, TEXT_COLOR)
-        self.fish("Usar Magia:",20,200,HEALTH_COLOR)
-        self.fish("[Z]",120, 200, TEXT_COLOR)
-        self.fish("Interagir:", 20, 220, HEALTH_COLOR)
-        self.fish("[SHIFT ESQUERDO]", 20, 240, TEXT_COLOR)
-        self.fish("Abrir/Fechar o", 20, 260, HEALTH_COLOR)
-        self.fish("Menu Upgrade:", 20, 280, HEALTH_COLOR)
-        self.fish("[M]", 140, 280, TEXT_COLOR)
-        self.fish("Comprar Upgrade:", 20, 300, HEALTH_COLOR)
-        self.fish("[ESPAÇO]", 20, 320, TEXT_COLOR)
+        self.set_text("Mover:", 20, 140, HEALTH_COLOR)
+        self.set_text("[↑, →, ↓, ←]", 20, 155, TEXT_COLOR)
+        self.set_text("Atacar:", 20, 175, HEALTH_COLOR)
+        self.set_text("[X]", 90, 180, TEXT_COLOR)
+        self.set_text("Usar Magia:",20,200,HEALTH_COLOR)
+        self.set_text("[Z]",120, 200, TEXT_COLOR)
+        self.set_text("Interagir:", 20, 220, HEALTH_COLOR)
+        self.set_text("[SHIFT ESQUERDO]", 20, 240, TEXT_COLOR)
+        self.set_text("Abrir/Fechar o", 20, 260, HEALTH_COLOR)
+        self.set_text("Menu Upgrade:", 20, 280, HEALTH_COLOR)
+        self.set_text("[M]", 140, 280, TEXT_COLOR)
+        self.set_text("Comprar Upgrade:", 20, 300, HEALTH_COLOR)
+        self.set_text("[ESPAÇO]", 20, 320, TEXT_COLOR)
 
     def controls(self):
         self.bar_rect(10, 110, CONTROLS_RECT_WIDTH, CONTROLS_RECT_HEIGHT)
@@ -139,6 +139,22 @@ class UI:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:
                     self.is_controls_open = not self.is_controls_open
+    
+    def show_enemies(self,enemies):
+        text_surf = self.font.render(str(int(enemies)),False,TEXT_COLOR)
+        x = self.display_surface.get_width() - 20
+        y = 20
+        text_rect = text_surf.get_rect(topright = (x,y))
+        enemy = import_a_single_sprite('assets/sprites/ui/enemy.png', 2)
+
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR,text_rect.inflate(20,20))
+        self.display_surface.blit(text_surf,text_rect)
+        border_rect = pygame.draw.rect(self.display_surface, UI_BORDER_COLOR,text_rect.inflate(20,20),3)
+        enemy_rect = enemy.get_rect(topright = (border_rect.topleft[0] - 10, border_rect.centery - 20))
+        self.display_surface.blit(enemy, enemy_rect)
+
+
+        
 
     def display(self,player):
 
@@ -147,9 +163,10 @@ class UI:
         self.show_bar(gameStats.player_health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR,self.heart,self.hp_text)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR,self.mana,self.mana_text)
         
-        self.show_exp(gameStats.player_exp) 
+        self.show_exp(gameStats.player_exp)
+        self.show_enemies(gameStats.enemies_amount) 
         self.change_controls()
-        
+
         if(self.is_controls_open): 
             self.controls()
         else:

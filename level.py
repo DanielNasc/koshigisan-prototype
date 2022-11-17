@@ -449,7 +449,6 @@ class Level:
         #             Tile(pos, (self.obstacle_sprites), 'invisible')
         #         self.summoned = True
 
-        debug(gameStats.enemies_amount)
 
         if (gameStats.enemies_amount <= 0):
             self.next_level_transition()
