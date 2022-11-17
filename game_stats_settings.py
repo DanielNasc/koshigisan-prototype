@@ -20,6 +20,7 @@ class GameStats:
         self.player_stats_backup = self.player_stats.copy()
         self.player_exp = 100
         self.player_health = self.player_stats["health"]
+        self.player_mana = self.player_stats['mana']
         
         self.enemies_amount = 0
 

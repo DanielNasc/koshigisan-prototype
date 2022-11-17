@@ -64,8 +64,8 @@ class UI:
 
     def show_exp(self,exp):
         text_surf = self.font.render(str(int(exp)),False,TEXT_COLOR)
-        x = self.display_surface.get_width() - 20
-        y = self.display_surface.get_height() - 20
+        x = self.display_surface.get_width() - 30
+        y = self.display_surface.get_height() - 0
         text_rect = text_surf.get_rect(bottomright = (x,y))
         coin = import_a_single_sprite('assets/sprites/ui/coin.png', 1.5)
 
@@ -99,8 +99,12 @@ class UI:
 
         self.display_surface.blit(magic_surf,magic_rect)
 
+    def update_text(self, player):
+        self.hp_text = f'{round(gameStats.player_health, 1)}/{round(gameStats.player_stats["health"], 1)} HP'
+        self.mana_text = f'{round(player.mana, 1)}/{round(player.stats["mana"], 1)} MANA'
 
     def display(self,player):
+        self.update_text(player)
         self.bar_rect()
         self.show_bar(gameStats.player_health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR,self.heart,self.hp_text)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR,self.mana,self.mana_text)
