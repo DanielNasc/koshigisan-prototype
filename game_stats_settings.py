@@ -18,6 +18,7 @@ class GameStats:
                         'magic': self.calculate_property_by_difficult(4)
                     }
         self.player_exp = 5000
+        self.player_health = self.player_stats["health"]
 
     def calculate_property_by_difficult(self, prop, invert_sign=False):
         return prop + ( prop * self.DIFFICULT_VALUES_VARIATION_PERCENTAGE * self.DIFFICULT * (-1 if invert_sign else 1) )

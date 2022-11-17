@@ -198,6 +198,9 @@ class Enemy(Entity):
             self.trigger_death_particles(self.rect.center,self.monster_name)
             self.add_exp(self.exp)
             self.death_sound.play()
+            gameStats.player_health += 5
+            if gameStats.player_health > gameStats.player_stats["health"]:
+                gameStats.player_health = gameStats.player_stats["health"]
     
     def hit_reaction(self):
         if not self.vulnerable:

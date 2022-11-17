@@ -12,6 +12,7 @@ from particles import AnimationController
 from magic import PlayerMagic
 from weapon import Weapon
 from upgrade import Upgrade
+from game_stats_settings import gameStats
 
 class Level:
     def __init__(self, curr_level) -> None:
@@ -362,7 +363,7 @@ class Level:
 
     def damage_player(self,amount,attack_type):
         if self.player.vulnerable:
-            self.player.health -= amount
+            gameStats.player_health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
             self.animation_controller.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])

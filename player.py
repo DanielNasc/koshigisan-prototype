@@ -75,7 +75,6 @@ class Player(Entity):
                                 'speed': calculate_property_by_difficult(100, True), 
                                 'magic': calculate_property_by_difficult(100, True)
                             }
-        self.health = self.stats['health']
         self.mana = self.stats['mana']
         # self.exp = gameStats.player_exp
 
@@ -264,7 +263,7 @@ class Player(Entity):
         return list(self.upgrade_cost.values())[index]
 
     def check_death(self):
-        if self.health <= 0:
+        if gameStats.player_health <= 0:
             self.is_dead = True
             self.vulnerable = True
 

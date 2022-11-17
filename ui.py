@@ -77,7 +77,7 @@ class UI:
 
 
     def display(self,player):
-        self.show_bar(player.health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
+        self.show_bar(gameStats.player_health,player.stats['health'],self.health_bar_rect,HEALTH_COLOR)
         self.show_bar(player.mana,player.stats['mana'],self.mana_bar_rect,MANA_COLOR)
 
         self.show_exp(gameStats.player_exp) 
