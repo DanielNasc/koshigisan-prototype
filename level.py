@@ -1,5 +1,6 @@
-from random import choice, randint
 import pygame
+from random import choice, randint
+from time import time
 
 from Tile import *
 from camera import YSortCameraGroup
@@ -16,7 +17,7 @@ from game_stats_settings import gameStats
 from debug import debug
 
 class Level:
-    def __init__(self, curr_level, next_level_transition) -> None:
+    def __init__(self, curr_level, next_level_transition, level_index=None) -> None:
         self.display_suface = pygame.display.get_surface()
         self.game_paused = False
 
@@ -56,8 +57,21 @@ class Level:
 
         self.player_magic = PlayerMagic(self.animation_controller)
 
-
         self.next_level_transition = next_level_transition
+
+        self.instance_time = time()
+        self.level_title_time = 3
+        self.level_initialized = False
+        self.level_index = level_index
+
+        self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
+        self.font = pygame.font.Font(self.font_path, 50)
+        self.level_index_font = pygame.font.Font(self.font_path, 15)
+        self.font_color = "white"
+
+        self.fade_init_time = self.level_title_time * .7
+        self.fade_speed = round(255 / ((self.level_title_time - .7 - self.fade_init_time) * FPS), 10)
+        self.fade_opactity = 0
 
     def create_layouts(self):
         self.layouts = {
@@ -386,6 +400,35 @@ class Level:
         self.animation_controller.create_particles(particle_type,pos,self.visible_sprites)
 
     def run(self):
+        if not self.level_initialized:
+            curr_time = time()
+            display_surface = pygame.display.get_surface()
+
+            text = self.font.render(self.curr_level,True,self.font_color)
+            level_index_txt = self.level_index_font.render(f"Fase {self.level_index}",True,self.font_color)
+
+            text_rect = text.get_rect(center = (display_surface.get_width() // 2, display_surface.get_height() // 2))
+            level_index_txt_rect = level_index_txt.get_rect(center = (text_rect.centerx, text_rect.centery - (text_rect.height // 2) - 20))
+
+            pygame.draw.line(display_surface, 'white', (text_rect.left, level_index_txt_rect.centery), (level_index_txt_rect.left - 10, level_index_txt_rect.centery),5)
+            pygame.draw.line(display_surface, 'white', (level_index_txt_rect.right + 10, level_index_txt_rect.centery), (text_rect.right, level_index_txt_rect.centery),5)
+            pygame.draw.line(display_surface, 'white', (text_rect.left, text_rect.bottom + 15), (text_rect.right, text_rect.bottom + 15),5)
+
+            display_surface.blit(text,text_rect)
+            display_surface.blit(level_index_txt,level_index_txt_rect)
+
+            if curr_time - self.instance_time >= self.fade_init_time:
+                s = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+                s.fill((0,0,0))
+                s.set_alpha(self.fade_opactity)
+                display_surface.blit(s, (0,0))
+                self.fade_opactity += self.fade_speed
+
+            if curr_time - self.instance_time >= self.level_title_time:
+                self.level_initialized = True
+
+            return
+
         self.visible_sprites.custom_draw(self.player)  
 
         # -------------- Maluzinha ---------

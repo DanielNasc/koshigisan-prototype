@@ -73,9 +73,6 @@ class Guid(pygame.sprite.Sprite):
         self.restore_buttons()
 
     def update(self):
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_pressed = pygame.mouse.get_pressed()
-
         self.visible_sprites.update()
 
         # if self.rect.collidepoint(mouse_pos):
