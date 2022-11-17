@@ -194,6 +194,7 @@ class Enemy(Entity):
 
     def check_death(self):
         if self.health <= 0:
+            gameStats.enemies_amount -= 1
             self.kill()
             self.trigger_death_particles(self.rect.center,self.monster_name)
             self.add_exp(self.exp)

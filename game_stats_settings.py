@@ -17,6 +17,14 @@ class GameStats:
                         'speed': 2, 
                         'magic': self.calculate_property_by_difficult(4)
                     }
+        self.player_stats_backup = self.player_stats.copy()
+        self.player_exp = 5000
+        self.player_health = self.player_stats["health"]
+        
+        self.enemies_amount = 0
+
+    def reset_player_stats(self):
+        self.player_stats = self.player_stats_backup.copy()
         self.player_exp = 5000
         self.player_health = self.player_stats["health"]
 

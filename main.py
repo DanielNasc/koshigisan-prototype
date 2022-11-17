@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 from settings import *
 from level import *
@@ -23,23 +22,25 @@ class Game:
         self.black_screen_opacity_speed = 3
 
         self.levels = ["Intro", "Menu","Sky", "Hell"]
-        self.level_index = 0
+        self.level_index = 2
         self.create_level()
 
     def create_level(self):
         if (self.level_index == 0):
             self.level = IntroCutscene()
+            gameStats.reset_player_stats()
         elif self.level_index == 1:
             self.level = Menu(self.update_level)
+            gameStats.reset_player_stats()
         else:
             if self.level_index == 2:
                 pygame.mixer.music.load("assets/SFX/tankoubusi.WAV")
                 pygame.mixer.music.set_volume(0.8)
             else:
-                pygame.mixer.music.load("assets/SFX/kajiya.WAV")
-                pygame.mixer.music.set_volume(0.6)
+                pygame.mixer.music.load("assets/songs/songs_level_4/1º_Ato_L4.mp3")
+                # pygame.mixer.music.set_volume(0.6)
             pygame.mixer.music.play(loops=-1)
-            self.level = Level(self.levels[self.level_index]) # create a instance of Level class
+            self.level = Level(self.levels[self.level_index], self.level_transition) # create a instance of Level class
 
 
     def level_transition(self, to: int = None):
@@ -106,6 +107,8 @@ class Game:
 
                 if (self.level.player.is_dead):
                     self.level_transition(0)
+
+            debug(gameStats.enemies_amount)
 
             pygame.display.update()
             self.clock.tick(FPS)
