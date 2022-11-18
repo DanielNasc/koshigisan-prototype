@@ -454,15 +454,14 @@ class Level:
         debug(gameStats.enemies_amount)
 
         if (gameStats.enemies_amount <= 0):
-            self.next_level_transition()
-            
-                
+            self.next_level_transition()                
 
 class CutsceneController():
     def __init__(self) -> None:
         self.visible_sprites = pygame.sprite.Group()
         self.display_suface = pygame.display.get_surface()
         self.major_events = []
+        self.sounds = {}
 
     def convert_pos(self, pos, offset):
         if pos == "screen_center":

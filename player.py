@@ -77,11 +77,6 @@ class Player(Entity):
                             }
 
 
-        print("curr", self.stats)
-        print("max", self.max_stats)
-        print("cost", self.upgrade_cost)
-        print("============")
-
         self.mana = self.stats['mana']
         # self.exp = gameStats.player_exp
 

@@ -4,6 +4,7 @@ from settings import *
 from level import *
 from assets.cutscenes.intro.intro import IntroCutscene
 from assets.cutscenes.game_over.gameover import GameOverCutscene
+from assets.cutscenes.victory.victory import VictoryCutscene
 from menu import *
 
 class Game:
@@ -22,29 +23,37 @@ class Game:
         self.black_screen_opacity = 0
         self.black_screen_opacity_speed = 3
 
-        self.levels = ["Intro", "Menu","Sky", "Hell", "Game Over"]
-        self.level_index = 4
+        self.levels = ["Intro", "Menu","Sky", "Hell", "Game Over", "Win"]
+        self.level_index = 0
         self.create_level()
 
     def create_level(self):
         if (self.level_index == 0):
             self.level = IntroCutscene()
             gameStats.reset_player_stats()
+            
         elif self.level_index == 1:
             self.level = Menu(self.update_level)
             gameStats.reset_player_stats()
-        elif self.level_index == 2 or self.level_index == 3:
-            if self.level_index == 2:
-                pygame.mixer.music.load("assets/SFX/tankoubusi.WAV")
-                pygame.mixer.music.set_volume(0.8)
-            else:
-                pygame.mixer.music.load("assets/songs/songs_level_4/1º_Ato_L4.mp3")
-                # pygame.mixer.music.set_volume(0.6)
-            pygame.mixer.music.play(loops=-1)
-            self.level = Level(self.levels[self.level_index], self.level_transition, self.level_index - 1) # create a instance of Level class
-        else:
-            self.level = GameOverCutscene()
 
+        elif self.level_index == 2:
+            pygame.mixer.music.load("assets/SFX/tankoubusi.WAV")
+            pygame.mixer.music.set_volume(0.8)
+            self.level = Level(self.levels[self.level_index], self.level_transition, self.level_index - 1) # create a instance of Level class
+            pygame.mixer.music.play(loops=-1)
+
+        elif self.level_index == 3:
+            pygame.mixer.music.load("assets/songs/songs_level_4/1º_Ato_L4.mp3")
+            self.level = Level(self.levels[self.level_index], self.win, self.level_index - 1) # create a instance of Level class
+            pygame.mixer.music.play(loops=-1)
+
+        elif self.level_index == 4:
+            self.level = GameOverCutscene()
+        else:
+            self.level = VictoryCutscene()
+
+    def win(self):
+        self.level_transition(5)
 
     def level_transition(self, to: int = None):
         if self.is_in_transition:
@@ -108,7 +117,7 @@ class Game:
                 #     self.update_level()
 
                 if (self.level.player.is_dead):
-                    self.level_transition(0)
+                    self.level_transition(4)
 
             pygame.display.update()
             self.clock.tick(FPS)

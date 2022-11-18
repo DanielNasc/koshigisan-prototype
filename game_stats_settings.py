@@ -22,7 +22,7 @@ class GameStats:
         self.player_health = self.player_stats["health"]
         self.player_mana = self.player_stats['mana']
         
-        self.enemies_amount = 0
+        self.enemies_amount = 1
 
         self.is_fullscreen = False
         self.toggle_fullscreen_time = 0
