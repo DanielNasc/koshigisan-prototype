@@ -14,7 +14,6 @@ from magic import PlayerMagic
 from weapon import Weapon
 from upgrade import Upgrade
 from game_stats_settings import gameStats
-from debug import debug
 from particles import *
 from anim_enitity import AnimEntity
 
@@ -461,6 +460,7 @@ class CutsceneController():
         self.display_suface = pygame.display.get_surface()
         self.major_events = []
         self.sounds = {}
+        self.texts = {}
 
     def convert_pos(self, pos, offset):
         if pos == "screen_center":

@@ -2,7 +2,7 @@ from support import convert_path
 
 WIDTH=1280
 HEIGHT=720
-FPS=50
+FPS=100
 TILESIZE=32
 ZOOM=2
 
