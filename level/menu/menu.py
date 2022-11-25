@@ -1,13 +1,12 @@
 import pygame
 from datetime import datetime as dt
 
-from debug import debug
-from support import import_animations_from_folder, convert_path, import_a_single_sprite
+from support.sprites_support import import_animations_from_folder, convert_path, import_a_single_sprite
 from settings import *
-from button import Button
+from level.menu.button import Button
 from game_stats_settings import *
 
-from guid import *
+from level.menu.guide import *
 
 class Menu:
     def __init__(self, start_game):
@@ -145,7 +144,7 @@ class MenuBackground(pygame.sprite.Sprite):
     def __init__(self,groups):
         super().__init__(groups)
 
-        hour = 20
+        hour = dt.now().hour
 
         if hour < 12:
             self.wallpaper = 'Morning'

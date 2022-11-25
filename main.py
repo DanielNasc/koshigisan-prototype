@@ -1,11 +1,11 @@
 import pygame
 
 from settings import *
-from level import *
-from assets.cutscenes.intro.intro import IntroCutscene
-from assets.cutscenes.game_over.gameover import GameOverCutscene
-from assets.cutscenes.victory.victory import VictoryCutscene
-from menu import *
+from level.level import *
+from cutscenes.intro.intro import IntroCutscene
+from cutscenes.game_over.gameover import GameOverCutscene
+from cutscenes.victory.victory import VictoryCutscene
+from level.menu.menu import *
 
 class Game:
     def __init__(self) -> None:

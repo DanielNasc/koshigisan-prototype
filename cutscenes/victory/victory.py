@@ -1,9 +1,9 @@
 import time
 
-from level import CutsceneController
-from anim_enitity import AnimEntity
+from cutsceneController import CutsceneController
+from entities.anim_enitity import AnimEntity
 
-from assets.cutscenes.victory.v_settings import STAGES
+from cutscenes.victory.v_settings import STAGES
 
 class VictoryCutscene(CutsceneController):
     def __init__(self) -> None:

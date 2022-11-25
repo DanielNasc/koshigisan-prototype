@@ -1,4 +1,4 @@
-from support import convert_path
+from support.sprites_support import convert_path
 
 WIDTH=1280
 HEIGHT=720

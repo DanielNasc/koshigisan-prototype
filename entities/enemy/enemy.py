@@ -1,11 +1,13 @@
 import pygame
 import math
 
-from player import Player
-from entity import Entity
-from support import *
+from entities.player.player import Player
+from entities.entity import Entity
+
+from support.sprites_support import *
+from game_stats_settings import gameStats
+
 from settings import monsters_data
-from support import calculate_property_by_difficult
 
 """
 Estagios: [0] Idle, [1] Notar, [2] Preparar, [3] Atacar
@@ -35,13 +37,13 @@ class Enemy(Entity):
         # stats
         self.monster_name = monster_name
         monster_info = monsters_data[monster_name]
-        self.health = calculate_property_by_difficult(monster_info["health"], True)
-        self.exp = calculate_property_by_difficult(monster_info["exp"])
-        self.damage = calculate_property_by_difficult(monster_info["damage"], True)
+        self.health = gameStats.calculate_property_by_difficult(monster_info["health"], True)
+        self.exp = gameStats.calculate_property_by_difficult(monster_info["exp"])
+        self.damage = gameStats.calculate_property_by_difficult(monster_info["damage"], True)
         self.attack_type = monster_info["attack_type"]
         self.speed = monster_info["speed"]
         self.speed_boost = 1
-        self.resistance = calculate_property_by_difficult(monster_info["resistance"], True)
+        self.resistance = gameStats.calculate_property_by_difficult(monster_info["resistance"], True)
         self.attack_radius = monster_info["attack_radius"]
         self.notice_radius = monster_info["notice_radius"]
         self.scale = monster_info["scale"]

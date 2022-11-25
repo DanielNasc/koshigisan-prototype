@@ -1,8 +1,8 @@
 from math import floor
 import pygame
 from settings import *
-from support import import_sprites, calculate_property_by_difficult
-from entity import Entity
+from support.sprites_support import import_sprites
+from entities.entity import Entity
 from game_stats_settings import gameStats
 
 class Player(Entity):
@@ -69,11 +69,11 @@ class Player(Entity):
                         }
 
         self.upgrade_cost = {
-                                'health': calculate_property_by_difficult(100, True), 
-                                'mana': calculate_property_by_difficult(100, True),
-                                'attack': calculate_property_by_difficult(100, True), 
-                                'speed': calculate_property_by_difficult(100, True), 
-                                'magic': calculate_property_by_difficult(100, True)
+                                'health': gameStats.calculate_property_by_difficult(100, True), 
+                                'mana': gameStats.calculate_property_by_difficult(100, True),
+                                'attack': gameStats.calculate_property_by_difficult(100, True), 
+                                'speed': gameStats.calculate_property_by_difficult(100, True), 
+                                'magic': gameStats.calculate_property_by_difficult(100, True)
                             }
 
 
@@ -129,8 +129,8 @@ class Player(Entity):
             self.magic_time = pygame.time.get_ticks()
 
             style = list(magic_data.keys())[self.magic_index]
-            strength = calculate_property_by_difficult(self.selected_magic["strength"])
-            cost = calculate_property_by_difficult(self.selected_magic["cost"], True)
+            strength = gameStats.calculate_property_by_difficult(self.selected_magic["strength"])
+            cost = gameStats.calculate_property_by_difficult(self.selected_magic["cost"], True)
 
             self.create_magic(style, strength, cost)
 

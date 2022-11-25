@@ -1,5 +1,5 @@
 import pygame
-from support import convert_path
+from support.sprites_support import convert_path
 
 class SpriteSheet:
     def __init__(self, filepath: str):
