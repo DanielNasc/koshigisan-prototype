@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 from game_stats_settings import gameStats
-from support import import_a_single_sprite
+from support.sprites_support import import_a_single_sprite
 
 class UI:
     def __init__(self):

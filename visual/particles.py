@@ -1,5 +1,5 @@
 import pygame
-from support import import_animations_from_folder
+from support.sprites_support import import_animations_from_folder
 from random import choice
 
 class ParticleEffect(pygame.sprite.Sprite):

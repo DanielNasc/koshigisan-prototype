@@ -1,9 +1,9 @@
 import pygame, time
 
-from level import CutsceneController
-from anim_enitity import AnimEntity
+from cutscenes.cutsceneController import CutsceneController
+from entities.anim_enitity import AnimEntity
 
-from assets.cutscenes.game_over.gm_settings import STAGES
+from cutscenes.game_over.gm_settings import STAGES
 
 class GameOverCutscene(CutsceneController):
     def __init__(self) -> None:

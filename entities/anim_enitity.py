@@ -2,8 +2,8 @@ import pygame, time
 
 from math import floor
 
-from entity import Entity
-from support import import_sprites
+from entities.entity import Entity
+from support.sprites_support import import_sprites
 
 
 """

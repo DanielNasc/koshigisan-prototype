@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from button import Button
+from level.menu.button import Button
 
 class Guid(pygame.sprite.Sprite):
     def __init__(self, pos, width, height, restore_buttons, groups):

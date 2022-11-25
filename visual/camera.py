@@ -1,9 +1,9 @@
 import pygame
 
-from player import Player
 from settings import HEIGHT, WIDTH, ZOOM
-from weapon import Weapon
-from support import convert_path
+from entities.player.player import Player
+from entities.player.weapon import Weapon
+from support.sprites_support import convert_path
 
 """
 as principais funções dos grupos são

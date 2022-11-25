@@ -1,4 +1,4 @@
-from support import convert_path
+from support.sprites_support import convert_path
 
 WIDTH=1280
 HEIGHT=720
@@ -88,7 +88,7 @@ monsters_data = {
             "speed": 1, 
             "resistance": 32,
             "attack_radius":460,
-            "notice_radius": 400,
+            "notice_radius": 550,
             "scale": 1,
             "preparing_duration": 0,
             "attack_sound": "assets/SFX/Akuma.wav"

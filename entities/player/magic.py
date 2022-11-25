@@ -1,7 +1,7 @@
 import pygame
 from settings import *
-from player import Player
-from particles import AnimationController
+from entities.player.player import Player
+from visual.particles import AnimationController
 from random import randint
 
 class PlayerMagic:

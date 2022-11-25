@@ -1,8 +1,8 @@
 from math import floor
 import pygame
 from os import path
-from player import Player
-from support import import_animations_from_folder
+from entities.player.player import Player
+from support.sprites_support import import_animations_from_folder
 from settings import ATTACK_SPEED, PLAYER_ZOOM, weapons_data
 
 class Weapon(pygame.sprite.Sprite):
