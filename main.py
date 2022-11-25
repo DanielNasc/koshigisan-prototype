@@ -27,6 +27,8 @@ class Game:
         self.level_index = 0
         self.create_level()
 
+        self.upgrade_menu_time = 0
+
     def create_level(self):
         if (self.level_index == 0):
             self.level = IntroCutscene()
@@ -88,14 +90,16 @@ class Game:
 
     def run(self):
         while True:
+            keys = pygame.key.get_pressed()
+            if (keys[pygame.K_m]):
+                if (hasattr(self.level, "toggle_menu") and (pygame.time.get_ticks() - self.upgrade_menu_time >= 500)):
+                            self.level.toggle_menu()
+                            self.upgrade_menu_time = pygame.time.get_ticks()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_m:
-                        if (hasattr(self.level, "toggle_menu")):
-                            self.level.toggle_menu()
+                        
 
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run()

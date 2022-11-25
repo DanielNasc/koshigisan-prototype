@@ -39,6 +39,9 @@ class UI:
             magic = pygame.image.load(magic_path).convert_alpha()
             self.magic_graphics.append(magic)
 
+        self.tab_time = 0
+        self.tab_cooldown = 500
+
     def show_bar(self,current,max_amount,bg_rect,color,path,text):
         # draw bg
         pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect)
@@ -135,10 +138,14 @@ class UI:
         self.display_surface.blit(text_surf,text_rect)
     
     def change_controls(self):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_TAB:
-                    self.is_controls_open = not self.is_controls_open
+        keys = pygame.key.get_pressed()
+
+        if (keys[pygame.K_TAB] and (pygame.time.get_ticks() - self.tab_time >= self.tab_cooldown)):
+            self.is_controls_open = not self.is_controls_open
+            self.tab_time = pygame.time.get_ticks()
+        # for event in pygame.event.get():
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_TAB:
     
     def show_enemies(self,enemies):
         text_surf = self.font.render(str(int(enemies)),False,TEXT_COLOR)

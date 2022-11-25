@@ -39,7 +39,7 @@ class Enemy(Entity):
         self.exp = calculate_property_by_difficult(monster_info["exp"])
         self.damage = calculate_property_by_difficult(monster_info["damage"], True)
         self.attack_type = monster_info["attack_type"]
-        self.speed = calculate_property_by_difficult(monster_info["speed"])
+        self.speed = monster_info["speed"]
         self.speed_boost = 1
         self.resistance = calculate_property_by_difficult(monster_info["resistance"], True)
         self.attack_radius = monster_info["attack_radius"]

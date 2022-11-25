@@ -145,7 +145,7 @@ class MenuBackground(pygame.sprite.Sprite):
     def __init__(self,groups):
         super().__init__(groups)
 
-        hour = dt.now().hour
+        hour = 20
 
         if hour < 12:
             self.wallpaper = 'Morning'
