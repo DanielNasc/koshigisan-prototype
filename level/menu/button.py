@@ -1,4 +1,4 @@
-import pygame 
+import pygame
 from game_stats_settings import *
 
 class Button(pygame.sprite.Sprite):
@@ -24,7 +24,6 @@ class Button(pygame.sprite.Sprite):
         self.color = color
         self.color_shadow = shadow
         self.hover = hover
-        self.clicked = False
         pos = (
             pos[0] - (width // 2),
             pos[1] - (height // 2)
@@ -38,44 +37,38 @@ class Button(pygame.sprite.Sprite):
 
         self.press_time = 0
 
-    def update(self):
-        mouse_pressed = pygame.mouse.get_pressed()
+    def handle_mouse(self):
         mouse_pos = pygame.mouse.get_pos()
-        
+        curr_time = time.time()
+
+        if self.top_rect.collidepoint(mouse_pos):
+            self.top_color = self.hover
+
+            if pygame.mouse.get_pressed()[0] and (curr_time - self.press_time >= 500):
+                self.press_time = curr_time
+                self.action()
+            
+        else:
+            self.top_color = self.color
+    
+    def update(self):
+        self.handle_mouse()
+
         top_rect = self.top_rect.copy()
+
         bottom_rect = self.bottom_rect.copy()
         bottom_rect.x += 10
         bottom_rect.y += 10
         text_rect = self.text_rect.copy()
-        if top_rect.collidepoint(mouse_pos):
-            self.top_color = self.color
-            if pygame.mouse.get_pressed()[0]:
-                self.clicked = True
-                bottom_rect.inflate_ip(self.elevation, self.elevation)
-                top_rect.inflate_ip(self.elevation, self.elevation)
-                text_rect.center = (
-                    text_rect.centerx + (self.elevation // 2),
-                    text_rect.centery + (self.elevation // 2)
-                )
 
-            elif pygame.mouse.get_pressed()[0] == 0 and self.clicked == True:
-                self.clicked = False
-            self.top_color = self.hover
-        else:
-            self.top_color = self.color
-
+        # desenha a sombra do botão
         bottom_surf = pygame.Surface(bottom_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(bottom_surf, self.bottom_color, (0, 0, *bottom_rect.size), border_radius = 12)
         self.screen.blit(bottom_surf, bottom_rect.topleft)
 
+        # desenha o botão em si
         top_surf = pygame.Surface(top_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(top_surf, self.top_color, (0, 0, *top_rect.size), border_radius = 12)
         top_surf.blit(self.text, text_rect)
+
         self.screen.blit(top_surf, top_rect.topleft)
-
-        curr_time = pygame.time.get_ticks()
-
-        if self.rect.collidepoint(mouse_pos) and (curr_time - self.press_time >= 500):
-            if mouse_pressed[0]:
-                self.press_time = curr_time
-                self.action()
