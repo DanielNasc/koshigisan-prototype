@@ -316,7 +316,7 @@ class Level:
         # self.create_block_areas()s
 
     def update_teleport_pairs(self):
-        """s
+        """
             Percorre o dicionário de pares de teletransportes e atualiza a posição de destino de cada um
             de acordo com a posição do outro.
         """
@@ -401,34 +401,54 @@ class Level:
     def trigger_death_particles(self,pos,particle_type):
         self.animation_controller.create_particles(particle_type,pos,self.visible_sprites)
 
+    def fade_out_effect(self):
+        """
+            Função que mostra tela com o titulo da fase atual e o índice da fase.
+            Esse titulo fica aparecendo na tela por uma quantidade de tempo e depois é aplicado um efeito de fade out.
+
+            Exemplo de texto:
+            ==== Fase x ====
+                N I V E L
+            ================
+        """
+
+        curr_time = time()
+        display_surface = pygame.display.get_surface()
+
+        text = self.font.render(self.curr_level,True,self.font_color)
+        level_index_txt = self.level_index_font.render(f"Fase {self.level_index}",True,self.font_color) # Texto que mostra o índice da fase
+
+        text_rect = text.get_rect(center = (display_surface.get_width() // 2, display_surface.get_height() // 2)) # Centraliza o texto na tela
+        # Centraliiza alinha horizontalmente o texto do índice da fase e o desloca verticalmente para cima
+        level_index_txt_rect = level_index_txt.get_rect(center = (text_rect.centerx, text_rect.centery - (text_rect.height // 2) - 20)) 
+
+        # desenha as linhas que ficam em volta do texto
+        pygame.draw.line(display_surface, 'white', (text_rect.left, level_index_txt_rect.centery), (level_index_txt_rect.left - 10, level_index_txt_rect.centery),5)
+        pygame.draw.line(display_surface, 'white', (level_index_txt_rect.right + 10, level_index_txt_rect.centery), (text_rect.right, level_index_txt_rect.centery),5)
+        pygame.draw.line(display_surface, 'white', (text_rect.left, text_rect.bottom + 15), (text_rect.right, text_rect.bottom + 15),5)
+
+        # desenha o texto
+        display_surface.blit(text,text_rect)
+        display_surface.blit(level_index_txt,level_index_txt_rect)
+
+        """
+            Para fazer o fade out, é necessário criar uma superfície preta com a opacidade aumentando a cada frame.
+            A opacidade é aumentada a cada frame até chegar no valor máximo, que é 255.
+        """
+        if curr_time - self.instance_time >= self.fade_init_time:
+            s = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+            s.fill((0,0,0))
+            s.set_alpha(self.fade_opactity)
+            display_surface.blit(s, (0,0))
+            self.fade_opactity += self.fade_speed
+
+        if curr_time - self.instance_time >= self.level_title_time:
+            self.level_initialized = True
+
+
     def run(self):
         if not self.level_initialized:
-            curr_time = time()
-            display_surface = pygame.display.get_surface()
-
-            text = self.font.render(self.curr_level,True,self.font_color)
-            level_index_txt = self.level_index_font.render(f"Fase {self.level_index}",True,self.font_color)
-
-            text_rect = text.get_rect(center = (display_surface.get_width() // 2, display_surface.get_height() // 2))
-            level_index_txt_rect = level_index_txt.get_rect(center = (text_rect.centerx, text_rect.centery - (text_rect.height // 2) - 20))
-
-            pygame.draw.line(display_surface, 'white', (text_rect.left, level_index_txt_rect.centery), (level_index_txt_rect.left - 10, level_index_txt_rect.centery),5)
-            pygame.draw.line(display_surface, 'white', (level_index_txt_rect.right + 10, level_index_txt_rect.centery), (text_rect.right, level_index_txt_rect.centery),5)
-            pygame.draw.line(display_surface, 'white', (text_rect.left, text_rect.bottom + 15), (text_rect.right, text_rect.bottom + 15),5)
-
-            display_surface.blit(text,text_rect)
-            display_surface.blit(level_index_txt,level_index_txt_rect)
-
-            if curr_time - self.instance_time >= self.fade_init_time:
-                s = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
-                s.fill((0,0,0))
-                s.set_alpha(self.fade_opactity)
-                display_surface.blit(s, (0,0))
-                self.fade_opactity += self.fade_speed
-
-            if curr_time - self.instance_time >= self.level_title_time:
-                self.level_initialized = True
-
+            self.fade_out_effect()
             return
 
         self.visible_sprites.custom_draw(self.player)  
