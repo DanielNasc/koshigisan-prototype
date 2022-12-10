@@ -15,11 +15,11 @@ class Menu:
         self.buttons = pygame.sprite.Group()
 
         #lonalt
-        self.guid_surface = pygame.sprite.Group()
+        self.guide_surface = pygame.sprite.Group()
 
-        MenuBackground(self.visible_sprites)
+        MenuBackground(self.visible_sprites) # Adiciona o fundo do menu
 
-        
+        # Deixa a tela mais escura
         self.filter = pygame.sprite.Sprite(self.visible_sprites)
         self.filter.image = pygame.surface.Surface((WIDTH, HEIGHT))
         #self.filter.image.convert_alpha()
@@ -27,11 +27,12 @@ class Menu:
         self.filter.image.fill((0,0,0))
         self.filter.image.set_alpha(101) 
 
-        MenuTitle(self.visible_sprites)
+        MenuTitle(self.visible_sprites) 
 
         self.middle_w = self.display_suface.get_width() // 2
         self.middle_h = self.display_suface.get_height() // 2
 
+        # configurações de fonte
         self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
         self.font = pygame.font.Font(self.font_path, 20)
         self.font_color = "white"
@@ -42,22 +43,20 @@ class Menu:
 
         self.create_buttons()
 
-    def create_guid(self):
-        Guid((self.middle_w, self.middle_h),
+    def create_guide(self):
+        Guide((self.middle_w, self.middle_h),
             900, 300,
             self.create_buttons,
-            (self.guid_surface, self.visible_sprites))
+            (self.guide_surface, self.visible_sprites))
         for button in self.buttons:
             button.kill()
 
-    def set_difficult(self):
-        DIFFICULT += 1
-        if (DIFFICULT > 1):
-            DIFFICULT = -1
-
     def create_buttons(self):
+        # Cria os botões do menu
+
         diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
-        #screen = "Janela" if pygame.display.get_caption
+
+        # Botão de começar o jogo
         Button((self.middle_w, self.middle_h),
                 200, 50, 
                 "Começar", 
@@ -68,6 +67,7 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 self.start_game)
 
+        # Botão para abrir a tela de guia
         Button((self.middle_w, self.middle_h + 75),
                 200, 50, 
                 "Guia", 
@@ -76,8 +76,10 @@ class Menu:
                 self.font_color,
                 (self.buttons, self.visible_sprites),
                 20,  (64, 64, 128, 128), self.button_hover_color,
-                self.create_guid)
+                self.create_guide)
 
+        # Botão para mudar a dificuldade
+        # Ele é colocado em uma variável para poder ser removido e recriado
         self.dif = Button((self.middle_w, self.middle_h + 150),
                 200, 50, 
                 diff, 
@@ -88,6 +90,8 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 self.recreate_difficulty_button)
 
+        # Botão para mudar a tela cheia
+        # Ele é colocado em uma variável para poder ser removido e recriado
         self.fullsreen_button = Button((self.middle_w, self.middle_h + 225),
                 200, 50, 
                 "Janela", 
@@ -98,6 +102,7 @@ class Menu:
                 20,  (64, 64, 128, 128), self.button_hover_color,
                 self.recreate_fullscreen_button)
         
+        # Botão para sair do jogo
         Button((self.middle_w, self.middle_h + 300),
                 200, 50, 
                 "Sair", 
@@ -109,6 +114,7 @@ class Menu:
                 gameStats.close)
 
     def recreate_fullscreen_button(self):
+        # Recria a o botão de tela cheia com o texto de acordo com o estado atual
         gameStats.change_screen()
         text = "Tela Cheia" if gameStats.is_fullscreen else "Janela"
         self.fullsreen_button.kill()
@@ -123,6 +129,7 @@ class Menu:
                 self.recreate_fullscreen_button)
 
     def recreate_difficulty_button(self):
+        # Recria a o botão de dificuldade com o texto de acordo com o estado atual
         gameStats.set_difficult()
         self.dif.kill()
         diff = "Difícil" if gameStats.DIFFICULT == -1 else ("Normal" if gameStats.DIFFICULT == 0 else "Fácil" )
@@ -137,9 +144,11 @@ class Menu:
                 self.recreate_difficulty_button)
 
     def run(self):
+        # Loop principal do menu
         self.visible_sprites.draw(self.display_suface)
         self.visible_sprites.update()
 
+# Classe para o fundo animado do menu
 class MenuBackground(pygame.sprite.Sprite):
     def __init__(self,groups):
         super().__init__(groups)
@@ -153,13 +162,18 @@ class MenuBackground(pygame.sprite.Sprite):
         else:
             self.wallpaper = 'Night'
         
+        # Muda o fundo de acordo com a hora do dia
         self.animation = import_animations_from_folder(f'assets/sprites/background/Menu/{self.wallpaper}')
+
+        # Animação do fundo
         self.anim_index = 0
         self.anim_speed = .045
         self.image = self.animation[0]
         self.rect = self.image.get_rect(topleft = (0,0))
     
     def animate(self):
+        # Função simples para animar o fundo
+        # Seleciona a imagem com o indice atual
         self.anim_index += self.anim_speed
 
         if (self.anim_index > len(self.animation)):
@@ -171,6 +185,7 @@ class MenuBackground(pygame.sprite.Sprite):
     def update(self) -> None:
         self.animate()
 
+# Desenha o título do jogo
 class MenuTitle(pygame.sprite.Sprite):
     def __init__(self, groups) -> None:
         super().__init__(groups)
@@ -178,10 +193,12 @@ class MenuTitle(pygame.sprite.Sprite):
         width = 1000
         height = 300
 
+
         self.image = pygame.surface.Surface((width, height), pygame.SRCALPHA)
         self.image.convert_alpha()
         self.rect = self.image.get_rect(center = (WIDTH // 2, 120))
 
+        # Não tem o I porque colocamos uma espada no lugar dele
         self.raw_text = "KOSHIG SAN"
         self.font_path = convert_path("assets/fonts/PressStart2P.ttf")
         self.font = pygame.font.Font(self.font_path, 90)

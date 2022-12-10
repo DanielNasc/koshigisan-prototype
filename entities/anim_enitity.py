@@ -7,9 +7,7 @@ from support.sprites_support import import_sprites
 
 
 """
-    "anim_type": "move",
-    "from": (x, y),
-    "to": (u, v)
+    Classe que representa uma entidade animada
 """
 
 class AnimEntity(Entity):
@@ -20,10 +18,10 @@ class AnimEntity(Entity):
         self.scale = data["scale"]
         self.anim = import_sprites(data["path"], self.scale)
         self.anim_type = data["anim_type"]
-        self.from_pos = data["from"]
-        self.to = data["to"]
-        self.animation_after_stopped = data["animation_after_stopped"]
-        self.events = data["events"].copy()
+        self.from_pos = data["from"] # Posição inicial
+        self.to = data["to"] # Posição final
+        self.animation_after_stopped = data["animation_after_stopped"] # Animação que será executada após o movimento parar
+        self.events = data["events"].copy() # Eventos que serão executados ao longo do tempo
         self.animation_speed = anim_speed
 
         self.is_in_event = False
@@ -40,7 +38,7 @@ class AnimEntity(Entity):
                 self.to[0] - self.from_pos[0],
                 self.to[1] - self.from_pos[1]
             )
-        )
+        ) # Direção do movimento 
 
         self.stopped = False
 
@@ -71,28 +69,33 @@ class AnimEntity(Entity):
                 self.frame_index = 0
 
     def check_requirements(self, requirements):
+        # Verifica se os requisitos para a execução de um evento foram satisfeitos
         for requirement in requirements:
             if requirement == "stopped":
-                if not (self.direction.x == 0 and self.direction.y == 0):
+                if not (self.direction.x == 0 and self.direction.y == 0): # Se a entidade não estiver parada
                     return False
             if requirement == "animation_after_stopped":
-                if not (self.status == self.animation_after_stopped):
+                if not (self.status == self.animation_after_stopped): # Se a entidade nao estiver na animação que deve ser executada após parar
                     return False
         return True
 
     def event_manager(self):
         curr_tick = time.time()
-        satisfied_events = []
+        satisfied_events = [] # Eventos que foram satisfeitos
 
+        # Há duas maneiras de um evento ser executado:
+        # 1. O evento é executado em um tempo específico
+        # 2. O evento é executado quando os requisitos são satisfeitos
         for index, event in enumerate(self.events):
             if "time" in event:
                 if event["time"] + self.spawn_time <= curr_tick:
                     self.is_in_event = True
                     if event["type"] == "dance":
-                        self.status = event["animation"]
+                        self.status = event["animation"] 
                     elif event["type"] == "die":
                         self.kill()
                     satisfied_events.append(index)
+
             elif self.check_requirements(event["required"]):
                 if event["type"] == "rescale":
                     self.is_in_event = True
@@ -101,12 +104,13 @@ class AnimEntity(Entity):
                         for i in range(len(anim_array)):
                             player_size_vector = pygame.math.Vector2(anim_array[i].get_size())
                             anim_array[i] = pygame.transform.scale(anim_array[i], player_size_vector * event["new_scale"])
+
                 elif event["type"] == "init_sound":
                     pygame.mixer.Sound(event["path"]).play()
 
                 satisfied_events.append(index)
 
-        satisfied_events.reverse()
+        satisfied_events.reverse() # Inverte a lista para que os eventos sejam removidos da lista de eventos sem que os índices sejam alterados
         for index in satisfied_events:
             self.events.pop(index)
 

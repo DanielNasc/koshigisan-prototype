@@ -3,6 +3,9 @@ from csv import reader
 from os import walk, listdir
 from os.path import join
 
+"""
+    Lê os arquivos de CSV contendo as posições dos objetos e retorna um array com elas
+"""
 def import_positions(path):
     path = convert_path(path)
     position_map = []
@@ -30,6 +33,10 @@ def import_sprites(path, scale=None):
     
     return animations
     
+
+"""
+    Importa todas as imagens de uma pasta e retorna um array com elas
+"""
 def import_animations_from_folder(anim_folder, scale=None):
     anim_folder = convert_path(anim_folder)
     folder_animations = []
@@ -42,6 +49,10 @@ def import_animations_from_folder(anim_folder, scale=None):
 
     return folder_animations
 
+"""
+    Importa todas as imagens de uma pasta e retorna um dict com elas
+    cuja chave é o nome da imagem e o valor é a Surface
+"""
 def import_sprites_as_dict(anim_folder, scale=None):
     anim_folder = convert_path(anim_folder)
     sprites = {}
@@ -59,6 +70,7 @@ def import_sprites_as_dict(anim_folder, scale=None):
     return sprites
 
 
+# importa uma única imagem e retorna uma Surface
 def import_a_single_sprite(image_path, scale=None):
     image_path = convert_path(image_path)
     img = pygame.image.load(image_path).convert_alpha()
@@ -69,5 +81,5 @@ def import_a_single_sprite(image_path, scale=None):
     return img
 
 
-def convert_path(path: str):
+def convert_path(path: str): # converte o path para o formato do sistema operacional
     return join(*(path.split("/")))

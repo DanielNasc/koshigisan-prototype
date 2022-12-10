@@ -128,7 +128,7 @@ class Player(Entity):
             self.can_attack_w_magic = False
             self.magic_time = pygame.time.get_ticks()
 
-            style = list(magic_data.keys())[self.magic_index]
+            style = list(magic_data.keys())[self.magic_index] 
             strength = gameStats.calculate_property_by_difficult(self.selected_magic["strength"])
             cost = gameStats.calculate_property_by_difficult(self.selected_magic["cost"], True)
 

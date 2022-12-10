@@ -74,13 +74,16 @@ class Level:
         self.fade_speed = round(255 / ((self.level_title_time - .7 - self.fade_init_time) * FPS), 10)
         self.fade_opactity = 0
 
+    # importa os layouts do level atual
     def create_layouts(self):
+        # layouts basicos que todas as fases tem
         self.layouts = {
             'boundary': import_positions(f'assets/positions/{self.curr_level}/{self.curr_level}map_FloorBlocks.csv'),
             'entities': import_positions(f'assets/positions/{self.curr_level}/Spawn_Positions.csv')
         }
 
         if (self.curr_level == "Sky"):
+            # adiciona os layouts especificos da fase Sky
             self.layouts.update({
                 'grass': import_positions('assets/positions/Sky/Skymap_Grass.csv'),
                 'tree': import_positions('assets/positions/Sky/Skymap_Trees.csv'),
@@ -102,6 +105,60 @@ class Level:
         #     self.layouts.update({
 
         #     })
+
+    def spawn_house(self, type, pos):
+        house = None
+        if (type == "gr"):
+            house = import_a_single_sprite('assets/sprites/houses/gr.png')
+        elif (type == "gb"):
+            house = import_a_single_sprite('assets/sprites/houses/gb.png')
+        elif (type == "gn"):
+            house = import_a_single_sprite('assets/sprites/houses/gn.png', 1.2)
+        elif (type == "sn"):
+            house = import_a_single_sprite('assets/sprites/houses/sn.png', 1.5)
+        elif (type == "sn2"):
+            house = import_a_single_sprite('assets/sprites/houses/sn2.png', 1.5)
+        elif (type == "n"):
+            house = import_a_single_sprite('assets/sprites/houses/n.png',1.2)
+        elif (type == "k"):
+            house = import_a_single_sprite('assets/sprites/houses/koshigi.png')
+        elif (type == "b"):
+            house = import_a_single_sprite('assets/sprites/houses/budah.png')
+
+        if (house):
+            Tile(pos, (self.visible_sprites, self.obstacle_sprites), 'house', house)
+
+    def spawn_enemy(self, type, pos):
+        if type in ["14", "A", "ske"]:
+            # Define o nome do inimigo de acordo com o seu tipo
+            enemy_name = "" 
+
+            if type == "A":
+                enemy_name = "akuma"
+            elif type == "14":
+                enemy_name = "eagle"
+            elif type == "ske":
+                if self.curr_level == "Sky":
+                    enemy_name = "snow_skeleton" # no sky só tem snow_skeleton
+                else:
+                    enemy_name = choice(("snow_skeleton", "fire_skeleton", "thunder_skeleton")) # no hell tem os 3
+
+            # Instancia um inimigo com dash de acordo com o seu nome
+            DashEnemy(  enemy_name,   
+                        pos, 
+                        [self.visible_sprites,self.attackble_sprites], 
+                        self.obstacle_sprites, self.slippery_sprites,
+                        self.damage_player,self.trigger_death_particles,
+                        self.add_exp
+                    )
+        else:
+            ContinuousEnemy(    "nukekubi",
+                                pos,
+                                [self.visible_sprites,self.attackble_sprites],
+                                self.obstacle_sprites, self.slippery_sprites,
+                                self.damage_player,self.trigger_death_particles,
+                                self.add_exp
+                            )
 
     def create_map(self):
 
@@ -131,6 +188,7 @@ class Level:
 
         }
 
+        # Percorre todos os layouts, criando os tiles de acordo com o estilo 
         for style,layout in self.layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, data in enumerate(row):
@@ -160,14 +218,10 @@ class Level:
                             else:
                                 Tile((x,y), (self.visible_sprites, self.obstacle_sprites, self.attackble_sprites), 'little_rocks', winner)
                         
-                        elif style == "rocks":
-                            if "r" not in data:
-                                continue
+                        elif style == "rocks" and "r" in data:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'rock', graphics['rocks'][data])
 
-                        elif style == "decoration":
-                            if "deco" not in data:
-                                continue
+                        elif style == "decoration" and "deco" in data:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'decoration', graphics['decoration'][data])
 
                         elif (style == "tree" or style == "tree2") and "t" in data:
@@ -183,7 +237,7 @@ class Level:
                         elif style == "water_objects":
                             try:
                                 int(data)
-                            except:
+                            except ValueError:
                                 Tile((x,y), (self.visible_sprites, self.obstacle_sprites), 'water_object', graphics[data])
 
                         elif style == "ladder":
@@ -247,68 +301,11 @@ class Level:
                                         self.destroy_attack,
                                         self.create_magic
                                     )
-                            elif data == "14":
-                                DashEnemy(  "eagle", 
-                                            (x, y), 
-                                            [self.visible_sprites,self.attackble_sprites], 
-                                            self.obstacle_sprites, self.slippery_sprites,
-                                            self.damage_player,self.trigger_death_particles,
-                                            self.add_exp
-                                        )
-                            elif data == "A":
-                                DashEnemy(  "akuma",   
-                                            (x, y), 
-                                            [self.visible_sprites,self.attackble_sprites], 
-                                            self.obstacle_sprites, self.slippery_sprites,
-                                            self.damage_player,self.trigger_death_particles,
-                                            self.add_exp
-                                        )
-                            elif data == "ske":
-                                if self.curr_level == "Sky":
-                                    DashEnemy(  "snow_skeleton",   
-                                            (x, y), 
-                                            [self.visible_sprites,self.attackble_sprites], 
-                                            self.obstacle_sprites, self.slippery_sprites,
-                                            self.damage_player,self.trigger_death_particles,
-                                            self.add_exp
-                                        )
-                                else:
-                                    DashEnemy(  choice(("snow_skeleton", "fire_skeleton", "thunder_skeleton")),   
-                                            (x, y), 
-                                            [self.visible_sprites,self.attackble_sprites], 
-                                            self.obstacle_sprites, self.slippery_sprites,
-                                            self.damage_player,self.trigger_death_particles,
-                                            self.add_exp
-                                        )
                             else:
-                                ContinuousEnemy(    "nukekubi",
-                                                    (x, y),
-                                                    [self.visible_sprites,self.attackble_sprites],
-                                                    self.obstacle_sprites, self.slippery_sprites,
-                                                    self.damage_player,self.trigger_death_particles,
-                                                    self.add_exp
-                                                )
+                                self.spawn_enemy(data, (x, y))
+                            
                         elif style == "house":
-                            house = None
-                            if (data == "gr"):
-                                house = import_a_single_sprite('assets/sprites/houses/gr.png')
-                            elif (data == "gb"):
-                                house = import_a_single_sprite('assets/sprites/houses/gb.png')
-                            elif (data == "gn"):
-                                house = import_a_single_sprite('assets/sprites/houses/gn.png', 1.2)
-                            elif (data == "sn"):
-                                house = import_a_single_sprite('assets/sprites/houses/sn.png', 1.5)
-                            elif (data == "sn2"):
-                                house = import_a_single_sprite('assets/sprites/houses/sn2.png', 1.5)
-                            elif (data == "n"):
-                                house = import_a_single_sprite('assets/sprites/houses/n.png',1.2)
-                            elif (data == "k"):
-                                house = import_a_single_sprite('assets/sprites/houses/koshigi.png')
-                            elif (data == "b"):
-                                house = import_a_single_sprite('assets/sprites/houses/budah.png')
-
-                            if (house):
-                                Tile((x, y), (self.visible_sprites, self.obstacle_sprites), 'house', house)
+                            self.spawn_house(data, (x, y))
                             
                         elif style == "torii":
                             if not "torii" in data:
@@ -316,9 +313,13 @@ class Level:
                             Tile((x, y), (self.visible_sprites, self.obstacle_sprites), data, graphics['torii'][data])
 
         self.update_teleport_pairs()
-        self.create_block_areas()
+        # self.create_block_areas()s
 
     def update_teleport_pairs(self):
+        """s
+            Percorre o dicionário de pares de teletransportes e atualiza a posição de destino de cada um
+            de acordo com a posição do outro.
+        """
         for key in self.teleport_pairs.keys():
             pair = self.teleport_pairs[key]
             tp_pos_0 = pair[0].my_tp_pos
@@ -327,13 +328,13 @@ class Level:
             pair[0].update_tp_destination(tp_pos_1)
             pair[1].update_tp_destination(tp_pos_0)
 
-    def create_block_areas(self):
-        for key in self.block_after_player_pass:
-            data = self.block_after_player_pass[key]
+    # def create_block_areas(self):
+    #     for key in self.block_after_player_pass:
+    #         data = self.block_after_player_pass[key]
 
-            size = (data["end"][0] - data["init"][0], data["end"][1] - data["init"][1])
+    #         size = (data["end"][0] - data["init"][0], data["end"][1] - data["init"][1])
 
-            Block(data["init"], size, data["block_areas"], (self.block_areas))
+    #         Block(data["init"], size, data["block_areas"], (self.block_areas))
 
     def create_attack(self):
         self.curr_attack = Weapon(self.player, [self.visible_sprites,self.attack_sprites])

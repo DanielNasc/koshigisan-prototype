@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from level.menu.button import Button
 
-class Guid(pygame.sprite.Sprite):
+class Guide(pygame.sprite.Sprite):
     def __init__(self, pos, width, height, restore_buttons, groups):
         super().__init__(groups)
         

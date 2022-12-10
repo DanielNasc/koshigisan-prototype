@@ -14,9 +14,6 @@ as principais funções dos grupos são
 mas você pode mudar adicionar novos metodos ou mudar os existentes extendendo a classe
 """
 
-def gambiarra_weapon(sprite: pygame.sprite.Sprite):
-    return sprite.rect.bottom if not isinstance(sprite,Weapon) else 10000000000
-
 class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
     def __init__(self, level=None):
         super().__init__()
@@ -58,7 +55,7 @@ class YSortCameraGroup(pygame.sprite.Group): # extendendo a classe Group
         floor_offset = self.floor_rect.topleft - self.offset
         self.internal_surf.blit(self.floor_surface, floor_offset)
 
-        for sprite in sorted(self.sprites(), key=gambiarra_weapon):
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.bottom):
             offset_pos = sprite.rect.topleft - self.offset
             self.internal_surf.blit(sprite.image, offset_pos)
 

@@ -228,7 +228,6 @@ Não tem o Stage de preparação
 
 """
 
-
 class ContinuousEnemy(Enemy):
     def __init__(self, monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp) -> None:
         super().__init__(monster_name, pos, groups, obstacle_sprites, slippery_sprites, damage_player, trigger_death_particles, add_exp)
