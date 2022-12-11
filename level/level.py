@@ -144,7 +144,7 @@ class Level:
                     enemy_name = choice(("snow_skeleton", "fire_skeleton", "thunder_skeleton")) # no hell tem os 3
 
             # Instancia um inimigo com dash de acordo com o seu nome
-            DashEnemy(  enemy_name,   
+            return DashEnemy(  enemy_name,   
                         pos, 
                         [self.visible_sprites,self.attackble_sprites], 
                         self.obstacle_sprites, self.slippery_sprites,
@@ -152,7 +152,7 @@ class Level:
                         self.add_exp
                     )
         else:
-            ContinuousEnemy(    "nukekubi",
+            return ContinuousEnemy(    "nukekubi",
                                 pos,
                                 [self.visible_sprites,self.attackble_sprites],
                                 self.obstacle_sprites, self.slippery_sprites,

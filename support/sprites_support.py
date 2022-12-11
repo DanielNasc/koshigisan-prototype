@@ -72,8 +72,22 @@ def import_sprites_as_dict(anim_folder, scale=None):
 
 # importa uma única imagem e retorna uma Surface
 def import_a_single_sprite(image_path, scale=None):
+    # image_path tem quer ser ums string e scale um float ou inteiro maior que 0
+
+    if not type(image_path) == str:
+        return None
+    
+    if scale and not type(scale) in [float, int]:
+        return None
+
+    if scale and scale <= 0:
+        return None
+
     image_path = convert_path(image_path)
-    img = pygame.image.load(image_path).convert_alpha()
+    try:
+        img = pygame.image.load(image_path).convert_alpha()
+    except:
+        return None
     if (scale):
         img_size = pygame.math.Vector2(img.get_size())
         img = pygame.transform.scale(img, img_size * scale)
