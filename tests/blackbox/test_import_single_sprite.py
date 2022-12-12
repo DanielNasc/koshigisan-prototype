@@ -4,7 +4,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__) + '/../..')
 
-from support.sprites_support import import_a_single_sprite
+from support.sprites_support import import_a_single_sprite 
+from support.sprites_support import import_positions
 
 
 # Testes para a função import_a_single_sprite
@@ -49,21 +50,17 @@ def test_import_a_single_sprite_scale():
     assert sprite.get_height() == sprite2.get_height() / 2
 
 def test_import_a_single_sprite_invalid_path():
-    # Testa se a função retorna None quanto os parâmetros quando path é inválido
+    # Testa por meio da análise de valores limites, se a função retorna 
+    # None quanto os parâmetros quando path é inválido
     pygame.init()
     pygame.display.set_mode((100, 100))
 
     # Importa um sprite
+    # Como a função só aceita valores maiores do que 0, só precisamos testar 3 valores: -1, 0 e 1.
     sprites = [
+        import_a_single_sprite(-1),
+        import_a_single_sprite(0),
         import_a_single_sprite(1),
-        import_a_single_sprite(1.0),
-        import_a_single_sprite(True),
-        import_a_single_sprite(False),
-        import_a_single_sprite(None),
-        import_a_single_sprite([]),
-        import_a_single_sprite({}),
-        import_a_single_sprite(()),
-        import_a_single_sprite("  "),
     ]
 
     # Verifica se o sprite foi importado corretamente e é uma instancia de Surface
@@ -90,3 +87,26 @@ def test_import_a_single_sprite_invalid_scale():
     # pois como testamos com True, que é um tipo diferente de int e float, já cobrimos todos os tipos de dados
 
     assert sprite is None
+
+def test_import_position():
+    # Testa se a função retorna corretamente um array
+    pygame.init()
+    pygame.display.set_mode((100, 100))
+
+    # Importa o mapa
+    position_map = []
+    position_map = import_positions("tests/blackbox/position/teste.csv")
+
+    assert position_map is not None
+
+def test_import_position_invalid_path():
+    # Testa se a função retorna None quanto os parâmetros quando o path é inválido
+    pygame.init()
+    pygame.display.set_mode((100, 100))
+
+    # Importa o mapa
+    position_map = []
+    position_map = import_positions(True)
+
+    assert position_map is None
+

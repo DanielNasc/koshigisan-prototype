@@ -7,8 +7,13 @@ from os.path import join
     Lê os arquivos de CSV contendo as posições dos objetos e retorna um array com elas
 """
 def import_positions(path):
+    
+    if not type(path) == str:
+        return None
+
     path = convert_path(path)
     position_map = []
+
     with open(path) as csv_file:
         dunno = reader(csv_file, delimiter = ',')
         
