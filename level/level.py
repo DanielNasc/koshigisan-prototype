@@ -137,7 +137,7 @@ class Level:
                 enemy_name = "akuma"
             elif type == "14":
                 enemy_name = "eagle"
-            elif type == "ske":
+            else:
                 if self.curr_level == "Sky":
                     enemy_name = "snow_skeleton" # no sky só tem snow_skeleton
                 else:

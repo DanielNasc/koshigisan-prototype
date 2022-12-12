@@ -39,6 +39,8 @@ def test_import_a_single_sprite_scale():
     # Importa um sprite com escala 2x
     sprite2 = import_a_single_sprite("/tests/blackbox/img/test.png", 2)
 
+    sprite3 = import_a_single_sprite("/tests/blackbox/img/test.png", 0.00001)
+
     # Verifica se o sprite foi importado corretamente e é uma instancia de Surface
     assert sprite is not None
     assert isinstance(sprite, pygame.Surface)
@@ -49,23 +51,8 @@ def test_import_a_single_sprite_scale():
     assert sprite.get_width() == sprite2.get_width() / 2
     assert sprite.get_height() == sprite2.get_height() / 2
 
-def test_import_a_single_sprite_invalid_path():
-    # Testa por meio da análise de valores limites, se a função retorna 
-    # None quanto os parâmetros quando path é inválido
-    pygame.init()
-    pygame.display.set_mode((100, 100))
-
-    # Importa um sprite
-    # Como a função só aceita valores maiores do que 0, só precisamos testar 3 valores: -1, 0 e 1.
-    sprites = [
-        import_a_single_sprite(-1),
-        import_a_single_sprite(0),
-        import_a_single_sprite(1),
-    ]
-
-    # Verifica se o sprite foi importado corretamente e é uma instancia de Surface
-    for sprite in sprites:
-        assert sprite is None
+    assert sprite.get_width() == sprite3.get_width() / 0.00001
+    assert sprite.get_height() == sprite3.get_height() / 0.00001
 
 """
     Utilizando partição de equivalência, vamos dividir os tipos de daodos em 2 grupos, com relação ao parâmetro scale:
@@ -85,6 +72,34 @@ def test_import_a_single_sprite_invalid_scale():
 
     # apenas com esse teste, já cobrimos todos os tipos de dados inválido
     # pois como testamos com True, que é um tipo diferente de int e float, já cobrimos todos os tipos de dados
+
+    assert sprite is None
+
+def test_import_a_single_sprite_invalid_scale_limits():
+    # Testa por meio da análise de valores limites, se a função retorna 
+    # None quanto os parâmetros quando path é inválido
+    pygame.init()
+    pygame.display.set_mode((100, 100))
+
+    # Importa um sprite
+    # Como a função só aceita valores maiores do que 0, só precisamos testar 3 valores: -1, 0 e 1.
+    sprites = [
+        import_a_single_sprite("/tests/blackbox/img/test.png", -.000001),
+        import_a_single_sprite("/tests/blackbox/img/test.png", 0),
+        import_a_single_sprite("/tests/blackbox/img/test.png", .000001),
+    ]
+
+    # Verifica se o sprite foi importado corretamente e é uma instancia de Surface
+    for sprite in sprites:
+        assert sprite is None
+
+def test_import_a_single_sprite_invalid_path():
+    # Testa se a função retorna None quanto os parâmetros quando path é inválido
+    pygame.init()
+    pygame.display.set_mode((100, 100))
+
+    # Importa um sprite
+    sprite = import_a_single_sprite(True)
 
     assert sprite is None
 
