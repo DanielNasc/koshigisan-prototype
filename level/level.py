@@ -460,8 +460,8 @@ class Level:
         if self.game_paused:
             self.upgrade.display()
         else:
-            self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)
+            self.visible_sprites.update()
             self.player_attack_logic()
 
         # for sprite in self.block_areas: 

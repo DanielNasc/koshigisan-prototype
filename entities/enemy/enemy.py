@@ -294,7 +294,7 @@ class DashEnemy(Enemy):
                 self.stage = PREPARE
         elif distance <= self.notice_radius:
             self.is_preparing = self.is_blocked = False
-            self.stage = NOTICE 
+            self.stage = NOTICE
         else:
             self.is_preparing = self.is_blocked = False
             self.stage = IDLE
