@@ -27,9 +27,12 @@ class Game:
         # Todas as telas do jogo são tratadas como níveis
         self.levels = ["Intro", "Menu","Sky", "Hell", "Game Over", "Win"]
         self.level_index = 0
+        self.created_level_time = 0
+        self.jump_level_cooldown = 100
         self.create_level()
 
         self.upgrade_menu_time = 0
+
 
     # Cria um nível de acordo com o índice atual
     def create_level(self):
@@ -56,6 +59,8 @@ class Game:
             self.level = GameOverCutscene()
         else: # Win
             self.level = VictoryCutscene()
+
+        self.created_level_time = pygame.time.get_ticks()
 
     def win(self):
         self.level_transition(5) # vai para o indice 5 do array de levels, que é a tela de vitória
@@ -118,7 +123,7 @@ class Game:
             self.screen.fill('black') # Fill the Surface with a solid color.
             self.level.run() # Run the level
 
-            if pressed_keys[pygame.K_j]: # Tecla Cheat para pular de level
+            if pressed_keys[pygame.K_j] and (pygame.time.get_ticks() - self.created_level_time >= self.jump_level_cooldown): # Tecla Cheat para pular de level
                 self.update_level()
 
             if (hasattr(self.level, "ended")): # Quando a animação de fim de jogo terminar, volta para o menu
