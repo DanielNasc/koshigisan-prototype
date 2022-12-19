@@ -25,7 +25,7 @@ class GameStats:
                         'health': self.calculate_property_by_difficult(100), 
                         'mana': 60, 
                         'attack': self.calculate_property_by_difficult(10), 
-                        'speed': 2, 
+                        'speed': 5, 
                         'magic': self.calculate_property_by_difficult(4)
                     }
         self.player_stats_backup = self.player_stats.copy() # Usado para resetar os status do jogador quando ele morre

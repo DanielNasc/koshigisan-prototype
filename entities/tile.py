@@ -34,8 +34,8 @@ class Teleporter(Tile):
         super().__init__(pos, groups, sprite_type, surface)
         self.direction = direction
 
-        x = self.rect.centerx + (32 * self.direction[0])
-        y = self.rect.centery + (32 * self.direction[1])
+        x = self.rect.centerx + (40 * self.direction[0])
+        y = self.rect.centery + (40 * self.direction[1])
 
         self.my_tp_pos = self.tp_destination_pos = (x, y)
 

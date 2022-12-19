@@ -32,6 +32,7 @@ class Level:
         self.enemies_sprites = pygame.sprite.Group()
         self.interactive_sprites = pygame.sprite.Group()
         self.block_areas = pygame.sprite.Group()
+        self.boundary_group = pygame.sprite.Group()
 
         self.teleport_pairs = {}
         self.block_after_player_pass = {}
@@ -56,7 +57,7 @@ class Level:
         # particles
         self.animation_controller = AnimationController()
 
-        self.player_magic = PlayerMagic(self.animation_controller)
+        self.player_magic = PlayerMagic(self.animation_controller, self.boundary_group)
 
         self.next_level_transition = next_level_transition
 
@@ -124,6 +125,10 @@ class Level:
             house = import_a_single_sprite('assets/sprites/houses/koshigi.png')
         elif (type == "b"):
             house = import_a_single_sprite('assets/sprites/houses/budah.png')
+        elif (type == "igloo"):
+            house = import_a_single_sprite('assets/sprites/houses/igloo.png')
+        elif (type == "sigloo"):
+            house = import_a_single_sprite('assets/sprites/houses/sigloo.png')
 
         if (house):
             Tile(pos, (self.visible_sprites, self.obstacle_sprites), 'house', house)
@@ -197,7 +202,7 @@ class Level:
                         y = row_index * TILESIZE
 
                         if style == 'boundary':
-                            Tile((x, y), (self.obstacle_sprites), 'invisible')
+                            Tile((x, y), (self.obstacle_sprites, self.boundary_group), 'invisible')
 
                         elif style == 'grass':
                             random_grass = choice(graphics['grass'])

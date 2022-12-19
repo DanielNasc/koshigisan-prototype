@@ -104,4 +104,4 @@ class AnimationController:
 
     def create_particles(self,animation_type,pos,groups):
         animation_frames = self.frames[animation_type]
-        ParticleEffect(pos,animation_frames,groups)
+        return ParticleEffect(pos,animation_frames,groups)
