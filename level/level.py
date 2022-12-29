@@ -353,13 +353,20 @@ class Level:
     def destroy_attack(self):
         if self.curr_attack:
             self.curr_attack.kill()
+            if hasattr(self.curr_attack, "hitbox_sprite"):
+                self.curr_attack.hitbox_sprite.kill()
         self.curr_attack = None
 
     #--------------Lonalt-------------------
     def player_attack_logic(self):
         if self.attack_sprites:
             for attack_sprite in self.attack_sprites:
-                collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackble_sprites,False)
+
+                if (hasattr(attack_sprite, "hitbox_sprite")):
+                    collision_sprites = pygame.sprite.spritecollide(attack_sprite.hitbox_sprite,self.attackble_sprites,False, pygame.sprite.collide_mask)
+                else:
+                    collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackble_sprites,False, pygame.sprite.collide_mask)
+                
                 if collision_sprites:
                     for target_sprite in collision_sprites:
                         #target_sprite.get_damage(self.player,attack_sprites.sprite_type)
@@ -475,7 +482,6 @@ class Level:
         #         for pos in sprite.block_areas:
         #             Tile(pos, (self.obstacle_sprites), 'invisible')
         #         self.summoned = True
-
 
         if (gameStats.enemies_amount <= 0):
             self.next_level_transition()                

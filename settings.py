@@ -140,7 +140,11 @@ monsters_data = {
 # ------------- Maluzinha ---------------
 
 weapons_ui_data = {
-    "katana": {'graphic': convert_path('assets/sprites/weapons/ui/katana.png')}
+    "katana": {
+        'graphic': convert_path('assets/sprites/weapons/ui/katana.png'),
+        'range': 100,
+        'hitbox_mask': 'quarter_circle',
+        }
 }
 magics_ui_data = {
     'fire_ball': {'graphic': convert_path('assets/sprites/magic/ui/fire.png')}

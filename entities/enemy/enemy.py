@@ -86,6 +86,8 @@ class Enemy(Entity):
         self.hit_sound.set_volume(0.3)
         self.attck_sound.set_volume(0.3)
 
+        self.mask = pygame.mask.from_surface(self.image)
+
     def import_graphics(self,monster_name):
         self.anim = import_sprites(f"assets/sprites/monsters/{self.monster_name}", self.scale)
 
@@ -181,6 +183,8 @@ class Enemy(Entity):
             self.image.set_alpha(alpha)
         else:
             self.image.set_alpha(255)
+
+        self.mask = pygame.mask.from_surface(self.image)
 
 #--------------Lonalt--------
     def get_damage(self, player: Player,attack_type):
