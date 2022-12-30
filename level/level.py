@@ -169,15 +169,15 @@ class Level:
 
         graphics = {
             'grass': import_animations_from_folder("assets/sprites/grass"),
-            'tree': import_sprites_as_dict('assets/sprites/trees'),
+            'tree': import_sprites_as_dict('assets/sprites/trees', 2),
             'houses': import_animations_from_folder("assets/sprites/houses"),
             'rocks': import_sprites_as_dict('assets/sprites/rocks'),
             'decoration': import_sprites_as_dict('assets/sprites/decoration'),
             'torii': import_sprites_as_dict('assets/sprites/torii'),
 
-            'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png'),
-            'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png'),
-            'ladder_bottom': import_a_single_sprite('assets/sprites/ladder/ladder_bottom.png'),
+            'ladder': import_a_single_sprite('assets/sprites/ladder/ladder.png', 2),
+            'ladder_top': import_a_single_sprite('assets/sprites/ladder/ladder_top.png', 2),
+            'ladder_bottom': import_a_single_sprite('assets/sprites/ladder/ladder_bottom.png', 2),
 
             'entrie': import_a_single_sprite('assets/sprites/entrie/entrie.png'),
 

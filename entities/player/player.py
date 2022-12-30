@@ -14,7 +14,7 @@ class Player(Entity):
         #### Animação
 
         # pegar todas as animações dos jogador e colocar na propriedade anim
-        self.anim = import_sprites('assets/sprites/characteres/yamato', PLAYER_ZOOM)
+        self.anim = import_sprites('assets/sprites/characteres/byakko', PLAYER_ZOOM)
         self.image = self.anim["down_idle"][0]
 
         self.status = 'down'

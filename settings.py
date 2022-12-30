@@ -3,11 +3,11 @@ from support.sprites_support import convert_path
 WIDTH=1280
 HEIGHT=720
 FPS=100
-TILESIZE=32
-ZOOM=2
+TILESIZE=64
+ZOOM=1.5
 
 PLAYER_SPAWN=(1260, 820)
-PLAYER_ZOOM=1
+PLAYER_ZOOM=2
 ATTACK_SPEED=0.15
 
 # ---------- Maluzinha ---------
@@ -75,7 +75,7 @@ monsters_data = {
             "resistance": 3,
             "attack_radius":150,
             "notice_radius": 240,
-            "scale": 1,
+            "scale": 2,
             "preparing_duration": 500,
             "attack_cooldown": 4000,
             "attack_sound": "assets/SFX/Eagle.wav"
@@ -89,7 +89,7 @@ monsters_data = {
             "resistance": 32,
             "attack_radius":460,
             "notice_radius": 550,
-            "scale": 1,
+            "scale": 2,
             "preparing_duration": 0,
             "attack_sound": "assets/SFX/Akuma.wav"
         },
@@ -102,7 +102,7 @@ monsters_data = {
             "resistance": 3,
             "attack_radius":90,
             "notice_radius": 240,
-            "scale": 1,
+            "scale": 2,
             "preparing_duration": 500,
             "attack_cooldown": 1000,
             "attack_sound": "assets/SFX/ice_skeleton.wav"
@@ -116,7 +116,7 @@ monsters_data = {
             "resistance": 3,
             "attack_radius":90,
             "notice_radius": 240,
-            "scale": 1,
+            "scale": 2,
             "preparing_duration": 500,
             "attack_cooldown": 1000,
             "attack_sound": "assets/SFX/lightning_skeleton.wav"
@@ -130,7 +130,7 @@ monsters_data = {
             "resistance": 3,
             "attack_radius":90,
             "notice_radius": 240,
-            "scale": 1,
+            "scale": 2,
             "preparing_duration": 500,
             "attack_cooldown": 1000,
             "attack_sound": "assets/SFX/fire_skeleton.wav"
